@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meine Awesome GitHub Website</title>
+  <title>My Awesome GitHub Website</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Schreibmaschinen-Effekt */
+    /* 🌈 Animated rainbow gradient background */
+    body {
+      background: linear-gradient(270deg, #ff6ec7, #ffde59, #5dff6e, #59cfff, #b659ff, #ff5959);
+      background-size: 1200% 1200%;
+      animation: gradientShift 20s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* ✨ Typewriter effect */
     .typewriter {
       overflow: hidden;
-      border-right: .15em solid #00f2fe;
+      border-right: .15em solid #fff;
       white-space: nowrap;
-      animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+      animation: typing 4s steps(40, end), blink-caret .75s step-end infinite;
     }
     @keyframes typing {
       from { width: 0 }
@@ -19,27 +31,47 @@
     }
     @keyframes blink-caret {
       from, to { border-color: transparent }
-      50% { border-color: #00f2fe }
+      50% { border-color: #fff }
+    }
+
+    /* 🌌 Floating effect */
+    .float {
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translatey(0px); }
+      50% { transform: translatey(-20px); }
+      100% { transform: translatey(0px); }
+    }
+
+    /* 🌟 Glowing button */
+    .glow-btn {
+      box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4);
+      transition: all 0.3s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.6);
+      transform: scale(1.1);
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white min-h-screen flex items-center justify-center flex-col">
+<body class="text-white min-h-screen flex flex-col items-center justify-center text-center">
   
-  <h1 class="text-5xl font-extrabold mb-6 bg-gradient-to-r from-cyan-400 to-blue-600 bg-clip-text text-transparent">
-    Willkommen! ✨
+  <h1 class="text-6xl font-extrabold mb-6 float">
+    🚀 Welcome to My GitHub Page
   </h1>
   
   <h2 class="typewriter text-2xl mb-10">
-    Das ist meine coole GitHub Website 🚀
+    Building cool projects with passion 💻✨
   </h2>
 
-  <a href="https://github.com/DEINUSERNAME" target="_blank"
-     class="px-6 py-3 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 
-            text-lg font-bold shadow-lg hover:scale-110 transform transition duration-300">
-     👉 Check mein GitHub
+  <a href="https://github.com/YOURUSERNAME" target="_blank"
+     class="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 
+            text-lg font-bold glow-btn">
+     👉 Visit My GitHub
   </a>
 
-  <footer class="absolute bottom-5 text-gray-400 text-sm">
+  <footer class="absolute bottom-5 text-gray-200 text-sm">
     © 2025 – Made with ❤ and Open Source
   </footer>
 </body>
