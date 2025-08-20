@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Awesome GitHub Website</title>
+  <title>wollydev24 - GitHub Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     /* 🌈 Animated rainbow gradient background */
@@ -53,26 +53,62 @@
       box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.6);
       transform: scale(1.1);
     }
+
+    /* 🛠️ Project cards hover effect */
+    .project-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+    }
   </style>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center justify-center text-center">
-  
+<body class="text-white min-h-screen flex flex-col items-center justify-center text-center px-4">
+
+  <!-- 🌌 Header -->
   <h1 class="text-6xl font-extrabold mb-6 float">
-    🚀 Welcome to My GitHub Page
+    🚀 Hi, I'm wollydev24
   </h1>
   
   <h2 class="typewriter text-2xl mb-10">
-    Building cool projects with passion 💻✨
+    Welcome to my GitHub Portfolio 💻✨
   </h2>
 
+  <!-- 🌟 GitHub Button -->
   <a href="https://github.com/wollydev24" target="_blank"
      class="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 
-            text-lg font-bold glow-btn">
+            text-lg font-bold glow-btn mb-16">
      👉 Visit My GitHub
   </a>
 
+  <!-- 🛠️ Projects Section -->
+  <h3 class="text-3xl font-bold mb-6">My Projects</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl w-full">
+    
+    <!-- YouShadeKWGT -->
+    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank"
+       class="project-card p-6 rounded-2xl bg-black/40 backdrop-blur-lg border border-white/20">
+      <h4 class="text-2xl font-bold mb-2">🌙 YouShadeKWGT</h4>
+      <p class="text-gray-200">
+        A modern KWGT widget pack with clean design and Material You styling.
+      </p>
+    </a>
+
+    <!-- Windows Tools -->
+    <a href="https://github.com/wollydev24/Windows-Tools" target="_blank"
+       class="project-card p-6 rounded-2xl bg-black/40 backdrop-blur-lg border border-white/20">
+      <h4 class="text-2xl font-bold mb-2">🖥️ Windows Tools</h4>
+      <p class="text-gray-200">
+        A collection of useful tools and scripts for Windows power users.
+      </p>
+    </a>
+
+  </div>
+
+  <!-- Footer -->
   <footer class="absolute bottom-5 text-gray-200 text-sm">
-    © 2025 – Made with ❤ and Open Source
+    © 2025 – Made with ❤ by wollydev24
   </footer>
 </body>
 </html>
