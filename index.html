@@ -6,111 +6,98 @@
   <title>wollydev24 - GitHub Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 🌈 Animated pastel gradient background */
     body {
-      background: linear-gradient(270deg, #fbc2eb, #a18cd1, #fbc2eb);
-      background-size: 600% 600%;
-      animation: gradientShift 15s ease infinite;
-    }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      font-family: "Fira Code", monospace;
+      background-color: #0d0d0d;
+      color: #00ff99;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
     }
 
-    /* ✨ Typewriter effect (fixed caret overshoot) */
+    .terminal {
+      max-width: 850px;
+      width: 100%;
+      border: 2px solid #00ff99;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: left;
+    }
+
+    .prompt::before {
+      content: "➜ ";
+    }
+
+    /* Typing effect */
     .typewriter {
-      display: inline-block;
       overflow: hidden;
-      border-right: .15em solid #fff;
+      border-right: .15em solid #00ff99;
       white-space: nowrap;
       width: 0;
-      animation: typing 4s steps(40, end) forwards, blink-caret .75s step-end infinite;
+      display: inline-block;
+      animation: typing 3s steps(40, end) forwards;
     }
     @keyframes typing {
       from { width: 0 }
-      to { width: 34ch } /* Adjust to length of your text */
-    }
-    @keyframes blink-caret {
-      from, to { border-color: transparent }
-      50% { border-color: #fff }
+      to { width: 34ch }
     }
 
-    /* 🌌 Floating effect */
-    .float {
-      animation: float 4s ease-in-out infinite;
-    }
-    @keyframes float {
-      0% { transform: translatey(0px); }
-      50% { transform: translatey(-20px); }
-      100% { transform: translatey(0px); }
-    }
-
-    /* 🌟 Glowing button */
-    .glow-btn {
-      box-shadow: 0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4);
+    /* Link Style */
+    .link {
+      display: inline-block;
+      text-decoration: underline;
+      color: #00ff99;
       transition: all 0.3s ease;
     }
-    .glow-btn:hover {
-      box-shadow: 0 0 40px rgba(255,255,255,0.9), 0 0 80px rgba(255,255,255,0.6);
-      transform: scale(1.1);
+    .link:hover {
+      color: #ffffff;
+      transform: scale(1.1) rotateZ(-2deg);
+      text-shadow: 0 0 8px #00ff99, 0 0 16px #00ff99;
     }
 
-    /* 🛠️ Project cards hover effect */
+    /* Project cards */
     .project-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: block;
+      padding: 0.8rem 1rem;
+      border-left: 3px solid #00ff99;
+      margin-top: 1rem;
+      background: rgba(0, 255, 153, 0.05);
+      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
     }
     .project-card:hover {
-      transform: translateY(-10px) scale(1.05);
-      box-shadow: 0 0 20px rgba(255,255,255,0.5);
+      transform: scale(1.05);
+      background: rgba(0, 255, 153, 0.15);
+      box-shadow: 0 0 12px #00ff99, 0 0 24px #00ff99;
     }
   </style>
 </head>
-<body class="text-white min-h-screen flex flex-col items-center justify-center text-center px-4">
+<body>
 
-  <!-- 🌌 Header -->
-  <h1 class="text-4xl sm:text-6xl font-extrabold mb-6 float">
-    🚀 Hi, I'm wollydev24
-  </h1>
-  
-  <h2 class="typewriter text-xl sm:text-2xl mb-10">
-    Welcome to my GitHub Portfolio 💻✨
-  </h2>
+  <div class="terminal">
+    <p class="prompt">Hi, I'm <span class="font-bold">wollydev24</span> 🚀</p>
+    <p class="prompt"><span class="typewriter">Welcome to my GitHub Portfolio 💻✨</span></p>
 
-  <!-- 🌟 GitHub Button -->
-  <a href="https://github.com/wollydev24" target="_blank"
-     class="px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-gradient-to-r from-pink-400 to-purple-400 
-            text-base sm:text-lg font-bold glow-btn mb-16">
-     👉 Visit My GitHub
-  </a>
+    <br>
+    <p class="prompt">👉 <a href="https://github.com/wollydev24" target="_blank" class="link">Visit My GitHub</a></p>
+    <p class="prompt">💬 <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="link">Join My Discord</a></p>
+    <p class="prompt">📨 <a href="https://t.me/YouShadeKWGT" target="_blank" class="link">Follow on Telegram</a></p>
 
-  <!-- 🛠️ Projects Section -->
-  <h3 class="text-2xl sm:text-3xl font-bold mb-6">My Projects</h3>
-  <div class="grid grid-cols-1 gap-6 sm:gap-8 sm:grid-cols-2 max-w-4xl w-full">
-    
-    <!-- YouShadeKWGT -->
-    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank"
-       class="project-card p-5 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-lg border border-white/20">
-      <h4 class="text-xl sm:text-2xl font-bold mb-2">🌙 YouShadeKWGT</h4>
-      <p class="text-gray-200 text-sm sm:text-base">
-        A modern KWGT widget pack with clean design and Material You styling.
-      </p>
+    <br>
+    <p class="prompt"># My Projects</p>
+
+    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank" class="project-card">
+      🌙 YouShadeKWGT – A modern KWGT widget pack with Material You styling.
     </a>
 
-    <!-- Windows Tools -->
-    <a href="https://github.com/wollydev24/Windows-Tools" target="_blank"
-       class="project-card p-5 sm:p-6 rounded-2xl bg-black/40 backdrop-blur-lg border border-white/20">
-      <h4 class="text-xl sm:text-2xl font-bold mb-2">🖥️ Windows Tools</h4>
-      <p class="text-gray-200 text-sm sm:text-base">
-        A collection of useful tools and scripts for Windows power users.
-      </p>
+    <a href="https://github.com/wollydev24/Windows-Tools" target="_blank" class="project-card">
+      🖥️ Windows Tools – A collection of useful tools and scripts for Windows power users.
     </a>
 
+    <br>
+    <p class="prompt text-sm">© 2025 – Made with ❤ by wollydev24</p>
   </div>
 
-  <!-- Footer -->
-  <footer class="mt-12 text-gray-200 text-xs sm:text-sm">
-    © 2025 – Made with ❤ by wollydev24
-  </footer>
 </body>
 </html>
