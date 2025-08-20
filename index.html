@@ -28,6 +28,7 @@
 
     .prompt::before {
       content: "➜ ";
+      vertical-align: middle; /* Zentriert die Pfeile mit dem Text */
     }
 
     /* Typing effect */
@@ -37,11 +38,12 @@
       white-space: nowrap;
       width: 0;
       display: inline-block;
+      vertical-align: middle; /* Macht die Texthöhe passend zum Pfeil */
       animation: typing 3s steps(40, end) forwards;
     }
     @keyframes typing {
       from { width: 0 }
-      to { width: 36ch }
+      to { width: 34ch }
     }
 
     /* Link Style */
@@ -112,7 +114,7 @@
       🌙 YouShadeKWGT – A modern KWGT widget pack with Material You styling.
     </a>
 
-    <a href="https://github.com/wollydev24/WindowsTools" target="_blank" class="project-card">
+    <a href="https://github.com/wollydev24/WindowsTool" target="_blank" class="project-card">
       🖥️ WindowsTool – A collection of useful tools and scripts for Windows power users.
     </a>
 
