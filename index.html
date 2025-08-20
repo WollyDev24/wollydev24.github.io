@@ -6,11 +6,11 @@
   <title>WollyDev24 - GitHub Portfolio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 🌈 Animated rainbow gradient background */
+    /* 🌈 Animated pastel gradient background */
     body {
-      background: linear-gradient(270deg, #ff6ec7, #ffde59, #5dff6e, #59cfff, #b659ff, #ff5959);
-      background-size: 1200% 1200%;
-      animation: gradientShift 20s ease infinite;
+      background: linear-gradient(270deg, #fbc2eb, #a18cd1, #fbc2eb);
+      background-size: 600% 600%;
+      animation: gradientShift 15s ease infinite;
     }
     @keyframes gradientShift {
       0% { background-position: 0% 50%; }
@@ -18,26 +18,23 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* ✨ Typewriter effect */
-.typewriter {
-  display: inline-block;         /* wichtig, damit width wirkt */
-  overflow: hidden;
-  border-right: .15em solid #fff;
-  white-space: nowrap;
-  width: 0;
-  animation: typing 4s steps(40, end) forwards, blink-caret .75s step-end infinite;
-}
-
-@keyframes typing {
-  from { width: 0 }
-  to { width: 32ch }  /* <-- Stelle anpassen: Anzahl Zeichen im Text */
-}
-
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: #fff }
-}
-
+    /* ✨ Typewriter effect (fixed caret overshoot) */
+    .typewriter {
+      display: inline-block;
+      overflow: hidden;
+      border-right: .15em solid #fff;
+      white-space: nowrap;
+      width: 0;
+      animation: typing 4s steps(40, end) forwards, blink-caret .75s step-end infinite;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 34ch } /* Adjust to length of your text */
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #fff }
+    }
 
     /* 🌌 Floating effect */
     .float {
@@ -73,7 +70,7 @@
 
   <!-- 🌌 Header -->
   <h1 class="text-4xl sm:text-6xl font-extrabold mb-6 float">
-    🚀 Hi, I'm wollydev24
+    🚀 Hi, I'm WollyDev24
   </h1>
   
   <h2 class="typewriter text-xl sm:text-2xl mb-10">
@@ -82,7 +79,7 @@
 
   <!-- 🌟 GitHub Button -->
   <a href="https://github.com/wollydev24" target="_blank"
-     class="px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 
+     class="px-6 py-3 sm:px-8 sm:py-4 rounded-2xl bg-gradient-to-r from-pink-400 to-purple-400 
             text-base sm:text-lg font-bold glow-btn mb-16">
      👉 Visit My GitHub
   </a>
