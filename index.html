@@ -22,7 +22,7 @@
       width: 100%;
       border: 2px solid #00ff99;
       border-radius: 12px;
-      padding: 2rem;
+      padding: 1.5rem;
       text-align: left;
     }
 
@@ -41,7 +41,7 @@
     }
     @keyframes typing {
       from { width: 0 }
-      to { width: 36ch }
+      to { width: 34ch }
     }
 
     /* Link Style */
@@ -60,16 +60,37 @@
     /* Project cards */
     .project-card {
       display: block;
-      padding: 0.8rem 1rem;
+      padding: 0.6rem 0.8rem;
       border-left: 3px solid #00ff99;
-      margin-top: 1rem;
+      margin-top: 0.8rem;
       background: rgba(0, 255, 153, 0.05);
       transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
     }
     .project-card:hover {
       transform: scale(1.05);
       background: rgba(0, 255, 153, 0.15);
       box-shadow: 0 0 12px #00ff99, 0 0 24px #00ff99;
+    }
+
+    /* Responsive Schriftgrößen */
+    @media (max-width: 640px) {
+      .terminal {
+        padding: 1rem;
+      }
+      .typewriter {
+        font-size: 0.9rem;
+      }
+      .prompt {
+        font-size: 0.95rem;
+      }
+      .project-card {
+        font-size: 0.9rem;
+      }
+      .link {
+        font-size: 0.95rem;
+      }
     }
   </style>
 </head>
@@ -92,11 +113,11 @@
     </a>
 
     <a href="https://github.com/wollydev24/WindowsTools" target="_blank" class="project-card">
-      🖥️ Windows Tools – A collection of useful tools and scripts for Windows power users.
+      🖥️ WindowsTool – A collection of useful tools and scripts for Windows power users.
     </a>
 
     <br>
-    <p class="prompt text-sm">© 2025 – Made with ❤ by wollydev24</p>
+    <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
   </div>
 
 </body>
