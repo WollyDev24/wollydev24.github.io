@@ -118,7 +118,7 @@
 
   <script>
     // Fetch giveaways.json
-    fetch("https://wollydev24.github.io/giveaway.json")
+    fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
       .then(response => response.json())
       .then(data => {
         const section = document.getElementById("giveaway-section");
