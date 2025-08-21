@@ -1,9 +1,9 @@
 {
-  "active": true,
+  "active": false,
   "items": [
     {
       "title": "No Giveaway Currently",
-      "ends": "No date as Of Now"
+      "ends": "---"
     }
   ]
 }
