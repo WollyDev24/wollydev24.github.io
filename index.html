@@ -71,9 +71,9 @@
       box-sizing: border-box;
     }
     .card:hover {
-      transform: scale(1.05);
-      background: rgba(0, 255, 153, 0.15);
-      box-shadow: 0 0 12px #00ff99, 0 0 24px #00ff99;
+  transform: scale(1.03); /* weniger starkes Zoomen */
+  background: rgba(0, 255, 153, 0.12);
+  box-shadow: 0 0 6px #00ff99, 0 0 12px #00ff99;
     }
 
     /* Responsive */
@@ -99,32 +99,25 @@
 
     <br>
     <p class="prompt"># 🎁 Giveaways</p>
-    <div id="giveaway-section" class="card">Loading giveaways...</div>
+    <div id="giveaway-section">Loading giveaways...</div>
 
     <br>
     <p class="prompt"># My Projects</p>
-
-    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank" class="card">
-      🌙 YouShadeKWGT – A modern KWGT widget pack with Material You styling.
-    </a>
-
-    <a href="https://github.com/wollydev24/WindowsTools" target="_blank" class="card">
-      🖥️ WindowsTools – A collection of useful tools and scripts for Windows power users.
-    </a>
+    <div id="projects-section">Loading projects...</div>
 
     <br>
     <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
   </div>
 
   <script>
-    // Fetch giveaways.json
+    // Fetch giveaways.json mit Cache-Buster
     fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
       .then(response => response.json())
       .then(data => {
         const section = document.getElementById("giveaway-section");
         section.innerHTML = "";
 
-        if (data.active && data.items && data.items.length > 0) {
+        if (data.active === true && data.items && data.items.length > 0) {
           data.items.forEach(g => {
             const div = document.createElement("div");
             div.className = "card";
@@ -132,12 +125,51 @@
             section.appendChild(div);
           });
         } else {
-          section.innerHTML = "❌ No giveaways are running right now.";
+          const div = document.createElement("div");
+          div.className = "card";
+          div.innerHTML = "❌ No giveaways are running right now.";
+          section.appendChild(div);
         }
       })
       .catch(() => {
-        document.getElementById("giveaway-section").innerHTML =
-          "⚠️ Could not load giveaways.";
+        const section = document.getElementById("giveaway-section");
+        section.innerHTML = "";
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = "⚠️ Could not load giveaways.";
+        section.appendChild(div);
+      });
+
+    // Fetch projects.json
+    fetch("https://wollydev24.github.io/projects.json?nocache=" + Date.now())
+      .then(response => response.json())
+      .then(data => {
+        const section = document.getElementById("projects-section");
+        section.innerHTML = "";
+
+        if (data.projects && data.projects.length > 0) {
+          data.projects.forEach(p => {
+            const a = document.createElement("a");
+            a.className = "card";
+            a.href = p.link;
+            a.target = "_blank";
+            a.innerHTML = `${p.emoji} <strong>${p.name}</strong> – ${p.description}`;
+            section.appendChild(a);
+          });
+        } else {
+          const div = document.createElement("div");
+          div.className = "card";
+          div.innerHTML = "❌ No projects found.";
+          section.appendChild(div);
+        }
+      })
+      .catch(() => {
+        const section = document.getElementById("projects-section");
+        section.innerHTML = "";
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = "⚠️ Could not load projects.";
+        section.appendChild(div);
       });
   </script>
 
