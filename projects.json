@@ -1,0 +1,22 @@
+{
+  "projects": [
+    {
+      "emoji": "🌙",
+      "name": "YouShadeKWGT",
+      "description": "A modern KWGT widget pack with Material You styling.",
+      "url": "https://github.com/wollydev24/YouShadeKWGT"
+    },
+    {
+      "emoji": "🖥️",
+      "name": "WindowsTools",
+      "description": "A collection of useful tools and scripts for Windows power users.",
+      "url": "https://github.com/wollydev24/WindowsTools"
+    },
+    {
+      "emoji": "📱",
+      "name": "Place Holder",
+      "description": "Place Holder",
+      "url": "example.com"
+    }
+  ]
+}
