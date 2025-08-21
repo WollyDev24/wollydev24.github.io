@@ -59,8 +59,8 @@
       text-shadow: 0 0 8px #00ff99, 0 0 16px #00ff99;
     }
 
-    /* Project cards */
-    .project-card {
+    /* Project cards + giveaway cards */
+    .card {
       display: block;
       padding: 0.6rem 0.8rem;
       border-left: 3px solid #00ff99;
@@ -70,29 +70,19 @@
       width: 100%;
       box-sizing: border-box;
     }
-    .project-card:hover {
+    .card:hover {
       transform: scale(1.05);
       background: rgba(0, 255, 153, 0.15);
       box-shadow: 0 0 12px #00ff99, 0 0 24px #00ff99;
     }
 
-    /* Responsive Schriftgrößen */
+    /* Responsive */
     @media (max-width: 640px) {
-      .terminal {
-        padding: 1rem;
-      }
-      .typewriter {
-        font-size: 0.9rem;
-      }
-      .prompt {
-        font-size: 0.95rem;
-      }
-      .project-card {
-        font-size: 0.9rem;
-      }
-      .link {
-        font-size: 0.95rem;
-      }
+      .terminal { padding: 1rem; }
+      .typewriter { font-size: 0.9rem; }
+      .prompt { font-size: 0.95rem; }
+      .card { font-size: 0.9rem; }
+      .link { font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -108,25 +98,48 @@
     <p class="prompt">📨 <a href="https://t.me/YouShadeKWGT" target="_blank" class="link">Follow on Telegram</a></p>
 
     <br>
+    <p class="prompt"># 🎁 Giveaways</p>
+    <div id="giveaway-section" class="card">Loading giveaways...</div>
+
+    <br>
     <p class="prompt"># My Projects</p>
 
-    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank" class="project-card">
+    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank" class="card">
       🌙 YouShadeKWGT – A modern KWGT widget pack with Material You styling.
     </a>
 
-    <a href="https://github.com/wollydev24/WindowsTools" target="_blank" class="project-card">
+    <a href="https://github.com/wollydev24/WindowsTools" target="_blank" class="card">
       🖥️ WindowsTools – A collection of useful tools and scripts for Windows power users.
     </a>
 
     <br>
-    <p class="prompt"># 🎁 Giveaways</p>
-    <div class="project-card">
-      ❌ No giveaways are running right now.
-    </div>
-
-    <br>
     <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
   </div>
+
+  <script>
+    // Fetch giveaways.json
+    fetch("giveaways.json")
+      .then(response => response.json())
+      .then(data => {
+        const section = document.getElementById("giveaway-section");
+        section.innerHTML = "";
+
+        if (data.active && data.items && data.items.length > 0) {
+          data.items.forEach(g => {
+            const div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `🎉 ${g.title} <br> 🕒 Ends: ${g.ends}`;
+            section.appendChild(div);
+          });
+        } else {
+          section.innerHTML = "❌ No giveaways are running right now.";
+        }
+      })
+      .catch(() => {
+        document.getElementById("giveaway-section").innerHTML =
+          "⚠️ Could not load giveaways.";
+      });
+  </script>
 
 </body>
 </html>
