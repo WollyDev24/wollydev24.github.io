@@ -3,143 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WollyDev - GitHub Portfolio</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>WollyDev | GitHub Portfolio</title>
   <style>
     body {
-      font-family: "Fira Code", monospace;
-      background-color: #0d0d0d;
+      margin: 0;
+      padding: 0;
+      font-family: 'Courier New', monospace;
+      background: #0a0a0a;
       color: #00ff99;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-top: 10vh;
+      text-shadow: 0 0 10px #00ff99;
+    }
+
+    p {
+      font-size: 1.2rem;
+    }
+
+    a {
+      color: #00ff99;
+      text-decoration: none;
+      transition: all 0.3s ease-in-out;
+    }
+
+    a:hover {
+      color: #fff;
+      text-shadow: 0 0 15px #00ff99;
+    }
+
+    .projects {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 0 20px;
+    }
+
+    .project {
+      background: #111;
+      border: 1px solid #00ff99;
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .project:hover {
+      transform: scale(1.05);
+    }
+
+    .socials {
+      margin-top: 30px;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 1rem;
+      gap: 20px;
     }
 
-    .terminal {
-      max-width: 850px;
-      width: 100%;
-      border: 2px solid #00ff99;
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: left;
+    .socials a {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border: 1px solid #00ff99;
+      border-radius: 8px;
+      transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
     }
 
-    .prompt::before {
-      content: "➜ ";
-      vertical-align: middle;
+    .socials a:hover {
+      transform: scale(1.08) rotate(1deg);
+      text-shadow: 0 0 15px #00ff99;
     }
 
-    /* Typing effect */
-    .typewriter {
-      overflow: hidden;
-      border-right: .15em solid #00ff99;
-      white-space: nowrap;
-      width: 0;
-      display: inline-block;
-      vertical-align: middle;
-      animation: typing 3s steps(40, end) forwards;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 34ch }
+    /* Giveaway Section */
+    #giveaway {
+      margin: 40px auto 0 auto;
+      max-width: 600px;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid #00ff99;
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 15px #00ff9980;
     }
 
-    /* Link Style */
-    .link {
-      display: inline-block;
-      text-decoration: underline;
-      color: #00ff99;
-      transition: all 0.3s ease;
-    }
-    .link:hover {
-      color: #ffffff;
-      transform: scale(1.1) rotateZ(-2deg);
-      text-shadow: 0 0 8px #00ff99, 0 0 16px #00ff99;
+    #giveaway p {
+      margin: 5px 0;
+      font-size: 1.1rem;
     }
 
-    /* Project cards + giveaway cards */
-    .card {
-      display: block;
-      padding: 0.6rem 0.8rem;
-      border-left: 3px solid #00ff99;
-      margin-top: 0.8rem;
-      background: rgba(0, 255, 153, 0.05);
-      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .card:hover {
-      transform: scale(1.05);
-      background: rgba(0, 255, 153, 0.15);
-      box-shadow: 0 0 12px #00ff99, 0 0 24px #00ff99;
-    }
+    /* Mobile Optimierung */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+        margin-top: 15vh;
+      }
 
-    /* Responsive */
-    @media (max-width: 640px) {
-      .terminal { padding: 1rem; }
-      .typewriter { font-size: 0.9rem; }
-      .prompt { font-size: 0.95rem; }
-      .card { font-size: 0.9rem; }
-      .link { font-size: 0.95rem; }
+      .project {
+        font-size: 1rem;
+        padding: 15px;
+      }
+
+      .socials {
+        flex-direction: column;
+        gap: 15px;
+      }
     }
   </style>
 </head>
 <body>
+  <h1>Welcome to my Github Portfolio ↓</h1>
+  <p>Hey, I’m <b>WollyDev</b> (@wollydev24)</p>
+  <a href="https://github.com/wollydev24" target="_blank">Visit my Github</a>
 
-  <div class="terminal">
-    <p class="prompt">Hi, I'm <span class="font-bold">WollyDev</span> 🚀</p>
-    <p class="prompt"><span class="typewriter">Welcome to my GitHub Portfolio 💻✨</span></p>
+  <!-- Giveaway Section -->
+  <div id="giveaway">
+    <p id="giveaway-title">🎁 Loading...</p>
+    <p id="giveaway-end">⏰ Please wait...</p>
+  </div>
 
-    <br>
-    <p class="prompt">👉 <a href="https://github.com/wollydev24" target="_blank" class="link">Visit My GitHub</a></p>
-    <p class="prompt">💬 <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="link">Join My Discord</a></p>
-    <p class="prompt">📨 <a href="https://t.me/YouShadeKWGT" target="_blank" class="link">Follow on Telegram</a></p>
+  <!-- Projekte -->
+  <div class="projects">
+    <div class="project">
+      <h3>📁 WindowsTools</h3>
+      <p>Handy utilities for Windows</p>
+    </div>
+    <div class="project">
+      <h3>📁 Simply You Adaptive</h3>
+      <p>A modern KWGT pack</p>
+    </div>
+  </div>
 
-    <br>
-    <p class="prompt"># 🎁 Giveaways</p>
-    <div id="giveaway-section" class="card">Loading giveaways...</div>
-
-    <br>
-    <p class="prompt"># My Projects</p>
-
-    <a href="https://github.com/wollydev24/YouShadeKWGT" target="_blank" class="card">
-      🌙 YouShadeKWGT – A modern KWGT widget pack with Material You styling.
-    </a>
-
-    <a href="https://github.com/wollydev24/WindowsTools" target="_blank" class="card">
-      🖥️ WindowsTools – A collection of useful tools and scripts for Windows power users.
-    </a>
-
-    <br>
-    <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
+  <!-- Socials -->
+  <div class="socials">
+    <a href="https://discord.gg/bapB8zz7VY" target="_blank">Discord</a>
+    <a href="https://t.me/YouShadeKWGT" target="_blank">Telegram</a>
   </div>
 
   <script>
-    // Fetch giveaways.json
-    fetch("https://wollydev24.github.io/giveaway.json")
-      .then(response => response.json())
-      .then(data => {
-        const section = document.getElementById("giveaway-section");
-        section.innerHTML = "";
+    async function loadGiveaway() {
+      try {
+        const response = await fetch("giveaway.json");
+        const data = await response.json();
 
-        if (data.active && data.items && data.items.length > 0) {
-          data.items.forEach(g => {
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `🎉 ${g.title} <br> 🕒 Ends: ${g.ends}`;
-            section.appendChild(div);
-          });
+        const titleElem = document.getElementById("giveaway-title");
+        const endElem = document.getElementById("giveaway-end");
+
+        if (data.title && data.end) {
+          titleElem.textContent = `🎁 ${data.title}`;
+          endElem.textContent = `⏰ Ends: ${data.end}`;
         } else {
-          section.innerHTML = "❌ No giveaways are running right now.";
+          titleElem.textContent = "🎁 No giveaway running";
+          endElem.textContent = "⏰ Check back later!";
         }
-      })
-      .catch(() => {
-        document.getElementById("giveaway-section").innerHTML =
-          "⚠️ Could not load giveaways.";
-      });
-  </script>
+      } catch (error) {
+        console.error("Error loading giveaway:", error);
+        document.getElementById("giveaway-title").textContent = "🎁 Error loading giveaway";
+        document.getElementById("giveaway-end").textContent = "⏰ Please try again later.";
+      }
+    }
 
+    loadGiveaway();
+  </script>
 </body>
 </html>
