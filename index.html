@@ -43,7 +43,7 @@
     }
     @keyframes typing {
       from { width: 0 }
-      to { width: 35ch }
+      to { width: 34ch }
     }
 
     /* Link Style */
@@ -84,6 +84,12 @@
       .card { font-size: 0.9rem; }
       .link { font-size: 0.95rem; }
     }
+
+    /* Fehlerstil */
+    .error {
+      color: #ff5555;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -110,40 +116,49 @@
   </div>
 
   <script>
-   // --- GIVEAWAYS ---
-fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
-  .then(response => response.json())
-  .then(data => {
-    const section = document.getElementById("giveaway-section");
-    section.innerHTML = "";
+    // --- GIVEAWAYS ---
+    fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status} – ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const section = document.getElementById("giveaway-section");
+        section.innerHTML = "";
 
-    if (data.active === true && data.items && data.items.length > 0) {
-      data.items.forEach(g => {
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `🎉 ${g.title} <br> 🕒 Ends: ${g.ends}`;
-        section.appendChild(div);
+        if (data.active === true && data.items && data.items.length > 0) {
+          data.items.forEach(g => {
+            const div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `🎉 ${g.title} <br> 🕒 Ends: ${g.ends}`;
+            section.appendChild(div);
+          });
+        } else {
+          section.innerHTML = `<div class="card">❌ No giveaways are running right now.</div>`;
+        }
+      })
+      .catch(error => {
+        const section = document.getElementById("giveaway-section");
+        section.innerHTML = `
+          <div class="card error">
+            ⚠️ Could not load giveaways.<br><br>
+            <b>Error details:</b><br>
+            ${error.message}<br><br>
+            <small>Tip: Make sure <code>giveaway.json</code> exists in your GitHub Pages repo and is valid JSON.</small>
+          </div>`;
       });
-    } else {
-      const div = document.createElement("div");
-      div.className = "card";
-      div.innerHTML = "❌ No giveaways are running right now.";
-      section.appendChild(div);
-    }
-  })
-  .catch(() => {
-    const section = document.getElementById("giveaway-section");
-    section.innerHTML = "";
-    const div = document.createElement("div");
-    div.className = "card";
-    div.innerHTML = "⚠️ Could not load giveaways.";
-    section.appendChild(div);
-  });
 
 
     // --- PROJECTS ---
     fetch("https://wollydev24.github.io/projects.json?nocache=" + Date.now())
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status} – ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then(data => {
         const section = document.getElementById("projects-section");
         section.innerHTML = "";
@@ -161,9 +176,15 @@ fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
           section.innerHTML = "<div class='card'>❌ No projects found.</div>";
         }
       })
-      .catch(() => {
-        document.getElementById("projects-section").innerHTML =
-          "<div class='card'>⚠️ Could not load projects.</div>";
+      .catch(error => {
+        const section = document.getElementById("projects-section");
+        section.innerHTML = `
+          <div class="card error">
+            ⚠️ Could not load projects.<br><br>
+            <b>Error details:</b><br>
+            ${error.message}<br><br>
+            <small>Tip: Make sure <code>projects.json</code> exists in your GitHub Pages repo and is valid JSON.</small>
+          </div>`;
       });
   </script>
 
