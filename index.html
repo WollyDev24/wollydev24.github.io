@@ -59,7 +59,7 @@
       text-shadow: 0 0 8px #00ff99, 0 0 16px #00ff99;
     }
 
-    /* Project cards + giveaway cards */
+    /* Project/Device/Giveaway cards */
     .card {
       display: block;
       padding: 0.6rem 0.8rem;
@@ -112,6 +112,10 @@
     <div id="projects-section">Loading projects...</div>
 
     <br>
+    <p class="prompt"># 📱 My Devices</p>
+    <div id="devices-section">Loading devices...</div>
+
+    <br>
     <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
   </div>
 
@@ -146,7 +150,7 @@
             ⚠️ Could not load giveaways.<br><br>
             <b>Error details:</b><br>
             ${error.message}<br><br>
-            <small>Tip: Make sure <code>giveaway.json</code> exists in your GitHub Pages repo and is valid JSON or Doesnt have any Errors</small>
+            <small>Tip: Make sure <code>giveaway.json</code> exists in your GitHub Pages repo and is valid JSON</small>
           </div>`;
       });
 
@@ -183,7 +187,44 @@
             ⚠️ Could not load projects.<br><br>
             <b>Error details:</b><br>
             ${error.message}<br><br>
-            <small>Tip: Make sure <code>projects.json</code> exists in your GitHub Pages repo and is valid JSON or Doesnt have any Erros</small>
+            <small>Tip: Make sure <code>projects.json</code> exists in your GitHub Pages repo and is valid JSON</small>
+          </div>`;
+      });
+
+
+    // --- DEVICES ---
+    fetch("https://wollydev24.github.io/devices.json?nocache=" + Date.now())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP Error ${response.status} – ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const section = document.getElementById("devices-section");
+        section.innerHTML = "";
+
+        if (data.devices && data.devices.length > 0) {
+          data.devices.forEach(d => {
+            const a = document.createElement("a");
+            a.className = "card";
+            a.href = d.url;
+            a.target = "_blank";
+            a.innerHTML = `${d.emoji || "📱"} <b>${d.name}</b> – ${d.description}`;
+            section.appendChild(a);
+          });
+        } else {
+          section.innerHTML = "<div class='card'>❌ No devices listed.</div>";
+        }
+      })
+      .catch(error => {
+        const section = document.getElementById("devices-section");
+        section.innerHTML = `
+          <div class="card error">
+            ⚠️ Could not load devices.<br><br>
+            <b>Error details:</b><br>
+            ${error.message}<br><br>
+            <small>Tip: Make sure <code>devices.json</code> exists in your GitHub Pages repo and is valid JSON</small>
           </div>`;
       });
   </script>
