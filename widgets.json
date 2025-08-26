@@ -1,0 +1,19 @@
+{
+  "widgets": [
+    {
+      "title": "Marshmallow Blue KWGT",
+      "description": "A minimalistic sidebar music widget with round buttons.",
+      "image": "https://wollydev24.github.io/images/marshmallow-blue.png"
+    },
+    {
+      "title": "Material You Weather",
+      "description": "Dynamic weather widget that adapts its colors to the forecast.",
+      "image": "https://wollydev24.github.io/images/weather-widget.png"
+    },
+    {
+      "title": "2x2 Music Widget",
+      "description": "Compact music control with auto-adaptive pause/play icon.",
+      "image": "https://wollydev24.github.io/images/music-2x2.png"
+    }
+  ]
+}
