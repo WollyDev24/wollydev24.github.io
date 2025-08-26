@@ -1,19 +1,19 @@
 {
   "widgets": [
     {
-      "title": "Marshmallow Blue KWGT",
-      "description": "A minimalistic sidebar music widget with round buttons.",
-      "image": "https://wollydev24.github.io/images/marshmallow-blue.png"
+      "title": "1x1 Weather",
+      "description": "A minimalistic Weather Widget",
+      "image": "https://wollydev24.github.io/images/1x1Weather.png"
     },
     {
-      "title": "Material You Weather",
-      "description": "Dynamic weather widget that adapts its colors to the forecast.",
-      "image": "https://wollydev24.github.io/images/weather-widget.png"
+      "title": "1x1 Material You Clock",
+      "description": "Clock with shapes inspired by the M3 Design",
+      "image": "https://wollydev24.github.io/images/1x1ClockM3.png"
     },
     {
-      "title": "2x2 Music Widget",
-      "description": "Compact music control with auto-adaptive pause/play icon.",
-      "image": "https://wollydev24.github.io/images/music-2x2.png"
+      "title": "1x1 Headphone Widget",
+      "description": "Headphone Widget with Image and Infos about you headphnes",
+      "image": "https://wollydev24.github.io/images/HeadPhones1x1.png"
     }
   ]
 }
