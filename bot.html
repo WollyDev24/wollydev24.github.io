@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>YouShadeBot - Discord Bot</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f916.png">
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --secondary: #23272a;
+            --accent: #43b581;
+            --bg: #18191c;
+            --white: #fff;
+            --card: #23272e;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--secondary) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        header {
+            text-align: center;
+            padding: 3rem 1rem 2rem 1rem;
+            animation: fadeInDown 1s;
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .bot-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: popIn 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5);}
+            80% { transform: scale(1.1);}
+            100% { transform: scale(1);}
+        }
+        h1 {
+            font-size: 2.8rem;
+            margin: 0.2em 0 0.1em 0;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 2s infinite alternate;
+        }
+        @keyframes gradientText {
+            0% { filter: brightness(1);}
+            100% { filter: brightness(1.2);}
+        }
+        p {
+            color: #b9bbbe;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .section {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card);
+            border-radius: 1.5rem;
+            animation: fadeInUp 1.2s;
+            box-sizing: border-box;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary);
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            animation: slideInLeft 1s;
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-40px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+        ul.feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        ul.feature-list li {
+            background: rgba(108,99,255,0.08);
+            border-left: 4px solid var(--primary);
+            border-radius: 1rem;
+            padding: 1.2rem 1.5rem;
+            min-width: 220px;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            transition: transform 0.2s;
+            animation: fadeInFeature 1s;
+        }
+        ul.feature-list li:hover {
+            transform: scale(1.04);
+        }
+        @keyframes fadeInFeature {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2.5rem 0 1rem 0;
+            flex-wrap: wrap;
+            animation: fadeInButtons 1.2s;
+        }
+        @keyframes fadeInButtons {
+            from { opacity: 0; transform: scale(0.9);}
+            to { opacity: 1; transform: scale(1);}
+        }
+
+        /* Buttons Rainbow Gradient */
+        .btn {
+            padding: 0.9rem 2.2rem;
+            border: none;
+            border-radius: 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--white);
+            transition: transform 0.18s;
+            text-decoration: none;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
+            background-size: 1400% 1400%;
+            animation: rainbow 6s linear infinite;
+        }
+
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .btn:hover {
+            transform: scale(1.04);
+        }
+
+        @media (max-width: 900px) {
+            .section {
+                margin: 1.5rem 1rem;
+                padding: 1.2rem;
+            }
+        }
+        @media (max-width: 700px) {
+            .section {
+                margin: 1rem 0.5rem;
+                padding: 1rem;
+            }
+            ul.feature-list { flex-direction: column; gap: 1rem;}
+            .buttons { flex-direction: column; gap: 1rem;}
+            h1 { font-size: 2rem;}
+            ul.feature-list li {
+                min-width: unset;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+        @media (max-width: 480px) {
+            .section {
+                margin: 0.5rem 0.2rem;
+                padding: 0.7rem;
+            }
+            header {
+                padding: 2rem 0.5rem 1.2rem 0.5rem;
+            }
+            h1 { font-size: 1.3rem;}
+        }
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 1rem;
+            margin: 2rem 0 1rem 0;
+            opacity: 0.7;
+            animation: fadeInFooter 1.5s;
+        }
+        @keyframes fadeInFooter {
+            from { opacity: 0;}
+            to { opacity: 0.7;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="bot-logo" title="YouShadeBot">
+            🤖
+        </div>
+        <h1>YouShadeBot</h1>
+        <p>The modern Open Source Discord bot for your server. Simple</p>
+        <div class="buttons">
+            <a class="btn" href="https://github.com/wollydev24/YouShadeBot" target="_blank" rel="noopener">GitHub Repo</a>
+            <a class="btn" href="https://discord.gg/support-server-link" target="_blank" rel="noopener">Support Server</a>
+            <a class="btn" href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot" target="_blank" rel="noopener">Invite Bot</a>
+        </div>
+    </header>
+
+    <section class="section" id="features">
+        <div class="section-title">Features</div>
+        <ul class="feature-list">
+            <li>
+                <strong>Greeting Message</strong><br>
+                Welcome new members with a customizable greeting message.
+            </li>
+            <li>
+                <strong>Change Bot Status</strong><br>
+                Easily update the bot's status to keep your community informed.
+            </li>
+        </ul>
+    </section>
+
+    <section class="section" id="planned-features">
+        <div class="section-title">Planned Features</div>
+        <ul class="feature-list">
+            <li>
+                <strong>Announcements</strong><br>
+                Send scheduled or instant announcements to your server.
+            </li>
+            <li>
+                <strong>Whisper Messages</strong><br>
+                Send private, ephemeral messages to users.
+            </li>
+            <li>
+                <strong>Notes</strong><br>
+                Let users save and retrieve personal notes.
+            </li>
+        </ul>
+    </section>
+
+    <footer>
+        &copy; 2024 YouShadeBot &mdash; Made with ❤️ for Discord communities by wollydev24.
+    </footer>
+
+    <script>
+        // Animate features on scroll
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll('.section, .section-title, .feature-list li, .buttons, footer').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
