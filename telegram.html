@@ -6,13 +6,44 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Segoe UI", sans-serif;
       background: linear-gradient(135deg, #6e8efb, #a777e3);
       color: white;
       text-align: center;
       padding: 20px;
     }
+
+    h1 {
+      margin-top: 10px;
+    }
+
+    .features {
+      margin: 20px auto;
+      padding: 15px;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.25);
+      max-width: 400px;
+      text-align: left;
+    }
+
+    .features h2 {
+      text-align: center;
+    }
+
+    .features ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .features li {
+      margin: 10px 0;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+    }
+
     button {
+      margin: 20px;
       padding: 12px 20px;
       font-size: 16px;
       border: none;
@@ -20,14 +51,56 @@
       background: #222;
       color: white;
       cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    .socials {
+      margin-top: 30px;
+    }
+
+    .socials a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .socials a:hover {
+      color: #ffe082;
     }
   </style>
 </head>
 <body>
   <h1>Welcome to YouShadeBot 🎭</h1>
-  <p>This is your Telegram Mini App!</p>
-  <button onclick="Telegram.WebApp.sendData('Hello from YouShadeBot!')">
+  <p>Your Telegram Mini App 🚀</p>
+
+  <!-- Features Section -->
+  <div class="features">
+    <h2>✨ Features</h2>
+    <ul>
+      <li>🤖 Smart Commands</li>
+      <li>🎵 Music Controls</li>
+      <li>🛠 Custom Tools</li>
+      <li>📊 Mini Games & Stats</li>
+    </ul>
+  </div>
+
+  <!-- Button to send data back to bot -->
+  <button onclick="Telegram.WebApp.sendData('User pressed the button!')">
     Send Message to Bot
   </button>
+
+  <!-- Social Links -->
+  <div class="socials">
+    <h3>🌐 Connect with me</h3>
+    <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+    <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
+    <a href="https://wollydev24.github.io/" target="_blank">Website</a>
+  </div>
 </body>
 </html>
