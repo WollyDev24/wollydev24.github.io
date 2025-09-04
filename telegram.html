@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouShade MiniApp</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to YouShadeBot 🎭</h1>
+  <p>This is your Telegram Mini App!</p>
+  <button onclick="Telegram.WebApp.sendData('Hello from YouShadeBot!')">
+    Send Message to Bot
+  </button>
+</body>
+</html>
