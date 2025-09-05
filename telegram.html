@@ -1,196 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>YouShade MiniApp</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    :root {
-      --tg-blue: #0088cc;
-      --tg-blue-dark: #006fa8;
-      --bg-light: #ffffff;
-      --bg-dark: #121212;
-      --text-light: #222;
-      --text-dark: #f5f5f5;
-      --card-light: #f0f8ff;
-      --card-dark: #1e1e1e;
-      --card-item-light: #e6f3fa;
-      --card-item-dark: #2a2a2a;
-    }
+<meta charset="UTF-8">
+<title>YouShade MiniApp</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --tg-blue: #0088cc;
+    --tg-blue-dark: #006fa8;
+    --bg-light: #ffffff;
+    --bg-dark: #121212;
+    --text-light: #222;
+    --text-dark: #f5f5f5;
+    --card-light: #f0f8ff;
+    --card-dark: #1e1e1e;
+    --card-item-light: #e6f3fa;
+    --card-item-dark: #2a2a2a;
+  }
 
-    body {
-      font-family: "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      transition: background 0.3s, color 0.3s;
-      position: relative;
-    }
+  body { font-family: "Segoe UI", sans-serif; margin: 0; padding: 0; text-align: center; transition: background 0.3s, color 0.3s; position: relative; }
+  body.light { background: var(--bg-light); color: var(--text-light); }
+  body.dark { background: var(--bg-dark); color: var(--text-dark); }
 
-    body.light { background: var(--bg-light); color: var(--text-light); }
-    body.dark { background: var(--bg-dark); color: var(--text-dark); }
+  /* User PFP top right */
+  .user-pfp {
+    position: fixed;
+    top: 60px; /* moved down to avoid Telegram UI */
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--tg-blue);
+    object-fit: cover;
+  }
 
-    /* User profile pic at top right */
-    .user-pfp {
-      position: fixed;
-      top: 60px; /* moved down to not conflict with Telegram UI */
-      right: 15px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 2px solid var(--tg-blue);
-    }
+  /* Splash */
+  #splash {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--bg-light);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999; transition: opacity 0.6s ease;
+  }
+  body.dark #splash { background: var(--bg-dark); }
+  #splash img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--tg-blue); animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0% {transform: scale(1); opacity:1;} 50% {transform: scale(1.1); opacity:0.8;} 100% {transform: scale(1); opacity:1;} }
 
-    /* Splash */
-    #splash {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: var(--bg-light);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999; transition: opacity 0.6s ease;
-    }
-    body.dark #splash { background: var(--bg-dark); }
-    #splash img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--tg-blue); animation: pulse 1.5s infinite; }
-    @keyframes pulse { 0% {transform: scale(1); opacity: 1;} 50% {transform: scale(1.1); opacity: 0.8;} 100% {transform: scale(1); opacity:1;} }
+  /* Sections */
+  section { padding: 30px 15px; max-width: 500px; margin: 20px auto; opacity:0; transform:translateY(20px); animation: fadeInUp 1s ease forwards; }
+  section:nth-of-type(1) { animation-delay:0.3s; }
+  section:nth-of-type(2) { animation-delay:0.6s; }
+  section:nth-of-type(3) { animation-delay:0.9s; }
+  @keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
 
-    /* Sections */
-    section {
-      padding: 30px 15px;
-      max-width: 500px;
-      margin: 20px auto;  
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 1s ease forwards;
-    }
-    section:nth-of-type(1) { animation-delay: 0.3s; }
-    section:nth-of-type(2) { animation-delay: 0.6s; }
-    section:nth-of-type(3) { animation-delay: 0.9s; }
-    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+  .profile-pic { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border:3px solid var(--tg-blue); margin:20px auto; animation:bounceIn 1s ease; }
+  @keyframes bounceIn { 0% {transform:scale(0.5); opacity:0;} 60% {transform:scale(1.2); opacity:1;} 100% {transform:scale(1);} }
 
-    .profile-pic { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--tg-blue); margin: 20px auto; animation: bounceIn 1s ease; }
-    @keyframes bounceIn { 0% {transform: scale(0.5); opacity:0;} 60% {transform: scale(1.2); opacity:1;} 100% {transform: scale(1);} }
+  h1,h2 { color: var(--tg-blue); margin-bottom:8px; }
+  p { color:gray; font-size:14px; }
 
-    h1, h2 { color: var(--tg-blue); margin-bottom: 8px; }
-    p { color: gray; font-size: 14px; }
+  .features { margin-top:15px; padding:15px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.15); transition: transform 0.3s; }
+  body.light .features { background: var(--card-light); }
+  body.dark .features { background: var(--card-dark); }
+  .features:hover { transform:scale(1.02); }
+  .features ul { list-style:none; padding:0; }
+  .features li { margin:8px 0; padding:8px; border-radius:8px; transition: background 0.3s, transform 0.3s; font-size:15px; }
+  body.light .features li { background: var(--card-item-light); }
+  body.dark .features li { background: var(--card-item-dark); }
+  .features li:hover { transform: translateX(5px); }
 
-    .features {
-      margin-top: 15px; padding: 15px; border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform 0.3s;
-    }
-    body.light .features { background: var(--card-light); }
-    body.dark .features { background: var(--card-dark); }
-    .features:hover { transform: scale(1.02); }
-    .features ul { list-style: none; padding: 0; }
-    .features li { margin: 8px 0; padding: 8px; border-radius: 8px; transition: background 0.3s, transform 0.3s; font-size: 15px; }
-    body.light .features li { background: var(--card-item-light); }
-    body.dark .features li { background: var(--card-item-dark); }
-    .features li:hover { transform: translateX(5px); }
+  button { margin:20px auto; padding:12px 20px; font-size:15px; border:none; border-radius:10px; background:var(--tg-blue); color:white; cursor:pointer; transition: transform 0.2s, background 0.3s; display:block; animation:popIn 0.8s ease forwards 1.2s; opacity:0; }
+  button:hover { background: var(--tg-blue-dark); transform: scale(1.05); }
+  @keyframes popIn { to { opacity:1; } }
 
-    button {
-      margin: 20px auto; padding: 12px 20px; font-size: 15px;
-      border: none; border-radius: 10px; background: var(--tg-blue);
-      color: white; cursor: pointer; transition: transform 0.2s, background 0.3s;
-      display: block; animation: popIn 0.8s ease forwards 1.2s; opacity: 0;
-    }
-    button:hover { background: var(--tg-blue-dark); transform: scale(1.05); }
-    @keyframes popIn { to { opacity: 1; } }
+  .socials a { margin:0 12px; color: var(--tg-blue); text-decoration:none; font-weight:bold; font-size:16px; transition: color 0.3s, transform 0.3s; display:inline-block; }
+  .socials a:hover { color: var(--tg-blue-dark); transform:translateY(-3px); }
 
-    .socials a {
-      margin: 0 12px;
-      color: var(--tg-blue);
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 16px;
-      transition: color 0.3s, transform 0.3s;
-      display: inline-block;
-    }
-    .socials a:hover { color: var(--tg-blue-dark); transform: translateY(-3px); }
-
-    /* GitHub commits list */
-    .commits { margin-top: 20px; text-align: left; }
-    .commits li { margin-bottom: 8px; font-size: 14px; }
-    .commits a { color: var(--tg-blue); text-decoration: none; }
-    .commits a:hover { text-decoration: underline; }
-  </style>
+  .commits { margin-top:20px; text-align:left; }
+  .commits li { margin-bottom:8px; font-size:14px; }
+  .commits a { color:var(--tg-blue); text-decoration:none; }
+  .commits a:hover { text-decoration:underline; }
+</style>
 </head>
 <body>
-  <!-- User PFP top right -->
-  <img src="https://github.com/wollydev24.png" alt="User PFP" class="user-pfp">
 
-  <!-- Splash -->
-  <div id="splash">
-    <img src="telegram_icon.jpg" alt="Splash Icon">
+<!-- User PFP top right -->
+<img src="telegram_icon.jpg" alt="User PFP" class="user-pfp" id="user-pfp">
+
+<!-- Splash -->
+<div id="splash"><img src="telegram_icon.jpg" alt="Splash Icon"></div>
+
+<!-- Home -->
+<section>
+  <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
+  <h1>YouShadeBot 🎭</h1>
+  <p>Your Telegram Mini App 🚀</p>
+
+  <div class="features">
+    <h2>✨ Features</h2>
+    <ul>
+      <li>ℹ️ Get news About YouShade</li>
+      <li>📣 News About the YouShadeBot</li>
+    </ul>
   </div>
 
-  <!-- Home -->
-  <section>
-    <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
-    <h1>YouShadeBot 🎭</h1>
-    <p>Your Telegram Mini App 🚀</p>
+  <button onclick="Telegram.WebApp.sendData('User pressed the button!')">Send Message to Bot</button>
 
-    <!-- Features directly under profile -->
-    <div class="features">
-      <h2>✨ Features</h2>
-      <ul>
-        <li>ℹ️ Get news About YouShade</li>
-        <li>📣 News About the YouShadeBot</li>
-      </ul>
-    </div>
-    <button onclick="Telegram.WebApp.sendData('User pressed the button!')">Send Message to Bot</button>
+  <div class="features">
+    <h2>📦 Latest GitHub Commits</h2>
+    <ul id="commit-list" class="commits"><li>Loading commits...</li></ul>
+  </div>
+</section>
 
-    <!-- GitHub commits -->
-    <div class="features">
-      <h2>📦 Latest GitHub Commits</h2>
-      <ul id="commit-list" class="commits">
-        <li>Loading commits...</li>
-      </ul>
-    </div>
-  </section>
+<section>
+  <h2>🌐 Connect with me</h2>
+  <div class="socials">
+    <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+    <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
+    <a href="https://wollydev24.github.io/" target="_blank">Website</a>
+  </div>
+</section>
 
-  <!-- Socials -->
-  <section>
-    <h2>🌐 Connect with me</h2>
-    <div class="socials">
-      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
-      <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
-      <a href="https://wollydev24.github.io/" target="_blank">Website</a>
-    </div>
-  </section>
+<script>
+function applyTheme() {
+  if(window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    document.body.classList.add("dark"); document.body.classList.remove("light");
+  } else {
+    document.body.classList.add("light"); document.body.classList.remove("dark");
+  }
+}
+applyTheme();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-  <script>
-    function applyTheme() {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add("dark"); document.body.classList.remove("light");
-      } else {
-        document.body.classList.add("light"); document.body.classList.remove("dark");
-      }
-    }
-    applyTheme();
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+window.onload = () => {
+  // Splash
+  setTimeout(() => {
+    document.getElementById("splash").style.opacity="0";
+    setTimeout(()=>{document.getElementById("splash").style.display="none";},600);
+  },1500);
 
-    window.onload = () => {
-      // Splash
-      setTimeout(() => {
-        document.getElementById("splash").style.opacity = "0";
-        setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 600);
-      }, 1500);
+  // GitHub commits
+  fetch('https://api.github.com/repos/wollydev24/YouShadeBot/commits')
+  .then(res => res.json())
+  .then(data => {
+    const list = document.getElementById('commit-list');
+    list.innerHTML = '';
+    data.slice(0,5).forEach(commit => {
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="${commit.html_url}" target="_blank">${commit.commit.message}</a>`;
+      list.appendChild(li);
+    });
+  })
+  .catch(err => { document.getElementById('commit-list').innerHTML='<li>Failed to load commits</li>'; });
 
-      // Fetch latest GitHub commits
-      fetch('https://api.github.com/repos/wollydev24/YouShadeBot/commits')
-        .then(res => res.json())
-        .then(data => {
-          const list = document.getElementById('commit-list');
-          list.innerHTML = '';
-          data.slice(0,5).forEach(commit => {
-            const li = document.createElement('li');
-            li.innerHTML = `<a href="${commit.html_url}" target="_blank">${commit.commit.message}</a>`;
-            list.appendChild(li);
-          });
-        })
-        .catch(err => {
-          document.getElementById('commit-list').innerHTML = '<li>Failed to load commits</li>';
-        });
-    };
-  </script>
+  // Set user PFP dynamically if available
+  const user = Telegram.WebApp.initDataUnsafe.user; 
+  if(user && user.photo_url){
+    document.getElementById('user-pfp').src = user.photo_url;
+  }
+};
+</script>
 </body>
 </html>
