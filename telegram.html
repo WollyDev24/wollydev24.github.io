@@ -9,20 +9,25 @@
   --tg-blue: #0088cc;
   --tg-blue-dark: #006fa8;
 
-  /* gradient vars (will be updated from PFP/theme if available) */
   --grad-start: #34aaf7;
   --grad-mid:   #1b8dd6;
 }
 
-body { font-family:"Segoe UI", sans-serif; margin:0; padding:0; text-align:center; transition: background 0.3s, color 0.3s; position: relative;}
+body {
+  font-family:"Segoe UI", sans-serif;
+  margin:0;
+  padding:0;
+  text-align:center;
+  transition: background 0.3s, color 0.3s;
+}
+
 body.light { --bg: #ffffff; --text: #222; --card: #f0f8ff; --card-item: #e6f3fa; background: var(--bg); color: var(--text); }
 body.dark  { --bg: #121212; --text: #f5f5f5; --card: #1e1e1e; --card-item: #2a2a2a; background: var(--bg); color: var(--text); }
 
-/* --- Top gradient that fades into page --- */
+/* --- Gradient header with parallax --- */
 .top-gradient {
   position: relative;
-  height: 140px;
-  /* Strong color blend at the top → soft → transparent at the bottom */
+  height: 220px;
   background:
     radial-gradient(120% 80% at 10% -20%, rgba(255,255,255,0.25), rgba(255,255,255,0) 60%),
     linear-gradient(180deg,
@@ -31,42 +36,68 @@ body.dark  { --bg: #121212; --text: #f5f5f5; --card: #1e1e1e; --card-item: #2a2a
       rgba(0,0,0,0) 100%);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  margin-bottom: 10px;
-  animation: fadeBarIn 600ms ease both;
-}
-/* Subtle extra fade using mask (supported on modern WebViews; harmless if ignored) */
-.top-gradient {
+  margin-bottom: -100px; /* overlap content */
+  z-index: 0;
+  transform: translateY(0px);
+  transition: transform 0.2s ease-out;
   -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
           mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
 }
 
-@keyframes fadeBarIn { from { opacity: 0; transform: translateY(-6px);} to { opacity: 1; transform: translateY(0);} }
-
-/* Splash */
-#splash {
-  position: fixed; inset: 0; display:flex; align-items:center; justify-content:center;
-  z-index:9999; transition:opacity 0.6s ease; background: var(--bg);
+/* Content inside gradient */
+.header-content {
+  position: relative;
+  z-index: 1;
+  padding-top: 40px;
 }
-#splash img { width:140px; height:140px; border-radius:50%; border:5px solid var(--tg-blue); animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% {transform: scale(1); opacity:1;} 50% {transform: scale(1.1); opacity:0.8;} 100% {transform: scale(1); opacity:1;} }
 
-section { padding:20px 12px; max-width:500px; margin:10px auto; opacity:0; transform:translateY(20px); animation: fadeInUp 1s ease forwards; display:none; }
-section.active { display:block; }
-@keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
-
-.profile-pic { width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid var(--tg-blue); margin:10px auto; animation:bounceIn 1s ease; }
+.profile-pic {
+  width:90px; height:90px; border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--tg-blue);
+  margin:10px auto;
+  animation:bounceIn 1s ease;
+}
 @keyframes bounceIn { 0% {transform:scale(0.5); opacity:0;} 60% {transform:scale(1.2); opacity:1;} 100% {transform:scale(1);} }
 
 h1,h2 { color: var(--tg-blue); margin-bottom:6px; }
 p { color:gray; font-size:14px; }
 
-/* Smaller feature/commit boxes */
-.features { 
-  margin-top:12px; 
-  padding:10px; 
-  border-radius:10px; 
-  box-shadow:0 1px 4px rgba(0,0,0,0.15); 
-  transition: transform 0.3s; 
+/* Splash */
+#splash {
+  position: fixed; inset: 0;
+  display:flex; align-items:center; justify-content:center;
+  z-index:9999;
+  transition:opacity 0.6s ease;
+  background: var(--bg);
+}
+#splash img {
+  width:140px; height:140px;
+  border-radius:50%;
+  border:5px solid var(--tg-blue);
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0% {transform: scale(1); opacity:1;} 50% {transform: scale(1.1); opacity:0.8;} 100% {transform: scale(1); opacity:1;} }
+
+section {
+  padding:20px 12px;
+  max-width:500px;
+  margin:0 auto 20px auto;
+  opacity:0;
+  transform:translateY(20px);
+  animation: fadeInUp 1s ease forwards;
+  display:none;
+}
+section.active { display:block; }
+@keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
+
+/* Feature and commit boxes (smaller) */
+.features {
+  margin-top:12px;
+  padding:10px;
+  border-radius:10px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.15);
+  transition: transform 0.3s;
   font-size:14px;
   background: var(--card);
 }
@@ -80,7 +111,7 @@ p { color:gray; font-size:14px; }
 .commits a { color:var(--tg-blue); text-decoration:none; }
 .commits a:hover { text-decoration:underline; }
 
-/* Bottom navigation as floating pill */
+/* Bottom nav pill */
 .bottom-nav {
   position: fixed;
   bottom: 20px;
@@ -120,15 +151,18 @@ p { color:gray; font-size:14px; }
 <!-- Splash -->
 <div id="splash"><img src="telegram_icon.jpg" alt="Splash Icon"></div>
 
-<!-- Gradient (now a real gradient that fades out) -->
+<!-- Gradient background -->
 <div class="top-gradient"></div>
 
-<!-- Home Section -->
-<section id="home-section" class="active">
+<!-- Header content over gradient -->
+<div class="header-content">
   <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
   <h1>YouShadeBot 🎭</h1>
   <p>Your Telegram Mini App 🚀</p>
+</div>
 
+<!-- Home Section -->
+<section id="home-section" class="active">
   <div class="features">
     <h2>✨ Features</h2>
     <ul>
@@ -180,13 +214,11 @@ applyTheme();
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
 window.onload = () => {
-  // Splash
   setTimeout(() => {
     document.getElementById("splash").style.opacity="0";
     setTimeout(()=>{document.getElementById("splash").style.display="none";},600);
   },1500);
 
-  // GitHub commits
   fetch('https://api.github.com/repos/wollydev24/YouShadeBot/commits')
     .then(res => res.json())
     .then(data => {
@@ -200,7 +232,6 @@ window.onload = () => {
     })
     .catch(err => { document.getElementById('commit-list').innerHTML='<li>Failed to load commits</li>'; });
 
-  // Fetch news.json
   fetch('news.json')
     .then(res => { if(!res.ok) throw new Error('Failed to fetch news'); return res.json(); })
     .then(news => {
@@ -218,11 +249,15 @@ window.onload = () => {
     })
     .catch(err => { document.getElementById('news-items').innerHTML = `<li>Error loading news: ${err.message}</li>`; });
 
-  // Try to color the gradient from the user's PFP; fall back to Telegram theme, then default
   colorGradientFromUserOrTheme();
 };
 
-// Tab switcher
+// Parallax effect
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  document.querySelector('.top-gradient').style.transform = `translateY(${scrollY * 0.3}px)`;
+});
+
 function switchTab(tab){
   ['home','news','info'].forEach(t=>{
     document.getElementById(`${t}-section`).classList.remove('active');
@@ -232,12 +267,9 @@ function switchTab(tab){
   document.getElementById(`${tab}-btn`).classList.add('active');
 }
 
-/* ---- Gradient color logic ---- */
 function colorGradientFromUserOrTheme(){
   const user = Telegram.WebApp?.initDataUnsafe?.user;
   const tp   = Telegram.WebApp?.themeParams || {};
-
-  // 1) Attempt PFP average color (may fail due to CORS)
   if (user && user.photo_url) {
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -247,46 +279,31 @@ function colorGradientFromUserOrTheme(){
         const {avg, darker} = averageColors(img);
         document.documentElement.style.setProperty('--grad-start', avg);
         document.documentElement.style.setProperty('--grad-mid',   darker);
-      } catch(e) {
-        // 2) Fallback to theme colors
-        themeFallback(tp);
-      }
+      } catch(e) { themeFallback(tp); }
     };
     img.onerror = () => themeFallback(tp);
     return;
   }
-
-  // 2) Theme fallback if no PFP
   themeFallback(tp);
 }
-
 function themeFallback(tp){
   const start = tp.button_color || '#34aaf7';
   const mid   = tp.link_color   || '#1b8dd6';
   document.documentElement.style.setProperty('--grad-start', start);
   document.documentElement.style.setProperty('--grad-mid',   mid);
 }
-
-/* Compute average & a darker variant */
 function averageColors(img){
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  const w = canvas.width = 32;
-  const h = canvas.height = 32;
+  const w = canvas.width = 32, h = canvas.height = 32;
   ctx.drawImage(img, 0, 0, w, h);
   const data = ctx.getImageData(0, 0, w, h).data;
-
   let r=0,g=0,b=0,count=0;
   for(let i=0;i<data.length;i+=4){
-    const a = data[i+3];
-    if(a < 128) continue; // skip mostly transparent
-    r += data[i];
-    g += data[i+1];
-    b += data[i+2];
-    count++;
+    if(data[i+3] < 128) continue;
+    r += data[i]; g += data[i+1]; b += data[i+2]; count++;
   }
   if(!count) throw new Error('No pixels');
-
   r = Math.round(r/count); g = Math.round(g/count); b = Math.round(b/count);
   const avg = `rgb(${r}, ${g}, ${b})`;
   const darker = `rgb(${Math.round(r*0.75)}, ${Math.round(g*0.75)}, ${Math.round(b*0.75)})`;
