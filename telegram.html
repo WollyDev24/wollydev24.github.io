@@ -22,7 +22,7 @@
       font-family: "Segoe UI", sans-serif;
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
+      text-align: center;
       transition: background 0.3s, color 0.3s;
     }
 
@@ -61,12 +61,21 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* Content */
-    .app-content {
-      padding: 40px 20px 90px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    /* Sections */
+    section {
+      padding: 60px 20px;
+      max-width: 600px;
+      margin: auto;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards;
+    }
+    section:nth-of-type(1) { animation-delay: 0.4s; }
+    section:nth-of-type(2) { animation-delay: 0.8s; }
+    section:nth-of-type(3) { animation-delay: 1.2s; }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .profile-pic {
@@ -77,147 +86,98 @@
       border: 4px solid var(--tg-blue);
       margin: 20px auto;
       display: block;
+      animation: bounceIn 1s ease;
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      60% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
     }
 
-    h1 {
-      margin-top: 10px;
+    h1, h2 {
       color: var(--tg-blue);
+      margin-bottom: 10px;
     }
 
-    /* Pages */
-    .page {
-      position: absolute;
-      top: 0;
-      left: 100%;
-      width: 100%;
-      opacity: 0;
-      transition: all 0.4s ease;
-    }
-    .page.active {
-      left: 0;
-      opacity: 1;
-    }
-    .page.exit-left {
-      left: -100%;
-      opacity: 0;
-    }
-    .page.exit-right {
-      left: 100%;
-      opacity: 0;
+    p {
+      color: gray;
     }
 
-    /* Cards */
+    /* Features Card */
     .features {
-      margin: 30px auto;
-      padding: 15px;
+      margin-top: 20px;
+      padding: 20px;
       border-radius: 15px;
-      max-width: 400px;
-      text-align: left;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      transition: background 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
     }
     body.light .features { background: var(--card-light); }
     body.dark .features { background: var(--card-dark); }
-
-    .features h2 {
-      text-align: center;
-      color: var(--tg-blue);
-    }
+    .features:hover { transform: scale(1.02); }
 
     .features ul {
       list-style: none;
       padding: 0;
     }
-
     .features li {
       margin: 10px 0;
       padding: 10px;
       border-radius: 10px;
-      font-size: 15px;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.3s;
     }
     body.light .features li { background: var(--card-item-light); }
     body.dark .features li { background: var(--card-item-dark); }
+    .features li:hover {
+      transform: translateX(8px);
+    }
 
+    /* Button */
     button {
-      margin: 25px auto;
-      padding: 12px 20px;
+      margin: 30px auto;
+      padding: 14px 24px;
       font-size: 16px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--tg-blue);
       color: white;
       cursor: pointer;
-      transition: 0.3s;
+      transition: transform 0.2s, background 0.3s;
       display: block;
+      animation: popIn 0.8s ease forwards 1.6s;
+      opacity: 0;
     }
-    button:hover { background: var(--tg-blue-dark); }
+    button:hover { background: var(--tg-blue-dark); transform: scale(1.05); }
+    @keyframes popIn {
+      to { opacity: 1; }
+    }
 
-    .socials {
-      margin-top: 40px;
-    }
-    .socials h3 { margin-bottom: 12px; }
+    /* Socials */
     .socials a {
       margin: 0 15px;
       color: var(--tg-blue);
       text-decoration: none;
       font-weight: bold;
-      font-size: 16px;
-      transition: 0.3s;
-    }
-    .socials a:hover { color: var(--tg-blue-dark); }
-
-    /* Bottom Navigation - Material 3 */
-    .bottom-nav {
-      position: fixed;
-      bottom: 12px; left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 400px;
-      height: 65px;
-      background: var(--card-light);
-      border-radius: 25px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
-      overflow: hidden;
-      transition: background 0.3s;
-    }
-    body.dark .bottom-nav { background: var(--card-dark); }
-
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      cursor: pointer;
+      font-size: 18px;
       position: relative;
-      padding: 10px 0;
-      color: var(--text-light);
-      transition: color 0.3s;
+      display: inline-block;
+      transition: color 0.3s, transform 0.3s;
     }
-    body.dark .nav-item { color: var(--text-dark); }
-
-    .nav-item.active {
-      color: var(--tg-blue);
-      font-weight: bold;
+    .socials a:hover {
+      color: var(--tg-blue-dark);
+      transform: translateY(-5px);
     }
-
-    /* Ripple effect */
-    .nav-item::after {
+    .socials a::after {
       content: "";
       position: absolute;
+      bottom: -5px; left: 0;
       width: 100%;
-      height: 100%;
-      top: 0; left: 0;
-      background: rgba(0,0,0,0.1);
-      opacity: 0;
-      transition: opacity 0.3s;
-      border-radius: 25px;
+      height: 2px;
+      background: var(--tg-blue);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+      transform-origin: left;
     }
-    .nav-item:active::after {
-      opacity: 1;
-      transition: opacity 0s;
-    }
+    .socials a:hover::after { transform: scaleX(1); }
   </style>
 </head>
 <body>
@@ -226,45 +186,38 @@
     <img src="telegram_icon.jpg" alt="Splash Icon">
   </div>
 
-  <!-- Content -->
-  <div class="app-content">
-    <div id="home" class="page active">
-      <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
-      <h1>Welcome 👋</h1>
-      <p>Your Telegram companion app 🚀</p>
-    </div>
+  <!-- Home -->
+  <section>
+    <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
+    <h1>YouShadeBot 🎭</h1>
+    <p>Your Telegram Mini App 🚀</p>
+  </section>
 
-    <div id="features" class="page">
-      <div class="features">
-        <h2>✨ Features</h2>
-        <ul>
-          <li>🤖 Smart Commands</li>
-          <li>🎵 Music Controls</li>
-          <li>🛠 Custom Tools</li>
-          <li>📊 Mini Games & Stats</li>
-        </ul>
-      </div>
-      <button onclick="Telegram.WebApp.sendData('User pressed the button!')">
-        Send Message to Bot
-      </button>
+  <!-- Features -->
+  <section>
+    <div class="features">
+      <h2>✨ Features</h2>
+      <ul>
+        <li>🤖 Smart Commands</li>
+        <li>🎵 Music Controls</li>
+        <li>🛠 Custom Tools</li>
+        <li>📊 Mini Games & Stats</li>
+      </ul>
     </div>
+    <button onclick="Telegram.WebApp.sendData('User pressed the button!')">
+      Send Message to Bot
+    </button>
+  </section>
 
-    <div id="socials" class="page">
-      <div class="socials">
-        <h3>🌐 Connect with me</h3>
-        <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
-        <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
-        <a href="https://wollydev24.github.io/" target="_blank">Website</a>
-      </div>
+  <!-- Socials -->
+  <section>
+    <h2>🌐 Connect with me</h2>
+    <div class="socials">
+      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+      <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
+      <a href="https://wollydev24.github.io/" target="_blank">Website</a>
     </div>
-  </div>
-
-  <!-- Bottom Navigation -->
-  <div class="bottom-nav">
-    <div id="nav-home" class="nav-item active" onclick="switchPage('home')">⚡ Home</div>
-    <div id="nav-features" class="nav-item" onclick="switchPage('features')">✨ Features</div>
-    <div id="nav-socials" class="nav-item" onclick="switchPage('socials')">🌐 Socials</div>
-  </div>
+  </section>
 
   <script>
     // Theme
@@ -287,38 +240,6 @@
         setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 600);
       }, 1500);
     };
-
-    // Page switching with animation
-    let currentPage = "home";
-    function switchPage(page) {
-      if (page === currentPage) return;
-
-      const current = document.getElementById(currentPage);
-      const next = document.getElementById(page);
-
-      // Exit animation
-      if (page === "features" && currentPage === "home" || page === "socials" && currentPage === "features") {
-        current.classList.remove("active");
-        current.classList.add("exit-left");
-      } else {
-        current.classList.remove("active");
-        current.classList.add("exit-right");
-      }
-
-      // Reset after transition
-      setTimeout(() => {
-        current.classList.remove("exit-left", "exit-right");
-      }, 400);
-
-      // Enter animation
-      next.classList.add("active");
-
-      // Update nav
-      document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-      document.getElementById("nav-" + page).classList.add("active");
-
-      currentPage = page;
-    }
   </script>
 </body>
 </html>
