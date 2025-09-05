@@ -7,27 +7,44 @@
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(135deg, #6e8efb, #a777e3);
-      color: white;
+      background: #ffffff;
+      color: #222;
       text-align: center;
       padding: 20px;
     }
 
-    h1 {
+    /* Circle image at top */
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #0088cc; /* Telegram blue border */
       margin-top: 10px;
+    }
+
+    h1 {
+      margin-top: 15px;
+      color: #0088cc;
+    }
+
+    p {
+      color: #555;
     }
 
     .features {
       margin: 20px auto;
       padding: 15px;
       border-radius: 15px;
-      background: rgba(0, 0, 0, 0.25);
+      background: #f0f8ff;
       max-width: 400px;
       text-align: left;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
     .features h2 {
       text-align: center;
+      color: #0088cc;
     }
 
     .features ul {
@@ -38,7 +55,7 @@
     .features li {
       margin: 10px 0;
       padding: 8px;
-      background: rgba(255, 255, 255, 0.15);
+      background: #e6f3fa;
       border-radius: 8px;
     }
 
@@ -48,14 +65,14 @@
       font-size: 16px;
       border: none;
       border-radius: 10px;
-      background: #222;
+      background: #0088cc;
       color: white;
       cursor: pointer;
       transition: 0.3s;
     }
 
     button:hover {
-      background: #444;
+      background: #006fa8;
     }
 
     .socials {
@@ -63,20 +80,23 @@
     }
 
     .socials a {
-      margin: 0 10px;
-      color: white;
+      margin: 0 12px;
+      color: #0088cc;
       text-decoration: none;
       font-weight: bold;
       transition: 0.3s;
     }
 
     .socials a:hover {
-      color: #ffe082;
+      color: #005f87;
     }
   </style>
 </head>
 <body>
-  <h1>Welcome to YouShadeBot 🎭</h1>
+  <!-- Circle Image -->
+  <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
+
+  <h1>YouShadeBot 🎭</h1>
   <p>Your Telegram Mini App 🚀</p>
 
   <!-- Features Section -->
