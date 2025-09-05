@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>YouShade MiniApp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-p0x4O44JX+j1tX+X5ZK+kVy4Z9x9tnXvvFxUepkUZf7J+nq7d8r4rk+d6T2BblZBr5eN0nO6bwA/kJ6yWv+gdg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
       --tg-blue: #0088cc;
@@ -44,11 +43,11 @@
 
     /* Sections */
     section {
-      padding: 40px 15px;  /* moved content slightly down */
+      padding: 30px 15px;
       max-width: 500px;
-      margin: 40px auto;   /* adds vertical spacing */
+      margin: 20px auto;  
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(20px);
       animation: fadeInUp 1s ease forwards;
     }
     section:nth-of-type(1) { animation-delay: 0.3s; }
@@ -84,14 +83,18 @@
     button:hover { background: var(--tg-blue-dark); transform: scale(1.05); }
     @keyframes popIn { to { opacity: 1; } }
 
-    /* Social icons */
-    .socials { margin-top: 20px; }
+    /* Social text links */
     .socials a {
-      margin: 0 12px; font-size: 28px; color: var(--tg-blue);
+      margin: 0 12px;
+      color: var(--tg-blue);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
       transition: color 0.3s, transform 0.3s;
       display: inline-block;
     }
     .socials a:hover { color: var(--tg-blue-dark); transform: translateY(-3px); }
+
   </style>
 </head>
 <body>
@@ -105,10 +108,8 @@
     <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
     <h1>YouShadeBot 🎭</h1>
     <p>Your Telegram Mini App 🚀</p>
-  </section>
 
-  <!-- Features -->
-  <section>
+    <!-- Features moved directly under profile -->
     <div class="features">
       <h2>✨ Features</h2>
       <ul>
@@ -123,9 +124,9 @@
   <section>
     <h2>🌐 Connect with me</h2>
     <div class="socials">
-      <a href="https://github.com/wollydev24" target="_blank"><i class="fab fa-github"></i></a>
-      <a href="https://t.me/yourTelegramUsername" target="_blank"><i class="fab fa-telegram"></i></a>
-      <a href="https://wollydev24.github.io/" target="_blank"><i class="fas fa-globe"></i></a>
+      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+      <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
+      <a href="https://wollydev24.github.io/" target="_blank">Website</a>
     </div>
   </section>
 
