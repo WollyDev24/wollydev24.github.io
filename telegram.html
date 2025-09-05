@@ -29,7 +29,6 @@
       background: var(--bg-light);
       color: var(--text-light);
     }
-
     body.dark {
       background: var(--bg-dark);
       color: var(--text-dark);
@@ -61,25 +60,9 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* App header */
-    .app-header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      background: var(--tg-blue);
-      color: white;
-      font-weight: bold;
-      font-size: 18px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
     /* Content wrapper */
     .app-content {
-      padding: 30px 20px;
+      padding: 40px 20px 80px; /* leave space for bottom nav */
       text-align: center;
     }
 
@@ -147,11 +130,7 @@
     .socials {
       margin-top: 40px;
     }
-
-    .socials h3 {
-      margin-bottom: 12px;
-    }
-
+    .socials h3 { margin-bottom: 12px; }
     .socials a {
       margin: 0 15px;
       color: var(--tg-blue);
@@ -161,6 +140,35 @@
       transition: 0.3s;
     }
     .socials a:hover { color: var(--tg-blue-dark); }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 60px;
+      background: var(--tg-blue);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
+    }
+    .bottom-nav div {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      padding: 10px 0;
+    }
+    .bottom-nav div.active {
+      background: var(--tg-blue-dark);
+    }
+
+    /* Hide pages */
+    .page { display: none; }
+    .page.active { display: block; }
   </style>
 </head>
 <body>
@@ -169,45 +177,51 @@
     <img src="telegram_icon.jpg" alt="Splash Icon">
   </div>
 
-  <!-- Header -->
-  <div class="app-header">
-    YouShadeBot MiniApp 🎭
-  </div>
-
   <!-- Content -->
   <div class="app-content">
-    <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
-
-    <h1>Welcome 👋</h1>
-    <p>Your Telegram companion app 🚀</p>
-
-    <!-- Features Section -->
-    <div class="features">
-      <h2>✨ Features</h2>
-      <ul>
-        <li>🤖 Smart Commands</li>
-        <li>🎵 Music Controls</li>
-        <li>🛠 Custom Tools</li>
-        <li>📊 Mini Games & Stats</li>
-      </ul>
+    <!-- Home -->
+    <div id="home" class="page active">
+      <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
+      <h1>Welcome 👋</h1>
+      <p>Your Telegram companion app 🚀</p>
     </div>
 
-    <!-- Button to send data back to bot -->
-    <button onclick="Telegram.WebApp.sendData('User pressed the button!')">
-      Send Message to Bot
-    </button>
-
-    <!-- Social Links -->
-    <div class="socials">
-      <h3>🌐 Connect with me</h3>
-      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
-      <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
-      <a href="https://wollydev24.github.io/" target="_blank">Website</a>
+    <!-- Features -->
+    <div id="features" class="page">
+      <div class="features">
+        <h2>✨ Features</h2>
+        <ul>
+          <li>🤖 Smart Commands</li>
+          <li>🎵 Music Controls</li>
+          <li>🛠 Custom Tools</li>
+          <li>📊 Mini Games & Stats</li>
+        </ul>
+      </div>
+      <button onclick="Telegram.WebApp.sendData('User pressed the button!')">
+        Send Message to Bot
+      </button>
     </div>
+
+    <!-- Socials -->
+    <div id="socials" class="page">
+      <div class="socials">
+        <h3>🌐 Connect with me</h3>
+        <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+        <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
+        <a href="https://wollydev24.github.io/" target="_blank">Website</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div id="nav-home" class="active" onclick="showPage('home')">⚡ Home</div>
+    <div id="nav-features" onclick="showPage('features')">✨ Features</div>
+    <div id="nav-socials" onclick="showPage('socials')">🌐 Socials</div>
   </div>
 
   <script>
-    // Detect system theme for dark mode
+    // Detect system theme
     function applyTheme() {
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add("dark");
@@ -220,7 +234,7 @@
     applyTheme();
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-    // Hide splash after 1.5s
+    // Splash screen
     window.onload = () => {
       setTimeout(() => {
         document.getElementById("splash").style.opacity = "0";
@@ -229,6 +243,15 @@
         }, 600);
       }, 1500);
     };
+
+    // Page switching
+    function showPage(page) {
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      document.getElementById(page).classList.add("active");
+
+      document.querySelectorAll(".bottom-nav div").forEach(n => n.classList.remove("active"));
+      document.getElementById("nav-" + page).classList.add("active");
+    }
   </script>
 </body>
 </html>
