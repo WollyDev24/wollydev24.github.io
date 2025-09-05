@@ -34,7 +34,7 @@
     .header-content {
       position: relative;
       z-index: 1;
-      margin-top: -130px; /* Adjusted by you */
+      margin-top: -130px;
       text-align: center;
     }
     .header-content img {
@@ -64,7 +64,7 @@
       margin: 8px 0;
       padding: 10px 14px;
       transition: transform 0.2s;
-      font-size: 0.9em; /* smaller boxes */
+      font-size: 0.9em;
     }
     .card:hover {
       transform: translateY(-2px);
@@ -100,7 +100,7 @@
     /* Sections Toggle */
     .page {
       display: none;
-      padding-bottom: 80px; /* for nav */
+      padding-bottom: 80px;
     }
     .page.active {
       display: block;
@@ -172,13 +172,13 @@
       document.getElementById(tab+'-btn').classList.add('active');
     }
 
-    // Load commits
+    // Load commits (limit to 3)
     fetch("https://api.github.com/repos/wollydev24/YouShadeBot/commits")
       .then(res => res.json())
       .then(data => {
         const commitsEl = document.getElementById("commits");
         commitsEl.innerHTML = "";
-        data.slice(0,5).forEach(c => {
+        data.slice(0,3).forEach(c => {
           const item = document.createElement("div");
           item.className = "card";
           item.textContent = `✔️ ${c.commit.message} — ${c.commit.author.name}`;
@@ -189,7 +189,7 @@
         document.getElementById("commits").innerHTML = `<div class="card">❌ Error: ${err.message}</div>`;
       });
 
-    // Load news
+    // Load news (with content)
     fetch("news.json")
       .then(res => res.json())
       .then(data => {
@@ -198,7 +198,9 @@
         data.forEach(n => {
           const item = document.createElement("div");
           item.className = "card";
-          item.textContent = `📰 ${n.title} — ${n.date}`;
+          item.innerHTML = `<strong>📰 ${n.title}</strong><br>
+                            <small>${n.date}</small><br>
+                            <p>${n.content}</p>`;
           newsEl.appendChild(item);
         });
       })
