@@ -24,10 +24,22 @@
       padding: 0;
       text-align: center;
       transition: background 0.3s, color 0.3s;
+      position: relative;
     }
 
     body.light { background: var(--bg-light); color: var(--text-light); }
     body.dark { background: var(--bg-dark); color: var(--text-dark); }
+
+    /* User profile pic at top right */
+    .user-pfp {
+      position: fixed;
+      top: 60px; /* moved down to not conflict with Telegram UI */
+      right: 15px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid var(--tg-blue);
+    }
 
     /* Splash */
     #splash {
@@ -83,7 +95,6 @@
     button:hover { background: var(--tg-blue-dark); transform: scale(1.05); }
     @keyframes popIn { to { opacity: 1; } }
 
-    /* Social text links */
     .socials a {
       margin: 0 12px;
       color: var(--tg-blue);
@@ -95,9 +106,17 @@
     }
     .socials a:hover { color: var(--tg-blue-dark); transform: translateY(-3px); }
 
+    /* GitHub commits list */
+    .commits { margin-top: 20px; text-align: left; }
+    .commits li { margin-bottom: 8px; font-size: 14px; }
+    .commits a { color: var(--tg-blue); text-decoration: none; }
+    .commits a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
+  <!-- User PFP top right -->
+  <img src="https://github.com/wollydev24.png" alt="User PFP" class="user-pfp">
+
   <!-- Splash -->
   <div id="splash">
     <img src="telegram_icon.jpg" alt="Splash Icon">
@@ -109,7 +128,7 @@
     <h1>YouShadeBot 🎭</h1>
     <p>Your Telegram Mini App 🚀</p>
 
-    <!-- Features moved directly under profile -->
+    <!-- Features directly under profile -->
     <div class="features">
       <h2>✨ Features</h2>
       <ul>
@@ -118,6 +137,14 @@
       </ul>
     </div>
     <button onclick="Telegram.WebApp.sendData('User pressed the button!')">Send Message to Bot</button>
+
+    <!-- GitHub commits -->
+    <div class="features">
+      <h2>📦 Latest GitHub Commits</h2>
+      <ul id="commit-list" class="commits">
+        <li>Loading commits...</li>
+      </ul>
+    </div>
   </section>
 
   <!-- Socials -->
@@ -142,10 +169,27 @@
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
     window.onload = () => {
+      // Splash
       setTimeout(() => {
         document.getElementById("splash").style.opacity = "0";
         setTimeout(() => { document.getElementById("splash").style.display = "none"; }, 600);
       }, 1500);
+
+      // Fetch latest GitHub commits
+      fetch('https://api.github.com/repos/wollydev24/YouShadeBot/commits')
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById('commit-list');
+          list.innerHTML = '';
+          data.slice(0,5).forEach(commit => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${commit.html_url}" target="_blank">${commit.commit.message}</a>`;
+            list.appendChild(li);
+          });
+        })
+        .catch(err => {
+          document.getElementById('commit-list').innerHTML = '<li>Failed to load commits</li>';
+        });
     };
   </script>
 </body>
