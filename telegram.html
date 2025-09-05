@@ -50,10 +50,6 @@ body.light .features li { background: var(--card-item-light);}
 body.dark .features li { background: var(--card-item-dark);}
 .features li:hover { transform:translateX(5px); }
 
-button { margin:20px auto; padding:12px 20px; font-size:15px; border:none; border-radius:10px; background:var(--tg-blue); color:white; cursor:pointer; transition: transform 0.2s, background 0.3s; display:block; animation:popIn 0.8s ease forwards 1.2s; opacity:0; }
-button:hover { background: var(--tg-blue-dark); transform: scale(1.05);}
-@keyframes popIn { to { opacity:1; } }
-
 .socials a { margin:0 12px; color: var(--tg-blue); text-decoration:none; font-weight:bold; font-size:16px; transition: color 0.3s, transform 0.3s; display:inline-block; }
 .socials a:hover { color: var(--tg-blue-dark); transform:translateY(-3px); }
 
@@ -93,8 +89,6 @@ body.dark .bottom-nav { background: var(--bg-dark); border-top:1px solid #333; }
     </ul>
   </div>
 
-  <button onclick="Telegram.WebApp.sendData('User pressed the button!')">Send Message to Bot</button>
-
   <div class="features">
     <h2>📦 Latest GitHub Commits</h2>
     <ul id="commit-list" class="commits"><li>Loading commits...</li></ul>
@@ -109,10 +103,21 @@ body.dark .bottom-nav { background: var(--bg-dark); border-top:1px solid #333; }
   </div>
 </section>
 
+<!-- Info Section -->
+<section id="info-section">
+  <h1>🤖 Info</h1>
+  <div class="features">
+    <p><strong>Name:</strong> YouShadeBot</p>
+    <p><strong>Version:</strong> 1.0.0</p>
+    <p><strong>Description:</strong> A Telegram Mini App to manage and get updates about YouShadeBot.</p>
+  </div>
+</section>
+
 <!-- Bottom Navigation -->
 <div class="bottom-nav">
   <button id="home-btn" class="active" onclick="switchTab('home')">🏠 Home</button>
   <button id="news-btn" onclick="switchTab('news')">ℹ️ News</button>
+  <button id="info-btn" onclick="switchTab('info')">🤖 Info</button>
 </div>
 
 <script>
@@ -149,10 +154,7 @@ window.onload = () => {
 
   // Fetch news.json
   fetch('news.json')
-    .then(res => {
-      if(!res.ok) throw new Error('Failed to fetch news');
-      return res.json();
-    })
+    .then(res => { if(!res.ok) throw new Error('Failed to fetch news'); return res.json(); })
     .then(news => {
       const newsItems = document.getElementById('news-items');
       newsItems.innerHTML = '';
@@ -163,25 +165,17 @@ window.onload = () => {
         newsItems.appendChild(li);
       });
     })
-    .catch(err => {
-      document.getElementById('news-items').innerHTML = `<li>Error loading news: ${err.message}</li>`;
-    });
+    .catch(err => { document.getElementById('news-items').innerHTML = `<li>Error loading news: ${err.message}</li>`; });
 };
 
 // Tab switcher
 function switchTab(tab){
-  document.getElementById('home-section').classList.remove('active');
-  document.getElementById('news-section').classList.remove('active');
-  document.getElementById('home-btn').classList.remove('active');
-  document.getElementById('news-btn').classList.remove('active');
-
-  if(tab === 'home'){
-    document.getElementById('home-section').classList.add('active');
-    document.getElementById('home-btn').classList.add('active');
-  } else {
-    document.getElementById('news-section').classList.add('active');
-    document.getElementById('news-btn').classList.add('active');
-  }
+  ['home','news','info'].forEach(t=>{
+    document.getElementById(`${t}-section`).classList.remove('active');
+    document.getElementById(`${t}-btn`).classList.remove('active');
+  });
+  document.getElementById(`${tab}-section`).classList.add('active');
+  document.getElementById(`${tab}-btn`).classList.add('active');
 }
 </script>
 </body>
