@@ -1,316 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>YouShade MiniApp</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<style>
-:root {
-  --tg-blue: #0088cc;
-  --tg-blue-dark: #006fa8;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouShadeBot Mini App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--tg-theme-bg-color, #f9f9f9);
+      color: var(--tg-theme-text-color, #000);
+      transition: background 0.3s, color 0.3s;
+    }
 
-  --grad-start: #34aaf7;
-  --grad-mid:   #1b8dd6;
-}
+    /* Gradient Header */
+    .top-gradient {
+      position: relative;
+      height: 180px;
+      background: linear-gradient(180deg,
+        var(--grad-start, #0088cc) 0%,
+        var(--grad-mid, #005580) 60%,
+        rgba(0,0,0,0) 100%);
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      margin-bottom: -80px;
+      z-index: 0;
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+              mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
+    }
 
-body {
-  font-family:"Segoe UI", sans-serif;
-  margin:0;
-  padding:0;
-  text-align:center;
-  transition: background 0.3s, color 0.3s;
-}
+    /* Content in Header */
+    .header-content {
+      position: relative;
+      z-index: 1;
+      margin-top: -140px; /* Adjusted by you */
+      text-align: center;
+    }
+    .header-content img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+    .header-content h1 {
+      margin: 0;
+      font-size: 1.6em;
+    }
+    .header-content p {
+      margin: 6px 0 0;
+      font-size: 1em;
+      opacity: 0.8;
+    }
 
-body.light { --bg: #ffffff; --text: #222; --card: #f0f8ff; --card-item: #e6f3fa; background: var(--bg); color: var(--text); }
-body.dark  { --bg: #121212; --text: #f5f5f5; --card: #1e1e1e; --card-item: #2a2a2a; background: var(--bg); color: var(--text); }
+    /* Sections */
+    .section {
+      padding: 14px;
+    }
+    .card {
+      background: var(--tg-theme-secondary-bg-color, #fff);
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin: 8px 0;
+      padding: 10px 14px;
+      transition: transform 0.2s;
+      font-size: 0.9em; /* smaller boxes */
+    }
+    .card:hover {
+      transform: translateY(-2px);
+    }
 
-/* Gradient header */
-.top-gradient {
-  position: relative;
-  height: 180px; /* smaller, was 220px */
-  background:
-    radial-gradient(120% 80% at 10% -20%, rgba(255,255,255,0.25), rgba(255,255,255,0) 60%),
-    linear-gradient(180deg,
-      var(--grad-start) 0%,
-      var(--grad-mid) 60%,
-      rgba(0,0,0,0) 100%);
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  margin-bottom: -80px; /* overlap slightly less */
-  z-index: 0;
-  transform: translateY(0px);
-  transition: transform 0.2s ease-out;
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-          mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%);
-}
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--tg-theme-secondary-bg-color, #fff);
+      border-radius: 40px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      display: flex;
+      gap: 30px;
+      padding: 10px 30px;
+      z-index: 10;
+      transition: background 0.3s;
+    }
+    .bottom-nav button {
+      background: none;
+      border: none;
+      font-size: 1.3em;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .bottom-nav button.active {
+      opacity: 1;
+    }
 
-/* Header content */
-.header-content {
-  position: relative;
-  z-index: 1;
-  padding-top: 0;    /* remove extra padding */
-  margin-top: -130px; /* pull everything further up */
-}
+    /* Sections Toggle */
+    .page {
+      display: none;
+      padding-bottom: 80px; /* for nav */
+    }
+    .page.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
 
-
-.profile-pic {
-  width:90px; height:90px; border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--tg-blue);
-  margin:10px auto;
-  animation:bounceIn 1s ease;
-}
-@keyframes bounceIn { 0% {transform:scale(0.5); opacity:0;} 60% {transform:scale(1.2); opacity:1;} 100% {transform:scale(1);} }
-
-h1,h2 { color: var(--tg-blue); margin-bottom:6px; }
-p { color:gray; font-size:14px; }
-
-/* Splash */
-#splash {
-  position: fixed; inset: 0;
-  display:flex; align-items:center; justify-content:center;
-  z-index:9999;
-  transition:opacity 0.6s ease;
-  background: var(--bg);
-}
-#splash img {
-  width:140px; height:140px;
-  border-radius:50%;
-  border:5px solid var(--tg-blue);
-  animation: pulse 1.5s infinite;
-}
-@keyframes pulse { 0% {transform: scale(1); opacity:1;} 50% {transform: scale(1.1); opacity:0.8;} 100% {transform: scale(1); opacity:1;} }
-
-section {
-  padding:20px 12px;
-  max-width:500px;
-  margin:0 auto 20px auto;
-  opacity:0;
-  transform:translateY(20px);
-  animation: fadeInUp 1s ease forwards;
-  display:none;
-}
-section.active { display:block; }
-@keyframes fadeInUp { to { opacity:1; transform:translateY(0); } }
-
-/* Feature and commit boxes (smaller) */
-.features {
-  margin-top:12px;
-  padding:10px;
-  border-radius:10px;
-  box-shadow:0 1px 4px rgba(0,0,0,0.15);
-  transition: transform 0.3s;
-  font-size:14px;
-  background: var(--card);
-}
-.features:hover { transform:scale(1.01);}
-.features ul { list-style:none; padding:0; margin:0; }
-.features li { margin:6px 0; padding:6px; border-radius:8px; transition: background 0.3s, transform 0.3s; font-size:14px; background: var(--card-item);}
-.features li:hover { transform:translateX(5px); }
-
-.commits { margin-top:10px; text-align:left; }
-.commits li { margin-bottom:6px; font-size:13px; }
-.commits a { color:var(--tg-blue); text-decoration:none; }
-.commits a:hover { text-decoration:underline; }
-
-/* Bottom nav pill */
-.bottom-nav {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 55px;
-  width: 90%;
-  max-width: 380px;
-  border-radius: 30px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  z-index: 1000;
-  transition: background 0.3s;
-  backdrop-filter: saturate(1.1) blur(2px);
-}
-.bottom-nav button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: var(--tg-blue);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  flex: 1;
-  transition: color 0.3s, transform 0.2s;
-}
-.bottom-nav button.active { font-weight: bold; }
-.bottom-nav button:hover { color: var(--tg-blue-dark); transform: scale(1.1); }
-</style>
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
 <body>
 
-<!-- Splash -->
-<div id="splash"><img src="telegram_icon.jpg" alt="Splash Icon"></div>
+  <!-- Gradient -->
+  <div class="top-gradient"></div>
 
-<!-- Gradient background -->
-<div class="top-gradient"></div>
-
-<!-- Header content over gradient -->
-<div class="header-content">
-  <img src="telegram_icon.jpg" alt="Bot Icon" class="profile-pic">
-  <h1>YouShadeBot 🎭</h1>
-  <p>Your Telegram Mini App 🚀</p>
-</div>
-
-<!-- Home Section -->
-<section id="home-section" class="active">
-  <div class="features">
-    <h2>✨ Features</h2>
-    <ul>
-      <li>ℹ️ Get news About YouShade</li>
-      <li>📣 News About the YouShadeBot</li>
-    </ul>
+  <!-- Header -->
+  <div class="header-content">
+    <img src="https://wollydev24.github.io/telegram_icon.jpg" alt="Bot Icon">
+    <h1>YouShadeBot</h1>
+    <p>Your multipurpose Discord companion</p>
   </div>
 
-  <div class="features">
-    <h2>📦 Latest GitHub Commits</h2>
-    <ul id="commit-list" class="commits"><li>Loading commits...</li></ul>
+  <!-- Pages -->
+  <div id="home" class="page active">
+    <div class="section">
+      <h2>✨ Features</h2>
+      <div class="card">ℹ️ Get news about YouShade</div>
+      <div class="card">📣 News about the YouShadeBot</div>
+    </div>
+    <div class="section">
+      <h2>📌 Latest GitHub Commits</h2>
+      <div id="commits" class="card">Loading commits...</div>
+    </div>
   </div>
-</section>
 
-<!-- News Section -->
-<section id="news-section">
-  <h1>ℹ️ News</h1>
-  <div id="news-list" class="features">
-    <ul id="news-items"><li>Loading news...</li></ul>
+  <div id="news" class="page">
+    <div class="section">
+      <h2>📣 News</h2>
+      <div id="news-list" class="card">Loading news...</div>
+    </div>
   </div>
-</section>
 
-<!-- Info Section -->
-<section id="info-section">
-  <h1>🤖 Info</h1>
-  <div class="features">
-    <p><strong>Name:</strong> YouShadeBot</p>
-    <p><strong>Version:</strong> 1.0.0</p>
-    <p><strong>Description:</strong> A Telegram Mini App to manage and get updates about YouShadeBot.</p>
+  <div id="info" class="page">
+    <div class="section">
+      <h2>🤖 Info</h2>
+      <div class="card">
+        YouShadeBot is a multipurpose bot with music, moderation, and more.
+      </div>
+    </div>
   </div>
-</section>
 
-<!-- Bottom Navigation -->
-<div class="bottom-nav">
-  <button id="home-btn" class="active" onclick="switchTab('home')">🏠 Home</button>
-  <button id="news-btn" onclick="switchTab('news')">ℹ️ News</button>
-  <button id="info-btn" onclick="switchTab('info')">🤖 Info</button>
-</div>
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <button id="home-btn" class="active" onclick="switchTab('home')">🏠</button>
+    <button id="news-btn" onclick="switchTab('news')">ℹ️</button>
+    <button id="info-btn" onclick="switchTab('info')">🤖</button>
+  </div>
 
-<script>
-function applyTheme() {
-  if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-    document.body.classList.add("dark"); document.body.classList.remove("light");
-  } else {
-    document.body.classList.add("light"); document.body.classList.remove("dark");
-  }
-}
-applyTheme();
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+  <script>
+    // Switch tabs
+    function switchTab(tab){
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+      document.getElementById(tab+'-btn').classList.add('active');
+    }
 
-window.onload = () => {
-  setTimeout(() => {
-    document.getElementById("splash").style.opacity="0";
-    setTimeout(()=>{document.getElementById("splash").style.display="none";},600);
-  },1500);
-
-  fetch('https://api.github.com/repos/wollydev24/YouShadeBot/commits')
-    .then(res => res.json())
-    .then(data => {
-      const list = document.getElementById('commit-list');
-      list.innerHTML = '';
-      data.slice(0,5).forEach(commit => {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="${commit.html_url}" target="_blank">${commit.commit.message}</a>`;
-        list.appendChild(li);
+    // Load commits
+    fetch("https://api.github.com/repos/wollydev24/YouShadeBot/commits")
+      .then(res => res.json())
+      .then(data => {
+        const commitsEl = document.getElementById("commits");
+        commitsEl.innerHTML = "";
+        data.slice(0,5).forEach(c => {
+          const item = document.createElement("div");
+          item.className = "card";
+          item.textContent = `✔️ ${c.commit.message} — ${c.commit.author.name}`;
+          commitsEl.appendChild(item);
+        });
+      })
+      .catch(err => {
+        document.getElementById("commits").innerHTML = `<div class="card">❌ Error: ${err.message}</div>`;
       });
-    })
-    .catch(err => { document.getElementById('commit-list').innerHTML='<li>Failed to load commits</li>'; });
 
-  fetch('news.json')
-    .then(res => { if(!res.ok) throw new Error('Failed to fetch news'); return res.json(); })
-    .then(news => {
-      const newsItems = document.getElementById('news-items');
-      newsItems.innerHTML = '';
-      if(!Array.isArray(news) || news.length === 0) {
-        newsItems.innerHTML = '<li>No news available.</li>';
-        return;
-      }
-      news.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = (item.title || 'Untitled') + (item.date ? " - " + item.date : "");
-        newsItems.appendChild(li);
+    // Load news
+    fetch("news.json")
+      .then(res => res.json())
+      .then(data => {
+        const newsEl = document.getElementById("news-list");
+        newsEl.innerHTML = "";
+        data.forEach(n => {
+          const item = document.createElement("div");
+          item.className = "card";
+          item.textContent = `📰 ${n.title} — ${n.date}`;
+          newsEl.appendChild(item);
+        });
+      })
+      .catch(err => {
+        document.getElementById("news-list").innerHTML = `<div class="card">❌ Error: ${err.message}</div>`;
       });
-    })
-    .catch(err => { document.getElementById('news-items').innerHTML = `<li>Error loading news: ${err.message}</li>`; });
 
-  colorGradientFromUserOrTheme();
-};
-
-// Parallax effect
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  document.querySelector('.top-gradient').style.transform = `translateY(${scrollY * 0.3}px)`;
-});
-
-function switchTab(tab){
-  ['home','news','info'].forEach(t=>{
-    document.getElementById(`${t}-section`).classList.remove('active');
-    document.getElementById(`${t}-btn`).classList.remove('active');
-  });
-  document.getElementById(`${tab}-section`).classList.add('active');
-  document.getElementById(`${tab}-btn`).classList.add('active');
-}
-
-function colorGradientFromUserOrTheme(){
-  const user = Telegram.WebApp?.initDataUnsafe?.user;
-  const tp   = Telegram.WebApp?.themeParams || {};
-  if (user && user.photo_url) {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = user.photo_url;
-    img.onload = () => {
-      try {
-        const {avg, darker} = averageColors(img);
-        document.documentElement.style.setProperty('--grad-start', avg);
-        document.documentElement.style.setProperty('--grad-mid',   darker);
-      } catch(e) { themeFallback(tp); }
-    };
-    img.onerror = () => themeFallback(tp);
-    return;
-  }
-  themeFallback(tp);
-}
-function themeFallback(tp){
-  const start = tp.button_color || '#34aaf7';
-  const mid   = tp.link_color   || '#1b8dd6';
-  document.documentElement.style.setProperty('--grad-start', start);
-  document.documentElement.style.setProperty('--grad-mid',   mid);
-}
-function averageColors(img){
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d', { willReadFrequently: true });
-  const w = canvas.width = 32, h = canvas.height = 32;
-  ctx.drawImage(img, 0, 0, w, h);
-  const data = ctx.getImageData(0, 0, w, h).data;
-  let r=0,g=0,b=0,count=0;
-  for(let i=0;i<data.length;i+=4){
-    if(data[i+3] < 128) continue;
-    r += data[i]; g += data[i+1]; b += data[i+2]; count++;
-  }
-  if(!count) throw new Error('No pixels');
-  r = Math.round(r/count); g = Math.round(g/count); b = Math.round(b/count);
-  const avg = `rgb(${r}, ${g}, ${b})`;
-  const darker = `rgb(${Math.round(r*0.75)}, ${Math.round(g*0.75)}, ${Math.round(b*0.75)})`;
-  return { avg, darker };
-}
-</script>
+    // Dynamic gradient colors from telegram_icon.jpg
+    window.addEventListener("load", () => {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = "https://wollydev24.github.io/telegram_icon.jpg";
+      img.onload = () => {
+        const colorThief = new ColorThief();
+        const [r, g, b] = colorThief.getColor(img);
+        document.documentElement.style.setProperty('--grad-start', `rgba(${r},${g},${b},1)`);
+        document.documentElement.style.setProperty('--grad-mid', `rgba(${r},${g},${b},0.6)`);
+      };
+    });
+  </script>
 </body>
 </html>
