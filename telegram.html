@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>YouShade MiniApp</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-p0x4O44JX+j1tX+X5ZK+kVy4Z9x9tnXvvFxUepkUZf7J+nq7d8r4rk+d6T2BblZBr5eN0nO6bwA/kJ6yWv+gdg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
       --tg-blue: #0088cc;
@@ -26,160 +27,71 @@
       transition: background 0.3s, color 0.3s;
     }
 
-    body.light {
-      background: var(--bg-light);
-      color: var(--text-light);
-    }
-    body.dark {
-      background: var(--bg-dark);
-      color: var(--text-dark);
-    }
+    body.light { background: var(--bg-light); color: var(--text-light); }
+    body.dark { background: var(--bg-dark); color: var(--text-dark); }
 
     /* Splash */
     #splash {
-      position: fixed;
-      top: 0; left: 0;
+      position: fixed; top: 0; left: 0;
       width: 100%; height: 100%;
       background: var(--bg-light);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.6s ease;
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.6s ease;
     }
     body.dark #splash { background: var(--bg-dark); }
-    #splash img {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      border: 5px solid var(--tg-blue);
-      animation: pulse 1.5s infinite;
-    }
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.8; }
-      100% { transform: scale(1); opacity: 1; }
-    }
+    #splash img { width: 140px; height: 140px; border-radius: 50%; border: 5px solid var(--tg-blue); animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% {transform: scale(1); opacity: 1;} 50% {transform: scale(1.1); opacity: 0.8;} 100% {transform: scale(1); opacity:1;} }
 
     /* Sections */
     section {
-      padding: 30px 15px; /* smaller padding */
+      padding: 40px 15px;  /* moved content slightly down */
       max-width: 500px;
-      margin: auto;
+      margin: 40px auto;   /* adds vertical spacing */
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
       animation: fadeInUp 1s ease forwards;
     }
     section:nth-of-type(1) { animation-delay: 0.3s; }
     section:nth-of-type(2) { animation-delay: 0.6s; }
     section:nth-of-type(3) { animation-delay: 0.9s; }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .profile-pic { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--tg-blue); margin: 20px auto; animation: bounceIn 1s ease; }
+    @keyframes bounceIn { 0% {transform: scale(0.5); opacity:0;} 60% {transform: scale(1.2); opacity:1;} 100% {transform: scale(1);} }
 
-    .profile-pic {
-      width: 100px; /* slightly smaller */
-      height: 100px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--tg-blue);
-      margin: 15px auto;
-      display: block;
-      animation: bounceIn 1s ease;
-    }
-    @keyframes bounceIn {
-      0% { transform: scale(0.5); opacity: 0; }
-      60% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(1); }
-    }
+    h1, h2 { color: var(--tg-blue); margin-bottom: 8px; }
+    p { color: gray; font-size: 14px; }
 
-    h1, h2 {
-      color: var(--tg-blue);
-      margin-bottom: 8px;
-    }
-
-    p {
-      color: gray;
-      font-size: 14px;
-    }
-
-    /* Features Card */
     .features {
-      margin-top: 15px;
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      transition: transform 0.3s;
+      margin-top: 15px; padding: 15px; border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15); transition: transform 0.3s;
     }
     body.light .features { background: var(--card-light); }
     body.dark .features { background: var(--card-dark); }
     .features:hover { transform: scale(1.02); }
-
-    .features ul {
-      list-style: none;
-      padding: 0;
-    }
-    .features li {
-      margin: 8px 0;
-      padding: 8px;
-      border-radius: 8px;
-      transition: background 0.3s, transform 0.3s;
-      font-size: 15px;
-    }
+    .features ul { list-style: none; padding: 0; }
+    .features li { margin: 8px 0; padding: 8px; border-radius: 8px; transition: background 0.3s, transform 0.3s; font-size: 15px; }
     body.light .features li { background: var(--card-item-light); }
     body.dark .features li { background: var(--card-item-dark); }
-    .features li:hover {
-      transform: translateX(5px);
-    }
+    .features li:hover { transform: translateX(5px); }
 
-    /* Button */
     button {
-      margin: 20px auto;
-      padding: 12px 20px;
-      font-size: 15px;
-      border: none;
-      border-radius: 10px;
-      background: var(--tg-blue);
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.3s;
-      display: block;
-      animation: popIn 0.8s ease forwards 1.2s;
-      opacity: 0;
+      margin: 20px auto; padding: 12px 20px; font-size: 15px;
+      border: none; border-radius: 10px; background: var(--tg-blue);
+      color: white; cursor: pointer; transition: transform 0.2s, background 0.3s;
+      display: block; animation: popIn 0.8s ease forwards 1.2s; opacity: 0;
     }
     button:hover { background: var(--tg-blue-dark); transform: scale(1.05); }
-    @keyframes popIn {
-      to { opacity: 1; }
-    }
+    @keyframes popIn { to { opacity: 1; } }
 
-    /* Socials */
+    /* Social icons */
+    .socials { margin-top: 20px; }
     .socials a {
-      margin: 0 12px;
-      color: var(--tg-blue);
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 16px;
-      position: relative;
-      display: inline-block;
+      margin: 0 12px; font-size: 28px; color: var(--tg-blue);
       transition: color 0.3s, transform 0.3s;
+      display: inline-block;
     }
-    .socials a:hover {
-      color: var(--tg-blue-dark);
-      transform: translateY(-3px);
-    }
-    .socials a::after {
-      content: "";
-      position: absolute;
-      bottom: -3px; left: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--tg-blue);
-      transform: scaleX(0);
-      transition: transform 0.3s;
-      transform-origin: left;
-    }
-    .socials a:hover::after { transform: scaleX(1); }
+    .socials a:hover { color: var(--tg-blue-dark); transform: translateY(-3px); }
   </style>
 </head>
 <body>
@@ -204,36 +116,30 @@
         <li>📣 News About the YouShadeBot</li>
       </ul>
     </div>
-    <button onclick="Telegram.WebApp.sendData('User pressed the button!')">
-      Send Message to Bot
-    </button>
+    <button onclick="Telegram.WebApp.sendData('User pressed the button!')">Send Message to Bot</button>
   </section>
 
   <!-- Socials -->
   <section>
     <h2>🌐 Connect with me</h2>
     <div class="socials">
-      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
-      <a href="https://t.me/yourTelegramUsername" target="_blank">Telegram</a>
-      <a href="https://wollydev24.github.io/" target="_blank">Website</a>
+      <a href="https://github.com/wollydev24" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://t.me/yourTelegramUsername" target="_blank"><i class="fab fa-telegram"></i></a>
+      <a href="https://wollydev24.github.io/" target="_blank"><i class="fas fa-globe"></i></a>
     </div>
   </section>
 
   <script>
-    // Theme
     function applyTheme() {
       if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add("dark");
-        document.body.classList.remove("light");
+        document.body.classList.add("dark"); document.body.classList.remove("light");
       } else {
-        document.body.classList.add("light");
-        document.body.classList.remove("dark");
+        document.body.classList.add("light"); document.body.classList.remove("dark");
       }
     }
     applyTheme();
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-    // Splash
     window.onload = () => {
       setTimeout(() => {
         document.getElementById("splash").style.opacity = "0";
