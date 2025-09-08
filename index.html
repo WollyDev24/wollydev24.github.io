@@ -9,7 +9,7 @@
 body {
   margin:0;
   font-family:'Inter',sans-serif;
-  background-color:#f2f2f2;
+  background:#f2f2f2;
   overflow-x:hidden;
 }
 .header-gradient {
@@ -33,52 +33,42 @@ body {
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin-top:0px;
+  margin-top:-50px;
 }
 .header-content img {
   width:90px;
   height:90px;
   border-radius:50%;
-  border:3px solid white;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  margin-top:-45px;
+  border:3px solid #fff;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
 }
 .header-content h1 {
   margin:8px 0 0;
   font-size:1.5rem;
   font-weight:700;
+  color:#111;
 }
 .header-content p {
   margin:4px 0 0;
   font-size:0.95rem;
-  color:#555;
+  color:#333;
 }
 .section {
   padding:12px 16px;
   margin-bottom:16px;
 }
 .card {
-  background:white;
-  border-radius:16px;
+  display:block;
   padding:14px 16px;
   margin-bottom:12px;
+  border-radius:16px;
+  background:white;
   box-shadow:0 3px 6px rgba(0,0,0,0.08);
   transition:transform 0.25s, box-shadow 0.25s;
 }
 .card:hover {
   transform:translateY(-2px);
   box-shadow:0 6px 14px rgba(0,0,0,0.12);
-}
-.page {
-  display:none;
-  opacity:0;
-  transform:translateY(20px);
-  transition:opacity 0.3s, transform 0.3s;
-}
-.page.active {
-  display:block;
-  opacity:1;
-  transform:translateY(0);
 }
 .bottom-bar {
   position:fixed;
@@ -87,13 +77,13 @@ body {
   transform:translateX(-50%);
   background:white;
   border-radius:9999px;
-  box-shadow:0 4px 16px rgba(0,0,0,0.15);
   display:flex;
   justify-content:space-around;
   align-items:center;
   width:220px;
   height:60px;
   z-index:50;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
 }
 .bottom-bar button {
   flex:1;
@@ -107,6 +97,17 @@ body {
 .bottom-bar button.active {
   opacity:1;
   transform:scale(1.2);
+}
+.page {
+  display:none;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.3s, transform 0.3s;
+}
+.page.active {
+  display:block;
+  opacity:1;
+  transform:translateY(0);
 }
 </style>
 </head>
@@ -124,22 +125,22 @@ body {
 <div class="bottom-bar">
   <button id="homeBtn" class="active">🏠</button>
   <button id="giveawayBtn">🎁</button>
-  <button id="devicesBtn">📱</button>
   <button id="projectsBtn">📂</button>
+  <button id="devicesBtn">📱</button>
 </div>
 
 <script>
 const content=document.getElementById('content');
-const proxy="https://api.allorigins.win/raw?url=";
 const baseURL="https://wollydev24.github.io/";
 
+// --- FETCH JSON ---
 async function fetchJSON(file){
-  const res=await fetch(proxy + encodeURIComponent(baseURL + file));
-  if(!res.ok) throw new Error("Failed to fetch " + file);
+  const res=await fetch(baseURL+file+"?nocache="+Date.now());
+  if(!res.ok) throw new Error("Failed to fetch "+file);
   return await res.json();
 }
 
-// Pages
+// --- PAGES ---
 const pages={
 home:async()=>{
   try{
@@ -150,16 +151,13 @@ home:async()=>{
     for(const e of events){
       if(e.type==="PushEvent"){
         e.payload.commits.forEach(c=>{
-          commits.push({
-            message:c.message,
-            repo:e.repo.name
-          });
+          commits.push({message:c.message,repo:e.repo.name});
         });
       }
       if(commits.length>=3) break;
     }
     return `<div class="section"><h2>📝 Latest 3 Commits</h2>`+
-      commits.slice(0,3).map(c=>`<div class="card"><p>${c.message}</p><p style="font-size:0.8rem;color:#777;">${c.repo}</p></div>`).join('')+
+      commits.slice(0,3).map(c=>`<div class="card"><p>${c.message}</p><p style="font-size:0.8rem;color:#555;">${c.repo}</p></div>`).join('')+
       `</div>`;
   }catch(e){
     return `<p class="card" style="color:red;">⚠️ Failed to load commits</p>`;
@@ -168,23 +166,33 @@ home:async()=>{
 giveaway:async()=>{
   try{
     const data=await fetchJSON("giveaway.json");
-    return `<div class="section"><h2>🎁 Giveaways</h2>`+data.map(i=>`<div class="card"><b>${i.title}</b><p>${i.description}</p></div>`).join('')+'</div>';
+    return `<div class="section"><h2>🎁 Giveaways</h2>`+
+      (data.items && data.items.length>0
+        ? data.items.map(i=>`<div class="card"><b>${i.title}</b><br>${i.description}</div>`).join('')
+        : `<div class="card">❌ No giveaways are running right now.</div>`)+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load giveaways</p>`;}
-},
-devices:async()=>{
-  try{
-    const data=await fetchJSON("devices.json");
-    return `<div class="section"><h2>📱 Devices</h2>`+data.map(d=>`<div class="card"><b>${d.name}</b><p>${d.specs||''}</p></div>`).join('')+'</div>';
-  }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load devices</p>`;}
 },
 projects:async()=>{
   try{
     const data=await fetchJSON("projects.json");
-    return `<div class="section"><h2>📂 Projects</h2>`+data.map(p=>`<div class="card"><b>${p.name}</b><p>${p.description}</p></div>`).join('')+'</div>';
+    return `<div class="section"><h2>📂 Projects</h2>`+
+      (data.projects && data.projects.length>0
+        ? data.projects.map(p=>`<div class="card"><b>${p.name}</b><br>${p.description}</div>`).join('')
+        : `<div class="card">❌ No projects found.</div>`)+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load projects</p>`;}
+},
+devices:async()=>{
+  try{
+    const data=await fetchJSON("devices.json");
+    return `<div class="section"><h2>📱 Devices</h2>`+
+      (data.devices && data.devices.length>0
+        ? data.devices.map(d=>`<div class="card"><b>${d.name}</b><br>${d.specs||''}</div>`).join('')
+        : `<div class="card">❌ No devices listed.</div>`)+'</div>';
+  }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load devices</p>`;}
 }
 };
 
+// --- LOAD PAGE ---
 async function loadPage(page){
   content.innerHTML='<p style="text-align:center;color:#777;">Loading...</p>';
   content.innerHTML=await pages[page]();
@@ -194,10 +202,10 @@ async function loadPage(page){
 
 document.getElementById('homeBtn').addEventListener('click',()=>loadPage('home'));
 document.getElementById('giveawayBtn').addEventListener('click',()=>loadPage('giveaway'));
-document.getElementById('devicesBtn').addEventListener('click',()=>loadPage('devices'));
 document.getElementById('projectsBtn').addEventListener('click',()=>loadPage('projects'));
+document.getElementById('devicesBtn').addEventListener('click',()=>loadPage('devices'));
 
-// Gradient from Telegram icon
+// --- GRADIENT FROM PFP ---
 window.addEventListener("load",()=>{
   const img=new Image();
   img.crossOrigin="Anonymous";
