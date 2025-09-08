@@ -6,113 +6,110 @@
 <title>WollyDev Mini App</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
 <style>
-  body {
-    margin:0;
-    font-family: 'Inter', sans-serif;
-    background-color:#f2f2f2;
-    overflow-x:hidden;
-    transition: background 0.3s;
-  }
-  /* Gradient header */
-  .header-gradient {
-    position: relative;
-    width:100%;
-    height:180px;
-    overflow:hidden;
-  }
-  .header-gradient::before {
-    content:'';
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    background:linear-gradient(to bottom, var(--grad-start,#0088cc), var(--grad-mid,#005580));
-    transition: background 0.3s;
-  }
-  .header-content {
-    position: relative;
-    z-index:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-top:130px;
-  }
-  .header-content img {
-    width:90px;
-    height:90px;
-    border-radius:50%;
-    border:3px solid white;
-    box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  }
-  .header-content h1 {
-    margin:8px 0 0;
-    font-size:1.5rem;
-    font-weight:700;
-  }
-  .header-content p {
-    margin:4px 0 0;
-    font-size:0.95rem;
-    color:#555;
-  }
-  /* Card sections */
-  .section {
-    padding:12px 16px;
-    margin-bottom:16px;
-  }
-  .card {
-    background:white;
-    border-radius:16px;
-    padding:14px 16px;
-    margin-bottom:12px;
-    box-shadow:0 3px 6px rgba(0,0,0,0.08);
-    transition:transform 0.25s, box-shadow 0.25s;
-  }
-  .card:hover {
-    transform:translateY(-2px);
-    box-shadow:0 6px 14px rgba(0,0,0,0.12);
-  }
-  /* Page transitions */
-  .page {
-    display:none;
-    opacity:0;
-    transform:translateY(20px);
-    transition:opacity 0.3s, transform 0.3s;
-  }
-  .page.active {
-    display:block;
-    opacity:1;
-    transform:translateY(0);
-  }
-  /* Bottom nav pill */
-  .bottom-bar {
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    background:white;
-    border-radius:9999px;
-    box-shadow:0 4px 16px rgba(0,0,0,0.15);
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    width:220px;
-    height:60px;
-    z-index:50;
-  }
-  .bottom-bar button {
-    flex:1;
-    font-size:1.5rem;
-    background:none;
-    border:none;
-    cursor:pointer;
-    opacity:0.6;
-    transition:transform 0.2s, opacity 0.2s;
-  }
-  .bottom-bar button.active {
-    opacity:1;
-    transform:scale(1.2);
-  }
+body {
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background-color:#f2f2f2;
+  overflow-x:hidden;
+}
+.header-gradient {
+  position:relative;
+  width:100%;
+  height:180px;
+  overflow:hidden;
+}
+.header-gradient::before {
+  content:'';
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;left:0;
+  background:linear-gradient(to bottom, var(--grad-start,#0088cc), var(--grad-mid,#005580));
+  transition: background 0.3s;
+}
+.header-content {
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-top:30px;
+}
+.header-content img {
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  border:3px solid white;
+  box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+.header-content h1 {
+  margin:8px 0 0;
+  font-size:1.5rem;
+  font-weight:700;
+}
+.header-content p {
+  margin:4px 0 0;
+  font-size:0.95rem;
+  color:#555;
+}
+/* Card Sections */
+.section {
+  padding:12px 16px;
+  margin-bottom:16px;
+}
+.card {
+  background:white;
+  border-radius:16px;
+  padding:14px 16px;
+  margin-bottom:12px;
+  box-shadow:0 3px 6px rgba(0,0,0,0.08);
+  transition:transform 0.25s, box-shadow 0.25s;
+}
+.card:hover {
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px rgba(0,0,0,0.12);
+}
+/* Page transitions */
+.page {
+  display:none;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.3s, transform 0.3s;
+}
+.page.active {
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+/* Bottom nav pill */
+.bottom-bar {
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:white;
+  border-radius:9999px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  width:220px;
+  height:60px;
+  z-index:50;
+}
+.bottom-bar button {
+  flex:1;
+  font-size:1.5rem;
+  background:none;
+  border:none;
+  cursor:pointer;
+  opacity:0.6;
+  transition:transform 0.2s, opacity 0.2s;
+}
+.bottom-bar button.active {
+  opacity:1;
+  transform:scale(1.2);
+}
 </style>
 </head>
 <body>
@@ -125,7 +122,7 @@
   <p>GitHub Mini App Dashboard</p>
 </div>
 
-<!-- Pages -->
+<!-- Content -->
 <div id="content" style="padding:16px; padding-bottom:100px;"></div>
 
 <!-- Bottom pill nav -->
@@ -148,13 +145,8 @@ home:async()=>{
     const commits=await res.json();
     return `
       <div class="section">
-      <h2>📝 Latest 3 Commits</h2>
-      ${commits.slice(0,3).map(c=>`
-        <div class="card">
-          <p>${c.commit.message}</p>
-          <p style="font-size:0.8rem; color:#777;">by ${c.commit.author.name}</p>
-        </div>
-      `).join("")}
+        <h2>📝 Latest 3 Commits</h2>
+        ${commits.slice(0,3).map(c=>`<div class="card"><p>${c.commit.message}</p><p style="font-size:0.8rem;color:#777;">by ${c.commit.author.name}</p></div>`).join('')}
       </div>
     `;
   }catch(e){
@@ -163,7 +155,7 @@ home:async()=>{
 },
 giveaway:async()=>{
   try{
-    const res=await fetch("giveaway.json");
+    const res=await fetch("https://wollydev24.github.io/giveaway.json");
     if(!res.ok)throw new Error("Failed to load giveaways");
     const data=await res.json();
     return `<div class="section"><h2>🎁 Giveaways</h2>`+data.map(i=>`<div class="card"><b>${i.title}</b><p>${i.description}</p></div>`).join('')+'</div>';
@@ -171,7 +163,7 @@ giveaway:async()=>{
 },
 devices:async()=>{
   try{
-    const res=await fetch("devices.json");
+    const res=await fetch("https://wollydev24.github.io/devices.json");
     if(!res.ok)throw new Error("Failed to load devices");
     const data=await res.json();
     return `<div class="section"><h2>📱 Devices</h2>`+data.map(d=>`<div class="card"><b>${d.name}</b><p>${d.specs || ''}</p></div>`).join('')+'</div>';
@@ -179,7 +171,7 @@ devices:async()=>{
 },
 projects:async()=>{
   try{
-    const res=await fetch("projects.json");
+    const res=await fetch("https://wollydev24.github.io/projects.json");
     if(!res.ok)throw new Error("Failed to load projects");
     const data=await res.json();
     return `<div class="section"><h2>📂 Projects</h2>`+data.map(p=>`<div class="card"><b>${p.name}</b><p>${p.description}</p></div>`).join('')+'</div>';
@@ -189,7 +181,7 @@ projects:async()=>{
 
 // Load page
 async function loadPage(page){
-  content.innerHTML='<p style="text-align:center; color:#777;">Loading...</p>';
+  content.innerHTML='<p style="text-align:center;color:#777;">Loading...</p>';
   content.innerHTML=await pages[page]();
   document.querySelectorAll('.bottom-bar button').forEach(b=>b.classList.remove('active'));
   document.getElementById(page+'Btn').classList.add('active');
@@ -210,7 +202,7 @@ window.addEventListener("load",()=>{
     const colorThief=new ColorThief();
     const [r,g,b]=colorThief.getColor(img);
     document.documentElement.style.setProperty('--grad-start',`rgba(${r},${g},${b},1)`);
-    document.documentElement.style.setProperty('--grad-mid',`rgba(${r},${g},${b},0.6)`);
+    document.documentElement.style.setProperty('--grad-mid',`rgba(${r},${g},${b},0)`);
   };
 });
 
