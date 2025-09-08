@@ -33,7 +33,7 @@ body {
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin-top:0px; /* Top of the page */
+  margin-top:0px;
 }
 .header-content img {
   width:90px;
@@ -41,7 +41,7 @@ body {
   border-radius:50%;
   border:3px solid white;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
-  margin-top:-45px; /* overlay gradient nicely */
+  margin-top:-45px;
 }
 .header-content h1 {
   margin:8px 0 0;
@@ -53,7 +53,6 @@ body {
   font-size:0.95rem;
   color:#555;
 }
-/* Card Sections */
 .section {
   padding:12px 16px;
   margin-bottom:16px;
@@ -70,7 +69,6 @@ body {
   transform:translateY(-2px);
   box-shadow:0 6px 14px rgba(0,0,0,0.12);
 }
-/* Page transitions */
 .page {
   display:none;
   opacity:0;
@@ -82,7 +80,6 @@ body {
   opacity:1;
   transform:translateY(0);
 }
-/* Bottom nav pill */
 .bottom-bar {
   position:fixed;
   bottom:20px;
@@ -115,7 +112,6 @@ body {
 </head>
 <body>
 
-<!-- Header -->
 <div class="header-gradient"></div>
 <div class="header-content">
   <img id="pfp" src="https://wollydev24.github.io/telegram_icon.jpg" alt="Profile">
@@ -123,10 +119,8 @@ body {
   <p>GitHub Mini App Dashboard</p>
 </div>
 
-<!-- Content -->
 <div id="content" style="padding:16px; padding-bottom:100px;"></div>
 
-<!-- Bottom pill nav -->
 <div class="bottom-bar">
   <button id="homeBtn" class="active">🏠</button>
   <button id="giveawayBtn">🎁</button>
@@ -136,6 +130,14 @@ body {
 
 <script>
 const content=document.getElementById('content');
+const proxy="https://api.allorigins.win/raw?url=";
+const baseURL="https://wollydev24.github.io/";
+
+async function fetchJSON(file){
+  const res=await fetch(proxy + encodeURIComponent(baseURL + file));
+  if(!res.ok) throw new Error("Failed to fetch " + file);
+  return await res.json();
+}
 
 // Pages
 const pages={
@@ -165,31 +167,24 @@ home:async()=>{
 },
 giveaway:async()=>{
   try{
-    const res=await fetch("https://wollydev24.github.io/giveaway.json");
-    if(!res.ok)throw new Error("Failed to fetch giveaways");
-    const data=await res.json();
+    const data=await fetchJSON("giveaway.json");
     return `<div class="section"><h2>🎁 Giveaways</h2>`+data.map(i=>`<div class="card"><b>${i.title}</b><p>${i.description}</p></div>`).join('')+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load giveaways</p>`;}
 },
 devices:async()=>{
   try{
-    const res=await fetch("https://wollydev24.github.io/devices.json");
-    if(!res.ok)throw new Error("Failed to fetch devices");
-    const data=await res.json();
+    const data=await fetchJSON("devices.json");
     return `<div class="section"><h2>📱 Devices</h2>`+data.map(d=>`<div class="card"><b>${d.name}</b><p>${d.specs||''}</p></div>`).join('')+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load devices</p>`;}
 },
 projects:async()=>{
   try{
-    const res=await fetch("https://wollydev24.github.io/projects.json");
-    if(!res.ok)throw new Error("Failed to fetch projects");
-    const data=await res.json();
+    const data=await fetchJSON("projects.json");
     return `<div class="section"><h2>📂 Projects</h2>`+data.map(p=>`<div class="card"><b>${p.name}</b><p>${p.description}</p></div>`).join('')+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load projects</p>`;}
 }
 };
 
-// Load page
 async function loadPage(page){
   content.innerHTML='<p style="text-align:center;color:#777;">Loading...</p>';
   content.innerHTML=await pages[page]();
@@ -197,7 +192,6 @@ async function loadPage(page){
   document.getElementById(page+'Btn').classList.add('active');
 }
 
-// Navigation
 document.getElementById('homeBtn').addEventListener('click',()=>loadPage('home'));
 document.getElementById('giveawayBtn').addEventListener('click',()=>loadPage('giveaway'));
 document.getElementById('devicesBtn').addEventListener('click',()=>loadPage('devices'));
@@ -216,7 +210,6 @@ window.addEventListener("load",()=>{
   };
 });
 
-// Default page
 loadPage('home');
 </script>
 
