@@ -33,7 +33,7 @@ body {
   display:flex;
   flex-direction:column;
   align-items:center;
-  margin-top:30px;
+  margin-top:0px; /* Top of the page */
 }
 .header-content img {
   width:90px;
@@ -41,6 +41,7 @@ body {
   border-radius:50%;
   border:3px solid white;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
+  margin-top:-45px; /* overlay gradient nicely */
 }
 .header-content h1 {
   margin:8px 0 0;
@@ -140,15 +141,24 @@ const content=document.getElementById('content');
 const pages={
 home:async()=>{
   try{
-    const res=await fetch("https://api.github.com/repos/wollydev24/YouShadeBot/commits");
-    if(!res.ok)throw new Error("GitHub API error");
-    const commits=await res.json();
-    return `
-      <div class="section">
-        <h2>📝 Latest 3 Commits</h2>
-        ${commits.slice(0,3).map(c=>`<div class="card"><p>${c.commit.message}</p><p style="font-size:0.8rem;color:#777;">by ${c.commit.author.name}</p></div>`).join('')}
-      </div>
-    `;
+    const res=await fetch("https://api.github.com/users/wollydev24/events/public");
+    if(!res.ok) throw new Error("GitHub API error");
+    const events=await res.json();
+    const commits=[];
+    for(const e of events){
+      if(e.type==="PushEvent"){
+        e.payload.commits.forEach(c=>{
+          commits.push({
+            message:c.message,
+            repo:e.repo.name
+          });
+        });
+      }
+      if(commits.length>=3) break;
+    }
+    return `<div class="section"><h2>📝 Latest 3 Commits</h2>`+
+      commits.slice(0,3).map(c=>`<div class="card"><p>${c.message}</p><p style="font-size:0.8rem;color:#777;">${c.repo}</p></div>`).join('')+
+      `</div>`;
   }catch(e){
     return `<p class="card" style="color:red;">⚠️ Failed to load commits</p>`;
   }
@@ -156,7 +166,7 @@ home:async()=>{
 giveaway:async()=>{
   try{
     const res=await fetch("https://wollydev24.github.io/giveaway.json");
-    if(!res.ok)throw new Error("Failed to load giveaways");
+    if(!res.ok)throw new Error("Failed to fetch giveaways");
     const data=await res.json();
     return `<div class="section"><h2>🎁 Giveaways</h2>`+data.map(i=>`<div class="card"><b>${i.title}</b><p>${i.description}</p></div>`).join('')+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load giveaways</p>`;}
@@ -164,15 +174,15 @@ giveaway:async()=>{
 devices:async()=>{
   try{
     const res=await fetch("https://wollydev24.github.io/devices.json");
-    if(!res.ok)throw new Error("Failed to load devices");
+    if(!res.ok)throw new Error("Failed to fetch devices");
     const data=await res.json();
-    return `<div class="section"><h2>📱 Devices</h2>`+data.map(d=>`<div class="card"><b>${d.name}</b><p>${d.specs || ''}</p></div>`).join('')+'</div>';
+    return `<div class="section"><h2>📱 Devices</h2>`+data.map(d=>`<div class="card"><b>${d.name}</b><p>${d.specs||''}</p></div>`).join('')+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load devices</p>`;}
 },
 projects:async()=>{
   try{
     const res=await fetch("https://wollydev24.github.io/projects.json");
-    if(!res.ok)throw new Error("Failed to load projects");
+    if(!res.ok)throw new Error("Failed to fetch projects");
     const data=await res.json();
     return `<div class="section"><h2>📂 Projects</h2>`+data.map(p=>`<div class="card"><b>${p.name}</b><p>${p.description}</p></div>`).join('')+'</div>';
   }catch(e){return `<p class="card" style="color:red;">⚠️ Failed to load projects</p>`;}
