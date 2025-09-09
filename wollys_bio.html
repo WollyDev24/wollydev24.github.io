@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WollyDev - Mini App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: "Fira Code", monospace;
+      background-color: var(--tg-theme-bg-color, #0d0d0d);
+      color: var(--tg-theme-text-color, #00ff99);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .terminal {
+      max-width: 850px;
+      width: 100%;
+      border: 2px solid var(--tg-theme-hint-color, #00ff99);
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .prompt::before {
+      content: "➜ ";
+      vertical-align: middle;
+      color: var(--tg-theme-hint-color, #00ff99);
+    }
+
+    .typewriter {
+      overflow: hidden;
+      border-right: .15em solid var(--tg-theme-link-color, #00ff99);
+      white-space: nowrap;
+      width: 0;
+      display: inline-block;
+      vertical-align: middle;
+      animation: typing 3s steps(40, end) forwards;
+    }
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 34ch }
+    }
+
+    .link {
+      display: inline-block;
+      text-decoration: underline;
+      color: var(--tg-theme-link-color, #00ff99);
+      transition: all 0.3s ease;
+    }
+    .link:hover {
+      color: #ffffff;
+      transform: scale(1.05);
+      text-shadow: 0 0 8px var(--tg-theme-link-color, #00ff99);
+    }
+
+    .card {
+      display: block;
+      padding: 0.6rem 0.8rem;
+      border-left: 3px solid var(--tg-theme-link-color, #00ff99);
+      margin-top: 0.8rem;
+      background: rgba(0, 255, 153, 0.05);
+      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .card:hover {
+      transform: scale(1.03);
+      background: rgba(0, 255, 153, 0.15);
+      box-shadow: 0 0 6px var(--tg-theme-link-color, #00ff99);
+    }
+
+    .error {
+      color: #ff5555;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="terminal">
+    <p class="prompt">Hi, I'm <span class="font-bold">WollyDev</span> 🚀</p>
+    <p class="prompt"><span class="typewriter">Welcome to my GitHub Profile 💻✨</span></p>
+
+    <br>
+    <p class="prompt">👉 <a href="https://github.com/wollydev24" target="_blank" class="link">Visit My GitHub</a></p>
+    <p class="prompt">💬 <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="link">Join My Discord</a></p>
+    <p class="prompt">📨 <a href="https://t.me/YouShadeKWGT" target="_blank" class="link">Follow on Telegram</a></p>
+
+    <br>
+    <p class="prompt"># 🎁 Giveaways</p>
+    <div id="giveaway-section">Loading giveaways...</div>
+
+    <br>
+    <p class="prompt"># 📂 My Projects</p>
+    <div id="projects-section">Loading projects...</div>
+
+    <br>
+    <p class="prompt"># 📱 My Devices</p>
+    <div id="devices-section">Loading devices...</div>
+
+    <br>
+    <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
+  </div>
+
+  <script>
+    // Init Telegram WebApp
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand(); // Fullscreen nutzen
+
+    // --- GIVEAWAYS ---
+    fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        const section = document.getElementById("giveaway-section");
+        section.innerHTML = "";
+        if (data.active && data.items?.length) {
+          data.items.forEach(g => {
+            section.innerHTML += `<div class="card">🎉 ${g.title}<br>🕒 Ends: ${g.ends}</div>`;
+          });
+        } else {
+          section.innerHTML = `<div class="card">❌ No giveaways running</div>`;
+        }
+      })
+      .catch(err => {
+        document.getElementById("giveaway-section").innerHTML =
+          `<div class="card error">⚠️ Could not load giveaways<br>${err.message}</div>`;
+      });
+
+    // --- PROJECTS ---
+    fetch("https://wollydev24.github.io/projects.json?nocache=" + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        const section = document.getElementById("projects-section");
+        section.innerHTML = "";
+        if (data.projects?.length) {
+          data.projects.forEach(p => {
+            section.innerHTML += `<a href="${p.url}" target="_blank" class="card">${p.emoji} <b>${p.name}</b> – ${p.description}</a>`;
+          });
+        } else {
+          section.innerHTML = `<div class="card">❌ No projects found</div>`;
+        }
+      })
+      .catch(err => {
+        document.getElementById("projects-section").innerHTML =
+          `<div class="card error">⚠️ Could not load projects<br>${err.message}</div>`;
+      });
+
+    // --- DEVICES ---
+    fetch("https://wollydev24.github.io/devices.json?nocache=" + Date.now())
+      .then(r => r.json())
+      .then(data => {
+        const section = document.getElementById("devices-section");
+        section.innerHTML = "";
+        if (data.devices?.length) {
+          data.devices.forEach(d => {
+            section.innerHTML += `<a href="${d.url}" target="_blank" class="card">${d.emoji || "📱"} <b>${d.name}</b> – ${d.description}</a>`;
+          });
+        } else {
+          section.innerHTML = `<div class="card">❌ No devices listed</div>`;
+        }
+      })
+      .catch(err => {
+        document.getElementById("devices-section").innerHTML =
+          `<div class="card error">⚠️ Could not load devices<br>${err.message}</div>`;
+      });
+  </script>
+
+</body>
+</html>
