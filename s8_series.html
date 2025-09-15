@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy S8 Series | Modern Showcase</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .device-card {
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .device-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .spec-item {
+            transition: all 0.2s ease;
+        }
+        .spec-item:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .rotate-arrow {
+            transition: transform 0.3s ease;
+        }
+        .expanded .rotate-arrow {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-blue-900 text-white min-h-screen">
+    <div class="container mx-auto px-4 py-12">
+        <!-- Header -->
+        <header class="text-center mb-16" data-aos="fade-down">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+                Galaxy S8 Series
+            </h1>
+            <p class="text-xl text-blue-200 max-w-2xl mx-auto">
+                The pinnacle of Samsung's 2017 smartphone lineup with Infinity Display and powerful performance
+            </p>
+        </header>
+
+        <!-- Device Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <!-- Galaxy S8 -->
+            <div class="device-card bg-gray-800 rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-2xl font-bold">Galaxy S8</h2>
+                        <span class="bg-blue-500 text-xs px-2 py-1 rounded-full">2017</span>
+                    </div>
+                    <img src="https://wollydev24.github.io/s8.png" alt="Galaxy S8" class="w-full h-auto mb-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-blue-300 font-medium">Starting at $725</span>
+                        <button class="expand-btn flex items-center text-blue-400 hover:text-blue-300">
+                            <span class="mr-1">Specs</span>
+                            <i data-feather="chevron-down" class="rotate-arrow w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="expandable-content">
+                        <div class="space-y-3 pt-2 border-t border-gray-700">
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Display:</span> 5.8" QHD+ Super AMOLED (2960×1440)
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Processor:</span> Exynos 8895 / Snapdragon 835
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">RAM:</span> 4GB
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Storage:</span> 64GB (expandable)
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Camera:</span> 12MP rear, 8MP front
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Battery:</span> 3000mAh
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">OS:</span> Android 7.0 (Upgradable to Android 9.0)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galaxy S8+ -->
+            <div class="device-card bg-gray-800 rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="200">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-2xl font-bold">Galaxy S8+</h2>
+                        <span class="bg-blue-500 text-xs px-2 py-1 rounded-full">2017</span>
+                    </div>
+                    <img src="https://wollydev24.github.io/s8plus.png" alt="Galaxy S8+" class="w-full h-auto mb-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-blue-300 font-medium">Starting at $850</span>
+                        <button class="expand-btn flex items-center text-blue-400 hover:text-blue-300">
+                            <span class="mr-1">Specs</span>
+                            <i data-feather="chevron-down" class="rotate-arrow w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="expandable-content">
+                        <div class="space-y-3 pt-2 border-t border-gray-700">
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Display:</span> 6.2" QHD+ Super AMOLED (2960×1440)
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Processor:</span> Exynos 8895 / Snapdragon 835
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">RAM:</span> 4GB/6GB
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Storage:</span> 64GB/128GB (expandable)
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Camera:</span> 12MP rear, 8MP front
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Battery:</span> 3500mAh
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">OS:</span> Android 7.0 (Upgradable to Android 9.0)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Galaxy Note 8 -->
+            <div class="device-card bg-gray-800 rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay="300">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h2 class="text-2xl font-bold">Galaxy Note 8</h2>
+                        <span class="bg-blue-500 text-xs px-2 py-1 rounded-full">2017</span>
+                    </div>
+                    <img src="https://wollydev24.github.io/note8.png" alt="Galaxy Note 8" class="w-full h-auto mb-4 rounded-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-blue-300 font-medium">Starting at $930</span>
+                        <button class="expand-btn flex items-center text-blue-400 hover:text-blue-300">
+                            <span class="mr-1">Specs</span>
+                            <i data-feather="chevron-down" class="rotate-arrow w-5 h-5"></i>
+                        </button>
+                    </div>
+                    <div class="expandable-content">
+                        <div class="space-y-3 pt-2 border-t border-gray-700">
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Display:</span> 6.3" QHD+ Super AMOLED (2960×1440)
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Processor:</span> Exynos 8895 / Snapdragon 835
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">RAM:</span> 6GB
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Storage:</span> 64GB/128GB/256GB (expandable)
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Camera:</span> Dual 12MP rear, 8MP front
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">Battery:</span> 3300mAh
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">S Pen:</span> 4096 pressure levels
+                            </div>
+                            <div class="spec-item p-2 rounded-lg">
+                                <span class="font-semibold">OS:</span> Android 7.1.1 (Upgradable to Android 9.0)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Features Section -->
+        <section class="mb-16" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-8 text-center">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-500 p-3 rounded-full mr-4">
+                            <i data-feather="maximize" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Infinity Display</h3>
+                    </div>
+                    <p class="text-gray-300">Edge-to-edge screen with minimal bezels and curved sides for an immersive viewing experience.</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-500 p-3 rounded-full mr-4">
+                            <i data-feather="camera" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Advanced Camera</h3>
+                    </div>
+                    <p class="text-gray-300">Dual pixel technology for fast autofocus and Note 8's dual camera setup with 2x optical zoom.</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-pink-500 p-3 rounded-full mr-4">
+                            <i data-feather="lock" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Security</h3>
+                    </div>
+                    <p class="text-gray-300">Multiple biometric options including iris scanner, fingerprint reader, and facial recognition.</p>
+                </div>
+                <div class="bg-gray-800 bg-opacity-50 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-500 p-3 rounded-full mr-4">
+                            <i data-feather="zap" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold">Great Performance</h3>
+                    </div>
+                    <p class="text-gray-300">Powered by Exynos 8895/Snapdragon 835 with 4-6GB RAM for smooth multitasking and gaming.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section class="mb-16 overflow-hidden rounded-xl border border-gray-700" data-aos="fade-up">
+            <h2 class="text-3xl font-bold mb-8 text-center">Detailed Comparison</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="p-4 text-left">Feature</th>
+                            <th class="p-4 text-left">Galaxy S8</th>
+                            <th class="p-4 text-left">Galaxy S8+</th>
+                            <th class="p-4 text-left">Galaxy Note 8</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Release Date</td>
+                            <td class="p-4">April 2017</td>
+                            <td class="p-4">April 2017</td>
+                            <td class="p-4">September 2017</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Dimensions</td>
+                            <td class="p-4">148.9 x 68.1 x 8.0 mm</td>
+                            <td class="p-4">159.5 x 73.4 x 8.1 mm</td>
+                            <td class="p-4">162.5 x 74.8 x 8.6 mm</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Weight</td>
+                            <td class="p-4">155g</td>
+                            <td class="p-4">173g</td>
+                            <td class="p-4">195g</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Processor (Regional Variants)</td>
+                            <td class="p-4">Exynos 8895 (Global)<br>Snapdragon 835 (USA/China)</td>
+                            <td class="p-4">Exynos 8895 (Global)<br>Snapdragon 835 (USA/China)</td>
+                            <td class="p-4">Exynos 8895 (Global)<br>Snapdragon 835 (USA/China)</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Water Resistance</td>
+                            <td class="p-4">IP68</td>
+                            <td class="p-4">IP68</td>
+                            <td class="p-4">IP68</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Wireless Charging</td>
+                            <td class="p-4">Yes</td>
+                            <td class="p-4">Yes</td>
+                            <td class="p-4">Yes</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800">
+                            <td class="p-4 font-medium">Dex Support</td>
+                            <td class="p-4">Yes</td>
+                            <td class="p-4">Yes</td>
+                            <td class="p-4">Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-400 py-8 border-t border-gray-800">
+            <p>© 2023 Galaxy S8 Series Showcase. All specifications are from the original release.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+            feather.replace();
+            
+            // Expandable cards functionality - all cards expand together
+            const expandButtons = document.querySelectorAll('.expand-btn');
+            expandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const allCards = document.querySelectorAll('.device-card');
+                    const allContents = document.querySelectorAll('.expandable-content');
+                    const allArrows = document.querySelectorAll('.rotate-arrow');
+                    
+                    const isExpanded = allContents[0].style.maxHeight;
+                    
+                    allContents.forEach(content => {
+                        content.style.maxHeight = isExpanded ? null : content.scrollHeight + 'px';
+                    });
+                    
+                    allCards.forEach(card => {
+                        isExpanded ? card.classList.remove('expanded') : card.classList.add('expanded');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
