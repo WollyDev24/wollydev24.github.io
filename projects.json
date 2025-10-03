@@ -1,22 +1,23 @@
 {
   "projects": [
     {
+      "emoji": "🦈",
+      "name": "Sharky",
+      "description": "A cool Discord bot For your Discord Server!",
+      "url": "https://wollydev24.github.io/sharky"
+    },
+    {
       "emoji": "🌙",
       "name": "YouShadeKWGT",
-      "description": "A modern KWGT widget pack with Material You styling.(Discontinued)",
+      "description": "A modern KWGT widget pack with Material You styling. (Discontinued)",
       "url": "https://github.com/wollydev24/YouShadeKWGT"
     },
     {
       "emoji": "🖥️",
       "name": "WindowsTools",
-      "description": "A collection of useful tools and scripts for Windows power users.(In Development)",
+      "description": "A collection of useful tools and scripts for Windows power users. (In Development)",
       "url": "https://github.com/wollydev24/WindowsTools"
-    },
-    {
-      "emoji": "🦈",
-      "name": "Sharky",
-      "description": "A cool Discord bot For your Discord Server!",
-      "url": "https://wollydev24.github.io/sharky"
     }
+
   ]
 }
