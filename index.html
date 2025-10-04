@@ -7,167 +7,182 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
-      font-family: "Fira Code", monospace;
-      background-color: #0d0d0d;
-      color: #00ff99;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0d0d0d, #000);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    /* Background Blur Shape */
+    .blur-shape {
+      position: absolute;
+      top: -10%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(56,189,248,0.4), rgba(14,165,233,0.2), transparent);
+      filter: blur(100px);
+      transform: translateX(-50%);
+      border-radius: 50%;
+      animation: spin 40s linear infinite;
+      z-index: 0;
+    }
+
+    /* Fade Up Animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    /* Card Style */
+    .card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
       padding: 1rem;
-    }
-
-    .terminal {
-      max-width: 850px;
-      width: 100%;
-      border: 2px solid #00ff99;
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: left;
-    }
-
-    .prompt::before {
-      content: "➜ ";
-      vertical-align: middle;
-    }
-
-    /* Typing effect */
-    .typewriter {
-      overflow: hidden;
-      border-right: .15em solid #00ff99;
-      white-space: nowrap;
-      width: 0;
-      display: inline-block;
-      vertical-align: middle;
-      animation: typing 3s steps(40, end) forwards;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 34ch }
-    }
-
-    /* Link Style */
-    .link {
-      display: inline-block;
-      text-decoration: underline;
-      color: #00ff99;
       transition: all 0.3s ease;
     }
-    .link:hover {
-      color: #ffffff;
-      transform: scale(1.1) rotateZ(-2deg);
-      text-shadow: 0 0 8px #00ff99, 0 0 16px #00ff99;
-    }
-
-    /* Project/Device/Giveaway cards */
-    .card {
-      display: block;
-      padding: 0.6rem 0.8rem;
-      border-left: 3px solid #00ff99;
-      margin-top: 0.8rem;
-      background: rgba(0, 255, 153, 0.05);
-      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-      width: 100%;
-      box-sizing: border-box;
-    }
     .card:hover {
-      transform: scale(1.03);
-      background: rgba(0, 255, 153, 0.15);
-      box-shadow: 0 0 6px #00ff99, 0 0 12px #00ff99;
+      transform: translateY(-4px) scale(1.05);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 15px rgba(56,189,248,0.6);
     }
 
-    /* Responsive Mobile and Web code*/
-    @media (max-width: 640px) {
-      .terminal { padding: 1rem; }
-      .typewriter { font-size: 0.9rem; }
-      .prompt { font-size: 0.95rem; }
-      .card { font-size: 0.9rem; }
-      .link { font-size: 0.95rem; }
+    /* Button Hover Glow */
+    .btn-glow {
+      transition: all 0.3s ease;
     }
-
-    /* Fehlerstil */
-    .error {
-      color: #ff5555;
-      font-weight: bold;
+    .btn-glow:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 12px rgba(56,189,248,0.7);
     }
   </style>
 </head>
-<body>
+<body class="relative">
 
-  <div class="terminal">
-    <p class="prompt">Hi, I'm <span class="font-bold">WollyDev</span> 🚀</p>
-    <p class="prompt"><span class="typewriter">Welcome to my GitHub Profile 💻✨</span></p>
+  <!-- Background Blur Shape -->
+  <div class="blur-shape"></div>
 
-    <br>
-    <p class="prompt">👉 <a href="https://github.com/wollydev24" target="_blank" class="link">Visit My GitHub</a></p>
-    <p class="prompt">💬 <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="link">Join My Discord</a></p>
-    <p class="prompt">📨 <a href="https://t.me/YouShadeKWGT" target="_blank" class="link">Follow on Telegram</a></p>
+  <!-- Hero -->
+  <header class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      
+      <!-- Text -->
+      <div class="fade-up text-center md:text-left">
+        <h1 class="text-4xl sm:text-5xl font-extrabold">
+          Hi, I'm <span class="text-sky-400">WollyDev</span>
+        </h1>
+        <p class="mt-4 text-lg text-gray-300">
+          Welcome to my GitHub Profile 💻✨ <br>
+          Here you’ll find my projects, devices I use and giveaways 🎁
+        </p>
+        <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-4">
+          <a href="https://github.com/wollydev24" target="_blank"
+             class="px-5 py-2 rounded-xl bg-sky-500/90 hover:bg-sky-600 btn-glow shadow-lg">
+            ⭐ Visit My GitHub
+          </a>
+          <a href="https://discord.gg/bapB8zz7VY" target="_blank"
+             class="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 btn-glow">
+            💬 Join My Discord
+          </a>
+          <a href="https://t.me/YouShadeKWGT" target="_blank"
+             class="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 btn-glow">
+            📨 Telegram
+          </a>
+        </div>
+      </div>
 
-    <br>
-    <p class="prompt"># 🎁 Giveaways</p>
-    <div id="giveaway-section">Loading giveaways...</div>
+      <!-- Banner -->
+      <div class="fade-up relative">
+        <!-- Blur Shape über Banner -->
+        <div class="absolute -top-20 left-1/2 w-72 h-72 bg-gradient-to-tr from-sky-400/40 via-sky-300/20 to-transparent rounded-full filter blur-3xl animate-spin z-0"
+             style="transform: translateX(-50%);"></div>
 
-    <br>
-    <p class="prompt"># 📂 My Projects</p>
-    <div id="projects-section">Loading projects...</div>
+        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 z-10">
+          <img src="https://raw.githubusercontent.com/WollyDev24/wollydev24.github.io/main/backround.jpg" 
+               alt="WollyDev banner" class="w-full h-56 sm:h-72 object-cover">
+          <div class="p-4 bg-gradient-to-t from-black/40 to-transparent">
+            <h3 class="text-lg font-bold">Welcome to my space</h3>
+            <p class="text-sm opacity-70">Sharing projects, Giveaways and more 🚀</p>
+          </div>
+        </div>
+      </div>
 
-    <br>
-    <p class="prompt"># 📱 My Devices</p>
-    <div id="devices-section">Loading devices...</div>
+    </div>
+  </header>
 
-    <br>
-    <p class="prompt text-sm">© 2025 – Made with ❤ by WollyDev</p>
-  </div>
+  <!-- Content -->
+  <main class="relative z-10 max-w-4xl mx-auto px-4 space-y-12 pb-16">
+
+    <!-- About Me -->
+    <section class="fade-up">
+      <h2 class="text-2xl font-bold mb-4">👤 About Me</h2>
+      <div class="card w-full">
+        <p class="text-gray-300 leading-relaxed">
+          Hey! I'm <span class="text-sky-400 font-bold">WollyDev</span> – a big Android fan, Developer and Tech enthusiast.  
+          The project I'm most proud of is <span class="text-sky-400 font-bold">Sharky</span>, a Discord Bot with continuous development and new features.  
+          I also love sharing giveaways and my projects. Feel free to explore and reach out if you have questions or just want to say hi! 😊
+        </p>
+      </div>
+    </section>
+
+    <!-- Giveaways -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">🎁 Giveaways</h2>
+      <div id="giveaway-section" class="grid gap-4">Loading giveaways...</div>
+    </section>
+
+    <!-- Projects -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">📂 My Projects</h2>
+      <div id="projects-section" class="grid gap-4">Loading projects...</div>
+    </section>
+
+    <!-- Devices -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">📱 My Devices</h2>
+      <div id="devices-section" class="grid gap-4">Loading devices...</div>
+    </section>
+
+    <p class="text-center text-sm text-gray-400">© 2025 – Made with ❤ by WollyDev</p>
+  </main>
 
   <script>
     // --- GIVEAWAYS ---
     fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error ${response.status} – ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
+      .then(r => r.json()).then(data => {
         const section = document.getElementById("giveaway-section");
         section.innerHTML = "";
-
-        if (data.active === true && data.items && data.items.length > 0) {
+        if (data.active && data.items?.length > 0) {
           data.items.forEach(g => {
             const div = document.createElement("div");
             div.className = "card";
-            div.innerHTML = `🎉 ${g.title} <br> 🕒 Ends: ${g.ends}`;
+            div.innerHTML = `🎉 ${g.title}<br> 🕒 Ends: ${g.ends}`;
             section.appendChild(div);
           });
         } else {
-          section.innerHTML = `<div class="card">❌ No giveaways are running right now.</div>`;
+          section.innerHTML = `<div class="card">❌ No giveaways right now.</div>`;
         }
-      })
-      .catch(error => {
-        const section = document.getElementById("giveaway-section");
-        section.innerHTML = `
-          <div class="card error">
-            ⚠️ Could not load giveaways.<br><br>
-            <b>Error details:</b><br>
-            ${error.message}<br><br>
-            <small>Tip: Make sure <code>giveaway.json</code> exists in your GitHub Pages repo and is valid JSON</small>
-          </div>`;
+      }).catch(() => {
+        document.getElementById("giveaway-section").innerHTML =
+          `<div class="card">⚠️ Could not load giveaways.</div>`;
       });
-
 
     // --- PROJECTS ---
     fetch("https://wollydev24.github.io/projects.json?nocache=" + Date.now())
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error ${response.status} – ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
+      .then(r => r.json()).then(data => {
         const section = document.getElementById("projects-section");
         section.innerHTML = "";
-
-        if (data.projects && data.projects.length > 0) {
+        if (data.projects?.length > 0) {
           data.projects.forEach(p => {
             const a = document.createElement("a");
             a.className = "card";
@@ -177,34 +192,16 @@
             section.appendChild(a);
           });
         } else {
-          section.innerHTML = "<div class='card'>❌ No projects found.</div>";
+          section.innerHTML = `<div class="card">❌ No projects found.</div>`;
         }
-      })
-      .catch(error => {
-        const section = document.getElementById("projects-section");
-        section.innerHTML = `
-          <div class="card error">
-            ⚠️ Could not load projects.<br><br>
-            <b>Error details:</b><br>
-            ${error.message}<br><br>
-            <small>Tip: Make sure <code>projects.json</code> exists in your GitHub Pages repo and is valid JSON</small>
-          </div>`;
       });
-
 
     // --- DEVICES ---
     fetch("https://wollydev24.github.io/devices.json?nocache=" + Date.now())
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP Error ${response.status} – ${response.statusText}`);
-        }
-        return response.json();
-      })
-      .then(data => {
+      .then(r => r.json()).then(data => {
         const section = document.getElementById("devices-section");
         section.innerHTML = "";
-
-        if (data.devices && data.devices.length > 0) {
+        if (data.devices?.length > 0) {
           data.devices.forEach(d => {
             const a = document.createElement("a");
             a.className = "card";
@@ -214,18 +211,8 @@
             section.appendChild(a);
           });
         } else {
-          section.innerHTML = "<div class='card'>❌ No devices listed.</div>";
+          section.innerHTML = `<div class="card">❌ No devices listed.</div>`;
         }
-      })
-      .catch(error => {
-        const section = document.getElementById("devices-section");
-        section.innerHTML = `
-          <div class="card error">
-            ⚠️ Could not load devices.<br><br>
-            <b>Error details:</b><br>
-            ${error.message}<br><br>
-            <small>Tip: Make sure <code>devices.json</code> exists in your GitHub Pages repo and is valid JSON</small>
-          </div>`;
       });
   </script>
 
