@@ -20,27 +20,35 @@
       animation: gradientShift 15s ease infinite;
       overflow: hidden;
       transition: background 0.5s ease, color 0.5s ease;
+      padding: 1rem;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     body.dark {
-        background: linear-gradient(-45deg, #0d1117, #1b2735, #2a1a3f, #162f42);
-        background-size: 400% 400%;
-        animation: darkGradientShift 15s ease infinite;
-        color: #e6edf3;
+      background: linear-gradient(-45deg, #0d1117, #1b2735, #2a1a3f, #162f42);
+      background-size: 400% 400%;
+      animation: darkGradientShift 15s ease infinite;
+      color: #e6edf3;
     }
 
     @keyframes darkGradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-
     .clock {
-      font-size: 6rem;
+      font-size: 5rem;
       font-weight: bold;
+      text-align: center;
       text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
       transition: font-family 0.3s ease, color 0.5s ease;
+      word-break: break-word;
     }
 
     body.dark .clock {
@@ -48,14 +56,17 @@
     }
 
     .message {
-      margin-top: 10px;
-      font-size: 1.3rem;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      text-align: center;
       opacity: 0.9;
       transition: opacity 0.3s ease;
     }
 
     .search {
-      margin-top: 30px;
+      margin-top: 1.5rem;
+      width: 100%;
+      max-width: 300px;
     }
 
     .search input {
@@ -63,7 +74,7 @@
       border: none;
       border-radius: 1rem;
       padding: 0.8rem 1.2rem;
-      width: 280px;
+      width: 100%;
       color: white;
       font-size: 1rem;
       backdrop-filter: blur(10px);
@@ -84,22 +95,48 @@
       color: #e6edf3;
     }
 
-    .settings {
-      position: absolute;
+    /* Settings toggle button */
+    .settings-toggle {
+      position: fixed;
       top: 20px;
       right: 20px;
-      background: rgba(255, 255, 255, 0.2);
+      font-size: 1.5rem;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      z-index: 1000;
+    }
+
+    .settings-toggle:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Settings panel */
+    .settings-panel {
+      position: fixed;
+      top: 70px;
+      right: 20px;
+      background: rgba(255,255,255,0.2);
       backdrop-filter: blur(10px);
       border-radius: 1rem;
       padding: 1rem;
       color: white;
-      display: flex;
-      align-items: center;
+      display: none;
+      flex-direction: column;
       gap: 10px;
+      width: 200px;
+      z-index: 999;
     }
 
-    body.dark .settings {
-      background: rgba(255, 255, 255, 0.1);
+    body.dark .settings-panel {
+      background: rgba(255,255,255,0.1);
       color: #e6edf3;
     }
 
@@ -110,6 +147,7 @@
       padding: 0.4rem;
       color: white;
       font-weight: bold;
+      width: 100%;
     }
 
     option {
@@ -133,10 +171,19 @@
     .toggle-btn:hover {
       background: rgba(255, 255, 255, 0.3);
     }
+
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .clock { font-size: 3.5rem; }
+      .message { font-size: 1rem; }
+      .settings-panel { width: 160px; padding: 0.8rem; top: 60px; }
+    }
   </style>
 </head>
 <body>
-  <div class="settings">
+  <button id="settingsToggle" class="settings-toggle" title="Settings">⚙️</button>
+  
+  <div class="settings-panel" id="settingsPanel">
     <label for="fontSelect">🛠 Clock Font:</label>
     <select id="fontSelect">
       <option value="'Inter', sans-serif">Inter</option>
@@ -209,6 +256,13 @@
       const isDark = document.body.classList.contains("dark");
       themeToggle.textContent = isDark ? "☀️" : "🌙";
       localStorage.setItem("theme", isDark ? "dark" : "light");
+    });
+
+    // Settings toggle
+    const settingsToggle = document.getElementById("settingsToggle");
+    const settingsPanel = document.getElementById("settingsPanel");
+    settingsToggle.addEventListener("click", () => {
+      settingsPanel.style.display = settingsPanel.style.display === "flex" ? "none" : "flex";
     });
   </script>
 
