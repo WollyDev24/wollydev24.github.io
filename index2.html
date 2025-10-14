@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-site-verification" content="XNtX42Brczz6QDHr48Ez3FzulcLcu2G1bvNh8V3f9Q8" />
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WollyDev - Interactive Card</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WollyDev 3D Card</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -12,39 +11,51 @@
       background: radial-gradient(circle at top, #0d0d0d, #000);
       color: white;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
+      perspective: 1200px;
       overflow: hidden;
-      perspective: 1000px;
     }
 
-    /* --- 3D Card Container --- */
     .card-container {
+      width: 600px;
+      height: 320px;
       position: relative;
-      width: 360px;
-      height: 520px;
-      transform-style: preserve-3d;
-      transition: transform 0.3s ease;
-      border-radius: 24px;
+      perspective: 1200px;
     }
 
-    /* --- Card Base --- */
     .card {
-      position: relative;
       width: 100%;
       height: 100%;
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(14,165,233,0.3), rgba(56,189,248,0.1));
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease;
+    }
+
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(14,165,233,0.25), rgba(56,189,248,0.1));
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 0 40px rgba(56,189,248,0.3);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(10px);
       overflow: hidden;
-      transform-style: preserve-3d;
+      backface-visibility: hidden;
       transition: all 0.3s ease;
     }
 
-    /* --- Shine Effect --- */
+    .card-face.back {
+      transform: rotateY(180deg);
+    }
+
     .shine {
       position: absolute;
       top: 0;
@@ -58,23 +69,22 @@
       transition: all 0.2s ease;
     }
 
-    /* --- Inner Content --- */
     .content {
       position: relative;
-      z-index: 5;
+      z-index: 2;
       padding: 2rem;
       text-align: center;
-      transform: translateZ(40px);
+      transform: translateZ(50px);
     }
 
     .avatar {
-      width: 100px;
-      height: 100px;
+      width: 90px;
+      height: 90px;
       margin: 0 auto;
       border-radius: 50%;
       overflow: hidden;
       border: 3px solid rgba(255,255,255,0.3);
-      box-shadow: 0 0 15px rgba(56,189,248,0.5);
+      box-shadow: 0 0 15px rgba(56,189,248,0.4);
     }
 
     .avatar img {
@@ -85,14 +95,14 @@
 
     .buttons a {
       display: inline-block;
-      margin: 0.5rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 12px;
+      margin: 0.4rem;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
       background: rgba(56,189,248,0.2);
       color: white;
       text-decoration: none;
-      transition: all 0.3s;
-      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(6px);
       box-shadow: 0 0 10px rgba(56,189,248,0.3);
     }
 
@@ -104,58 +114,132 @@
     footer {
       font-size: 0.8rem;
       color: #aaa;
-      margin-top: 2rem;
+      margin-top: 1rem;
+    }
+
+    /* Flip Button Style */
+    .flip-btn {
+      margin-top: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.7rem 1.4rem;
+      background: rgba(56,189,248,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 15px rgba(56,189,248,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .flip-btn:hover {
+      background: rgba(56,189,248,0.4);
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(56,189,248,0.6);
+    }
+
+    .flip-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Button Glow Animation */
+    .flip-btn.glow {
+      animation: buttonGlow 0.8s ease;
+    }
+
+    @keyframes buttonGlow {
+      0% {
+        box-shadow: 0 0 25px rgba(56,189,248,0.7);
+        transform: scale(1.1) rotate(3deg);
+      }
+      50% {
+        box-shadow: 0 0 45px rgba(56,189,248,1);
+        transform: scale(1.05) rotate(-3deg);
+      }
+      100% {
+        box-shadow: 0 0 15px rgba(56,189,248,0.4);
+        transform: scale(1) rotate(0);
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card-container" id="card">
-    <div class="card">
-      <div class="shine" id="shine"></div>
-      <div class="content">
-        <div class="avatar">
-          <img src="https://avatars.githubusercontent.com/u/170989885?v=4" alt="WollyDev Avatar">
+  <div class="card-container">
+    <div class="card" id="card">
+      <!-- Front -->
+      <div class="card-face front">
+        <div class="shine" id="shine"></div>
+        <div class="content">
+          <div class="avatar">
+            <img src="https://avatars.githubusercontent.com/u/170989885?v=4" alt="WollyDev Avatar">
+          </div>
+          <h1 class="text-2xl font-bold mt-3 text-sky-400">WollyDev</h1>
+          <p class="mt-2 text-gray-300">Android Fan • Developer • Tech Enthusiast</p>
+          <div class="buttons mt-3">
+            <a href="https://github.com/wollydev24" target="_blank">⭐ GitHub</a>
+            <a href="https://discord.gg/bapB8zz7VY" target="_blank">💬 Discord</a>
+            <a href="https://t.me/YouShadeKWGT" target="_blank">📨 Telegram</a>
+          </div>
+          <p class="mt-5 text-gray-400 text-sm">“Creating projects, sharing giveaways, and having fun 🚀”</p>
+          <footer>© 2025 – Made with ❤ by WollyDev</footer>
         </div>
-        <h1 class="text-2xl font-bold mt-4 text-sky-400">WollyDev</h1>
-        <p class="mt-2 text-gray-300">Android Fan • Developer • Tech Enthusiast</p>
+      </div>
 
-        <div class="buttons mt-4">
-          <a href="https://github.com/wollydev24" target="_blank">⭐ GitHub</a>
-          <a href="https://discord.gg/bapB8zz7VY" target="_blank">💬 Discord</a>
-          <a href="https://t.me/YouShadeKWGT" target="_blank">📨 Telegram</a>
+      <!-- Back -->
+      <div class="card-face back">
+        <div class="shine"></div>
+        <div class="content">
+          <h2 class="text-xl font-bold text-sky-400">Projects & Info</h2>
+          <p class="mt-3 text-gray-300">🌐 Check out my website:</p>
+          <a href="https://wollydev24.github.io" target="_blank" class="inline-block mt-2 text-sky-300 underline">wollydev24.github.io</a>
+          <p class="mt-5 text-gray-400 text-sm">💡 JSON files available:<br>devices.json • projects.json • giveaway.json</p>
+          <footer class="mt-6 text-gray-500">⬅️ Flip back to profile</footer>
         </div>
-
-        <div class="mt-6 text-gray-400 text-sm">
-          <p>“Creating projects, sharing giveaways, and having fun 🚀”</p>
-        </div>
-
-        <footer>© 2025 – Made with ❤ by WollyDev</footer>
       </div>
     </div>
   </div>
 
+  <!-- Flip Button -->
+  <button class="flip-btn" id="flipBtn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6a6 6 0 0 1-9.33 5H7.5A8 8 0 1 0 12 4zm0 14v3l4-4-4-4v3a6 6 0 0 1-6-6c0-1.27.39-2.45 1.05-3.43l-1.52-1.52A7.983 7.983 0 0 0 4 12a8 8 0 0 0 8 8z"/>
+    </svg>
+    Flip Card
+  </button>
+
   <script>
     const card = document.getElementById("card");
     const shine = document.getElementById("shine");
+    const flipBtn = document.getElementById("flipBtn");
 
-    // --- 3D Tilt Effect ---
+    flipBtn.addEventListener("click", () => {
+      card.classList.toggle("flipped");
+
+      // ✨ Add temporary glow + wiggle animation to button
+      flipBtn.classList.add("glow");
+      setTimeout(() => flipBtn.classList.remove("glow"), 800);
+    });
+
+    // 3D Tilt-Effekt
     card.addEventListener("mousemove", (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * 10;
-      const rotateY = ((x - centerX) / centerX) * 10;
-
-      card.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
-
+      const rotateX = ((y - rect.height / 2) / rect.height) * 15;
+      const rotateY = ((x - rect.width / 2) / rect.width) * 15;
+      card.style.transform = `rotateY(${card.classList.contains("flipped") ? 180 : 0}deg) rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
       shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.4), transparent 60%)`;
     });
 
-    // Reset on leave
     card.addEventListener("mouseleave", () => {
-      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      card.style.transform = card.classList.contains("flipped")
+        ? "rotateY(180deg)"
+        : "rotateY(0deg)";
       shine.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3), transparent 60%)`;
     });
   </script>
