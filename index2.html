@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="google-site-verification" content="XNtX42Brczz6QDHr48Ez3FzulcLcu2G1bvNh8V3f9Q8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WollyDev - Interactive Card</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0d0d0d, #000);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+
+    /* --- 3D Card Container --- */
+    .card-container {
+      position: relative;
+      width: 360px;
+      height: 520px;
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease;
+      border-radius: 24px;
+    }
+
+    /* --- Card Base --- */
+    .card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(14,165,233,0.3), rgba(56,189,248,0.1));
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 40px rgba(56,189,248,0.3);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: all 0.3s ease;
+    }
+
+    /* --- Shine Effect --- */
+    .shine {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3), transparent 60%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      transition: all 0.2s ease;
+    }
+
+    /* --- Inner Content --- */
+    .content {
+      position: relative;
+      z-index: 5;
+      padding: 2rem;
+      text-align: center;
+      transform: translateZ(40px);
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.3);
+      box-shadow: 0 0 15px rgba(56,189,248,0.5);
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .buttons a {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 12px;
+      background: rgba(56,189,248,0.2);
+      color: white;
+      text-decoration: none;
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 10px rgba(56,189,248,0.3);
+    }
+
+    .buttons a:hover {
+      background: rgba(56,189,248,0.4);
+      transform: scale(1.05);
+    }
+
+    footer {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="card-container" id="card">
+    <div class="card">
+      <div class="shine" id="shine"></div>
+      <div class="content">
+        <div class="avatar">
+          <img src="https://avatars.githubusercontent.com/u/170989885?v=4" alt="WollyDev Avatar">
+        </div>
+        <h1 class="text-2xl font-bold mt-4 text-sky-400">WollyDev</h1>
+        <p class="mt-2 text-gray-300">Android Fan • Developer • Tech Enthusiast</p>
+
+        <div class="buttons mt-4">
+          <a href="https://github.com/wollydev24" target="_blank">⭐ GitHub</a>
+          <a href="https://discord.gg/bapB8zz7VY" target="_blank">💬 Discord</a>
+          <a href="https://t.me/YouShadeKWGT" target="_blank">📨 Telegram</a>
+        </div>
+
+        <div class="mt-6 text-gray-400 text-sm">
+          <p>“Creating projects, sharing giveaways, and having fun 🚀”</p>
+        </div>
+
+        <footer>© 2025 – Made with ❤ by WollyDev</footer>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById("card");
+    const shine = document.getElementById("shine");
+
+    // --- 3D Tilt Effect ---
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * 10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+
+      card.style.transform = `rotateX(${-rotateX}deg) rotateY(${rotateY}deg)`;
+
+      shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,255,255,0.4), transparent 60%)`;
+    });
+
+    // Reset on leave
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      shine.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.3), transparent 60%)`;
+    });
+  </script>
+</body>
+</html>
