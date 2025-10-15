@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharky Wiki</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    .fade-up { opacity:0; transform: translateY(20px); animation: fadeUp 0.8s forwards; }
+    .fade-up-delay { opacity:0; transform: translateY(20px); animation: fadeUp 0.8s forwards 0.4s; }
+    @keyframes fadeUp { to { opacity:1; transform: translateY(0); } }
+    .floaty { animation: floaty 6s ease-in-out infinite; }
+    @keyframes floaty { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+    .spin-slow { animation: spin 18s linear infinite; }
+  </style>
+</head>
+<body class="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased">
+
+  <!-- Background Effects -->
+  <div class="absolute inset-0 -z-10 overflow-hidden">
+    <div class="absolute -top-40 left-1/2 w-[1000px] md:w-[1400px] h-[1000px] md:h-[1400px] -translate-x-1/2 rounded-full blur-3xl opacity-30 spin-slow" style="background: linear-gradient(135deg, #0ea5e9, #a78bfa)"></div>
+    <div class="absolute bottom-[-200px] md:bottom-[-300px] right-0 w-[500px] md:w-[800px] h-[500px] md:h-[800px] rounded-full blur-2xl opacity-20 spin-slow" style="background: linear-gradient(135deg, #06b6d4, #ef4444)"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-4 fade-up">
+    <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="flex items-center gap-3">
+      <img src="https://raw.githubusercontent.com/WollyDev24/Sharky/main/SharkyProfile.png" alt="Sharky" class="w-10 h-10 md:w-12 md:h-12 rounded-lg shadow-2xl">
+      <div>
+        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">Sharky Wiki</h1>
+        <p class="text-xs md:text-sm opacity-70">Documentation for the YouShade Community bot</p>
+      </div>
+    </a>
+    <nav class="flex flex-wrap justify-center md:justify-end items-center gap-2 md:gap-3 w-full md:w-auto">
+      <a href="#intro" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Intro</a>
+      <a href="#features" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Features</a>
+      <a href="#setup" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Setup</a>
+      <a href="#contribute" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Contribute</a>
+      <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="mt-2 md:mt-0 inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full font-medium hover:scale-105 transition">Join Discord</a>
+    </nav>
+  </header>
+
+  <!-- Wiki Content -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+    
+    <!-- Intro -->
+    <section id="intro" class="fade-up">
+      <img src="https://github.com/WollyDev24/Sharky/blob/main/Sharky.png?raw=true" alt="Banner" class="rounded-xl shadow-lg mb-6">
+      <h2 class="text-3xl md:text-4xl font-extrabold mb-3">Welcome to the Sharky Wiki 🦈</h2>
+      <p class="text-slate-300">Sharky (formerly YouShadeBot) is a Discord bot built in Python that focuses on <strong>fun, control, and flexibility</strong>. This wiki covers all available features, setup steps, and contribution details.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="inline-flex items-center gap-2 bg-sky-500/90 px-4 py-2 rounded-lg font-semibold shadow hover:shadow-lg transform hover:-translate-y-1 transition">⭐ GitHub Repository</a>
+        <a href="https://t.me/SharkyUpdates" target="_blank" class="inline-flex items-center gap-2 bg-cyan-600/80 px-4 py-2 rounded-lg font-semibold shadow hover:-translate-y-1 transition">📢 Telegram Channel</a>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="fade-up">
+      <h3 class="text-2xl font-bold mb-2">💻 Current Features</h3>
+      <p class="text-slate-300 mb-4">These are all the features that Sharky currently offers.</p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <li class="p-4 bg-white/5 rounded-xl floaty">🙍 Greet user via Command</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">👋 Automatic Greet Message</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">ℹ️ Info Command</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">🎮 Bot Activity Changer</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">⌛ Ping Command</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">🛑 Moderation Tools</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">🪨✂️📄 Rock-Paper-Scissor Game</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">💻 Terminal Control (shutdown, reload, etc.)</li>
+      </ul>
+
+      <h3 class="text-2xl font-bold mt-10 mb-2">🧩 Planned Features</h3>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <li class="p-4 bg-white/5 rounded-xl floaty">📣 Announcements</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">🤫 Whisper Messages</li>
+        <li class="p-4 bg-white/5 rounded-xl floaty">📒 Notes System</li>
+      </ul>
+    </section>
+
+    <!-- Setup -->
+    <section id="setup" class="fade-up">
+      <h3 class="text-2xl font-bold mb-2">🚀 Setup Guide</h3>
+      <p class="text-slate-300 mb-4">Follow these steps to self-host and run Sharky on your machine.</p>
+      <ol class="list-decimal list-inside text-slate-300 space-y-3">
+        <li>Clone the repository  
+          <pre class="bg-black/40 p-2 rounded-lg mt-1 text-sm">git clone https://github.com/wollydev24/sharky</pre>
+        </li>
+        <li>Create a Discord Application on the <a href="https://discord.com/developers/applications" target="_blank" class="text-sky-400 underline">Discord Developer Portal</a>.</li>
+        <li>Rename <code>config_example.py</code> to <code>config.py</code> and insert your bot token.</li>
+        <li>Set all required IDs:  
+          <ul class="list-disc list-inside ml-4">
+            <li><code>server</code> → your server ID</li>
+            <li><code>greet</code> → welcome channel ID</li>
+            <li><code>owner</code> → your Discord ID</li>
+          </ul>
+        </li>
+        <li>Invite the bot to your Discord server.</li>
+        <li>Run the bot:  
+          <pre class="bg-black/40 p-2 rounded-lg mt-1 text-sm">py main.py</pre>
+        </li>
+      </ol>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="https://discord.com/oauth2/authorize?client_id=1410735946374053918&permissions=8&integration_type=0&scope=bot" target="_blank" class="inline-flex items-center gap-2 bg-emerald-500/90 px-4 py-2 rounded-lg font-semibold shadow hover:-translate-y-1 transition">🤖 Invite Sharky</a>
+        <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="inline-flex items-center gap-2 border border-white/10 px-4 py-2 rounded-lg hover:bg-white/5 transition">📦 Source Code</a>
+      </div>
+    </section>
+
+    <!-- Contribute -->
+    <section id="contribute" class="fade-up">
+      <h3 class="text-2xl font-bold mb-2">🤝 Contribute</h3>
+      <p class="text-slate-300 mb-4">Want to help improve Sharky or support its development? Here’s how you can get involved:</p>
+      <ul class="space-y-3 text-slate-300">
+        <li>🧩 Create pull requests for bug fixes or new features</li>
+        <li>⭐ Star the repository to support development</li>
+        <li>💬 Join the <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="underline text-sky-400">Support Server</a> or <a href="https://t.me/SharkyUpdates" target="_blank" class="underline text-cyan-400">Telegram Channel</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 py-8 mt-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+      <div class="text-xs md:text-sm text-slate-400">© 2025 Sharky — Built with ❤️ by <a href="https://github.com/WollyDev24" class="underline">WollyDev24</a></div>
+      <div class="flex flex-wrap justify-center md:justify-end items-center gap-2">
+        <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">GitHub</a>
+        <a href="https://discord.gg/bapB8zz7VY" target="_blank" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Discord</a>
+        <a href="https://t.me/SharkyUpdates" target="_blank" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Telegram</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
