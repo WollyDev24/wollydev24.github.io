@@ -109,7 +109,7 @@
              style="transform: translateX(-50%);"></div>
 
         <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 z-10">
-          <img src="https://raw.githubusercontent.com/WollyDev24/wollydev24.github.io/main/backround.jpg" 
+          <img src="https://raw.githubusercontent.com/WollyDev24/wollydev24.github.io/main/pictures/backround.jpg" 
                alt="WollyDev banner" class="w-full h-56 sm:h-72 object-cover">
           <div class="p-4 bg-gradient-to-t from-black/40 to-transparent">
             <h3 class="text-lg font-bold">Welcome to my space</h3>
@@ -159,7 +159,7 @@
 
   <script>
     // --- GIVEAWAYS ---
-    fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
+    fetch("https://wollydev24.github.io/data/giveaway.json?nocache=" + Date.now())
       .then(r => r.json()).then(data => {
         const section = document.getElementById("giveaway-section");
         section.innerHTML = "";
@@ -179,7 +179,7 @@
       });
 
     // --- PROJECTS ---
-    fetch("https://wollydev24.github.io/projects.json?nocache=" + Date.now())
+    fetch("https://wollydev24.github.io/data/projects.json?nocache=" + Date.now())
       .then(r => r.json()).then(data => {
         const section = document.getElementById("projects-section");
         section.innerHTML = "";
@@ -198,7 +198,7 @@
       });
 
     // --- DEVICES ---
-    fetch("https://wollydev24.github.io/devices.json?nocache=" + Date.now())
+    fetch("https://wollydev24.github.io/data/devices.json?nocache=" + Date.now())
       .then(r => r.json()).then(data => {
         const section = document.getElementById("devices-section");
         section.innerHTML = "";

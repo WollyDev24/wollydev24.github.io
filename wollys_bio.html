@@ -115,7 +115,7 @@
     tg.expand(); // Fullscreen nutzen
 
     // --- GIVEAWAYS ---
-    fetch("https://wollydev24.github.io/giveaway.json?nocache=" + Date.now())
+    fetch("https://wollydev24.github.io/data/giveaway.json?nocache=" + Date.now())
       .then(r => r.json())
       .then(data => {
         const section = document.getElementById("giveaway-section");
@@ -134,7 +134,7 @@
       });
 
     // --- PROJECTS ---
-    fetch("https://wollydev24.github.io/projects.json?nocache=" + Date.now())
+    fetch("https://wollydev24.github.io/data/projects.json?nocache=" + Date.now())
       .then(r => r.json())
       .then(data => {
         const section = document.getElementById("projects-section");
@@ -153,7 +153,7 @@
       });
 
     // --- DEVICES ---
-    fetch("https://wollydev24.github.io/devices.json?nocache=" + Date.now())
+    fetch("https://wollydev24.github.io/data/devices.json?nocache=" + Date.now())
       .then(r => r.json())
       .then(data => {
         const section = document.getElementById("devices-section");

@@ -120,7 +120,7 @@
 
   <!-- Header -->
   <div class="header-content">
-    <img src="https://wollydev24.github.io/telegram_icon.jpg" alt="Bot Icon">
+    <img src="https://wollydev24.github.io/pictures/telegram_icon.jpg" alt="Bot Icon">
     <h1>YouShadeBot</h1>
     <p>Your multipurpose Discord companion</p>
   </div>
@@ -184,7 +184,7 @@
     }
 
     // Load commits (limit to 3)
-    fetch("https://api.github.com/repos/wollydev24/YouShadeBot/commits")
+    fetch("https://api.github.com/repos/wollydev24/Sharky/commits")
       .then(res => res.json())
       .then(data => {
         const commitsEl = document.getElementById("commits");
@@ -223,7 +223,7 @@
     window.addEventListener("load", () => {
       const img = new Image();
       img.crossOrigin = "Anonymous";
-      img.src = "https://wollydev24.github.io/telegram_icon.jpg";
+      img.src = "https://wollydev24.github.io/pictures/telegram_icon.jpg";
       img.onload = () => {
         const colorThief = new ColorThief();
         const [r, g, b] = colorThief.getColor(img);
