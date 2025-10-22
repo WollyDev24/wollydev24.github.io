@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Terminal Style Page</title>
+  <style>
+    :root{
+      --bg:#02060a;
+      --panel:#07111a;
+      --text:#8aff7a;
+      --muted:#6b8b6b;
+      --accent:#33ff99;
+    }
+    html,body{height:100%;margin:0}
+    body{
+      background:linear-gradient(180deg,var(--bg),#001018 70%);
+      color:var(--text);
+      font-family: "Roboto Mono", "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      display:flex;align-items:center;justify-content:center;padding:2rem;
+    }
+    .terminal{
+      width:min(1000px,96%);
+      max-width:1200px;
+      background:linear-gradient(180deg,var(--panel),rgba(0,0,0,0.25));
+      border-radius:12px;padding:20px;border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 10px 40px rgba(0,0,0,0.6);
+    }
+    .titlebar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+    .dots{display:flex;gap:6px}
+    .dot{width:12px;height:12px;border-radius:50%;opacity:0.95}
+    .dot.r{background:#ff5f56}
+    .dot.y{background:#ffbd2e}
+    .dot.g{background:#27c93f}
+
+    pre#screen{white-space:pre;overflow:auto;margin:0;padding:12px 14px;background:transparent;border-radius:8px;color:var(--text);line-height:1.05;font-size:14px}
+    .muted{color:var(--muted)}
+
+    input#cmd{
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+      font-family:inherit;
+      font-size:14px;
+      width:80%;
+    }
+
+    .controls{margin-top:12px;display:flex;gap:8px}
+    button{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:8px;color:var(--text);cursor:pointer}
+    button:hover{border-color:rgba(255,255,255,0.12)}
+
+    footer{margin-top:14px;color:var(--muted);font-size:13px}
+
+    @media (max-width:520px){pre#screen{font-size:12px}}
+  </style>
+</head>
+<body>
+  <div class="terminal" role="region" aria-label="Terminal">
+    <div class="titlebar">
+      <div class="dots">
+        <span class="dot r"></span>
+        <span class="dot y"></span>
+        <span class="dot g"></span>
+      </div>
+      <div class="muted" style="margin-left:8px">user@webshell:~$</div>
+    </div>
+
+    <pre id="screen" aria-live="polite">Hello! type 'run' to start</pre>
+    <input id="cmd" type="text" placeholder="type command here..." autofocus />
+
+    <div class="controls">
+      <button id="skip">Show instantly</button>
+      <button id="clear">Clear</button>
+    </div>
+    <footer>Tyoe "run" or "list projects/devices/giveaways"</footer>
+  </div>
+
+  <script>
+    const screen = document.getElementById('screen');
+    const cmd = document.getElementById('cmd');
+    const skipBtn = document.getElementById('skip');
+    const clearBtn = document.getElementById('clear');
+
+    const introLines = [
+      'Booting web-terminal...\n',
+      'Loading modules: [ok] [ok] [ok]\n',
+      'Welcome, user! Animation starting...\n\n'
+    ];
+
+    let typing = false;
+
+    async function fetchData(type){
+      try{
+        const res = await fetch(`https://wollydev24.github.io/data/${type}.json`);
+        if(!res.ok) throw new Error('Fetch failed');
+        const data = await res.json();
+        return data;
+      }catch(e){
+        return {error:true, message:`Could not load ${type}`};
+      }
+    }
+
+    function print(text){
+      screen.textContent += text + '\n';
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    function typeAll(lines, opts={speed:20}){
+      typing=true;
+      screen.textContent='';
+      const full = lines.join('') + '\nuser@webshell:~$ ';
+      let i=0;
+      function step(){
+        if(i>=full.length){typing=false;return}
+        screen.textContent += full[i++];
+        screen.scrollTop = screen.scrollHeight;
+        setTimeout(step, opts.speed);
+      }
+      step();
+    }
+
+    function showInstant(){
+      typing=false;
+      screen.textContent = introLines.join('') + '\nuser@webshell:~$ ';
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    async function handleCommand(value){
+      const args = value.split(' ');
+      const cmd = args[0];
+
+      switch(cmd){
+        case 'run':
+          if(!typing) typeAll(introLines,{speed:12});
+          break;
+        case 'list':
+          const type = args[1];
+          if(['projects','giveaways','devices'].includes(type)){
+            print(`Fetching ${type}...`);
+            const data = await fetchData(type);
+            if(data.error){
+              print(data.message);
+            } else {
+              print(JSON.stringify(data, null, 2));
+            }
+          } else {
+            print('Usage: list [projects|giveaways|devices]');
+          }
+          break;
+        default:
+          print(`${value}: command not found`);
+      }
+      print('user@webshell:~$ ');
+    }
+
+    cmd.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        const value = cmd.value.trim().toLowerCase();
+        cmd.value='';
+        handleCommand(value);
+      }
+    });
+
+    skipBtn.addEventListener('click', ()=>{ showInstant(); });
+    clearBtn.addEventListener('click', ()=>{ screen.textContent='user@webshell:~$ '; });
+  </script>
+</body>
+</html>
