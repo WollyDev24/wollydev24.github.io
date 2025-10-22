@@ -136,7 +136,7 @@
           break;
         case 'list':
           const type = args[1];
-          if(['projects','giveaways','devices'].includes(type)){
+          if(['projects','giveaway','devices'].includes(type)){
             print(`Fetching ${type}...`);
             const data = await fetchData(type);
             if(data.error){
@@ -145,7 +145,7 @@
               print(JSON.stringify(data, null, 2));
             }
           } else {
-            print('Usage: list [projects|giveaways|devices]');
+            print('Usage: list [projects|giveaway|devices]');
           }
           break;
         default:
