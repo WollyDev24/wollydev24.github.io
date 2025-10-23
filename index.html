@@ -9,12 +9,13 @@
   <style>
     body {
       font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top, #0d0d0d, #000);
+      background: linear-gradient(180deg, #000, #020617, #0f172a);
       color: white;
       overflow-x: hidden;
+      background-attachment: fixed;
     }
 
-    /* Background Blur Shape */
+    /* Parallax blur shape */
     .blur-shape {
       position: absolute;
       top: -10%;
@@ -29,7 +30,12 @@
       z-index: 0;
     }
 
-    /* Fade Up Animation */
+    @keyframes spin {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    /* Fade animation */
     .fade-up {
       opacity: 0;
       transform: translateY(20px);
@@ -39,26 +45,40 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes spin {
-      from { transform: translateX(-50%) rotate(0deg); }
-      to { transform: translateX(-50%) rotate(360deg); }
-    }
-
-    /* Card Style */
+    /* Card glow effect */
     .card {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
       border-radius: 16px;
       padding: 1rem;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(56,189,248,0.3), transparent);
+      transform: skewY(-10deg);
+      transition: all 0.5s ease;
+    }
+
+    .card:hover::before {
+      top: 100%;
+    }
+
     .card:hover {
       transform: translateY(-4px) scale(1.05);
-      background: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.08);
       box-shadow: 0 0 15px rgba(56,189,248,0.6);
     }
 
-    /* Button Hover Glow */
+    /* Buttons */
     .btn-glow {
       transition: all 0.3s ease;
     }
@@ -66,14 +86,29 @@
       transform: translateY(-2px) scale(1.05);
       box-shadow: 0 0 12px rgba(56,189,248,0.7);
     }
+
+    /* Terminal typewriter style */
+    #typewriter {
+      font-family: "Courier New", monospace;
+      color: #38bdf8;
+      white-space: pre-wrap;
+      overflow: hidden;
+      border-right: 2px solid #38bdf8;
+      animation: blink 0.7s step-end infinite alternate;
+    }
+
+    @keyframes blink {
+      from { border-color: transparent; }
+      to { border-color: #38bdf8; }
+    }
   </style>
 </head>
 <body class="relative">
 
-  <!-- Background Blur Shape -->
-  <div class="blur-shape"></div>
+  <!-- Background Parallax Blur -->
+  <div class="blur-shape" id="blur-shape"></div>
 
-  <!-- Hero -->
+ <!-- Hero -->
   <header class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
       
@@ -101,10 +136,9 @@
           </a>
         </div>
       </div>
-
+      
       <!-- Banner -->
       <div class="fade-up relative">
-        <!-- Blur Shape über Banner -->
         <div class="absolute -top-20 left-1/2 w-72 h-72 bg-gradient-to-tr from-sky-400/40 via-sky-300/20 to-transparent rounded-full filter blur-3xl animate-spin z-0"
              style="transform: translateX(-50%);"></div>
 
@@ -113,7 +147,7 @@
                alt="WollyDev banner" class="w-full h-56 sm:h-72 object-cover">
           <div class="p-4 bg-gradient-to-t from-black/40 to-transparent">
             <h3 class="text-lg font-bold">Welcome to my space</h3>
-            <p class="text-sm opacity-70">Sharing projects, Giveaways and more 🚀</p>
+            <p class="text-sm opacity-70">Sharing projects, giveaways, and more 🚀</p>
           </div>
         </div>
       </div>
@@ -124,7 +158,7 @@
   <!-- Content -->
   <main class="relative z-10 max-w-4xl mx-auto px-4 space-y-12 pb-16">
 
-    <!-- About Me -->
+    <!-- About Me (replaces GitHub Stats) -->
     <section class="fade-up">
       <h2 class="text-2xl font-bold mb-4">👤 About Me</h2>
       <div class="card w-full">
@@ -158,6 +192,28 @@
   </main>
 
   <script>
+    // Typewriter effect
+    const text = "Hi, I'm WollyDev — Android Fan & Developer 🚀";
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        document.getElementById("typewriter").textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 60);
+      }
+    }
+    type();
+
+    // Parallax scroll effect
+    window.addEventListener("scroll", () => {
+      const blur = document.getElementById("blur-shape");
+      blur.style.transform = `translateX(-50%) translateY(${window.scrollY * 0.2}px) rotate(${window.scrollY / 10}deg)`;
+    });
+
+    // Easter Egg 🥚
+    console.log("%cHey Dev 👋", "color:#38bdf8;font-size:20px;font-weight:bold;");
+    console.log("You found my secret console message 😏 Keep coding and stay awesome! 🚀");
+
     // --- GIVEAWAYS ---
     fetch("https://wollydev24.github.io/data/giveaway.json?nocache=" + Date.now())
       .then(r => r.json()).then(data => {
