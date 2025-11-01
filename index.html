@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="google-site-verification" content="XNtX42Brczz6QDHr48Ez3FzulcLcu2G1bvNh8V3f9Q8" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WollyDev - GitHub Profile</title>
@@ -9,154 +8,176 @@
   <style>
     body {
       font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top, #0d0d0d, #000);
+      background-color: #0d0d0d;
       color: white;
       overflow-x: hidden;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
     }
 
-    /* Background Blur Shape */
-    .blur-shape {
-      position: absolute;
-      top: -10%;
-      left: 50%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(56,189,248,0.4), rgba(14,165,233,0.2), transparent);
-      filter: blur(100px);
-      transform: translateX(-50%);
-      border-radius: 50%;
-      animation: spin 40s linear infinite;
-      z-index: 0;
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
     }
 
-    /* Fade Up Animation */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 1s ease forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
+    h1, h2 {
+      font-weight: 700;
     }
 
-    @keyframes spin {
-      from { transform: translateX(-50%) rotate(0deg); }
-      to { transform: translateX(-50%) rotate(360deg); }
-    }
-
-    /* Card Style */
     .card {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 16px;
+      border-radius: 12px;
       padding: 1rem;
-      transition: all 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-4px) scale(1.05);
-      background: rgba(255,255,255,0.1);
-      box-shadow: 0 0 15px rgba(56,189,248,0.6);
+      transition: 0.3s;
     }
 
-    /* Button Hover Glow */
-    .btn-glow {
-      transition: all 0.3s ease;
+    .card:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-3px);
     }
-    .btn-glow:hover {
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 0 12px rgba(56,189,248,0.7);
+
+    a.button {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      transition: 0.3s;
+    }
+
+    a.button:hover {
+      background: rgba(56,189,248,0.3);
+    }
+
+    header img {
+      border-radius: 12px;
+      margin-top: 1rem;
+      height: 18rem; /* Alte Bannergröße */
+      object-fit: cover;
+      width: 100%;
+    }
+
+    footer {
+      text-align: center;
+      color: #aaa;
+      font-size: 0.85rem;
+      margin-top: 3rem;
+    }
+
+    /* Einklappbare Bereiche */
+    .toggle-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      transition: 0.2s;
+    }
+
+    .toggle-header:hover {
+      color: #38bdf8;
+    }
+
+    .arrow {
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .arrow.open {
+      transform: rotate(90deg);
+    }
+
+    .toggle-content {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .toggle-content.open {
+      max-height: 1000px;
+      opacity: 1;
+      margin-top: 0.5rem;
     }
   </style>
 </head>
-<body class="relative">
+<body>
 
-  <!-- Background Blur Shape -->
-  <div class="blur-shape"></div>
-
-  <!-- Hero -->
-  <header class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-16">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-      
-      <!-- Text -->
-      <div class="fade-up text-center md:text-left">
-        <h1 class="text-4xl sm:text-5xl font-extrabold">
-          Hi, I'm <span class="text-sky-400">WollyDev</span>
-        </h1>
-        <p class="mt-4 text-lg text-gray-300">
-          Welcome to my GitHub Profile 💻✨ <br>
-          Here you’ll find my projects, devices I use and giveaways 🎁
-        </p>
-        <div class="mt-6 flex flex-wrap justify-center md:justify-start gap-4">
-          <a href="https://github.com/wollydev24" target="_blank"
-             class="px-5 py-2 rounded-xl bg-sky-500/90 hover:bg-sky-600 btn-glow shadow-lg">
-            ⭐ Visit My GitHub
-          </a>
-          <a href="https://discord.gg/bapB8zz7VY" target="_blank"
-             class="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 btn-glow">
-            💬 Join My Discord
-          </a>
-          <a href="https://t.me/YouShadeKWGT" target="_blank"
-             class="px-5 py-2 rounded-xl bg-white/10 hover:bg-white/20 btn-glow">
-            📨 Telegram
-          </a>
-        </div>
+  <div class="container">
+    <!-- Hero -->
+    <header class="text-center">
+      <h1 class="text-4xl font-bold">Hi, I'm <span class="text-sky-400">WollyDev</span></h1>
+      <p class="mt-2 text-gray-300">
+        Android Fan • Developer • Tech Enthusiast 🚀
+      </p>
+      <div class="mt-4">
+        <a href="https://github.com/wollydev24" class="button">⭐ GitHub</a>
+        <a href="https://discord.gg/bapB8zz7VY" class="button">💬 Discord</a>
+        <a href="https://t.me/YouShadeKWGT" class="button">📨 Telegram</a>
       </div>
+      <img src="https://raw.githubusercontent.com/WollyDev24/wollydev24.github.io/main/pictures/backround.jpg" alt="Banner">
+    </header>
 
-      <!-- Banner -->
-      <div class="fade-up relative">
-        <div class="absolute -top-20 left-1/2 w-72 h-72 bg-gradient-to-tr from-sky-400/40 via-sky-300/20 to-transparent rounded-full filter blur-3xl animate-spin z-0"
-             style="transform: translateX(-50%);"></div>
-
-        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 z-10">
-          <img src="https://raw.githubusercontent.com/WollyDev24/wollydev24.github.io/main/pictures/backround.jpg" 
-               alt="WollyDev banner" class="w-full h-56 sm:h-72 object-cover">
-          <div class="p-4 bg-gradient-to-t from-black/40 to-transparent">
-            <h3 class="text-lg font-bold">Welcome to my space</h3>
-            <p class="text-sm opacity-70">Sharing projects, Giveaways and more 🚀</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- Content -->
-  <main class="relative z-10 max-w-4xl mx-auto px-4 space-y-12 pb-16">
-
-    <!-- About Me -->
-    <section class="fade-up">
-      <h2 class="text-2xl font-bold mb-4">👤 About Me</h2>
-      <div class="card w-full">
-        <p class="text-gray-300 leading-relaxed">
-          Hey! I'm <span class="text-sky-400 font-bold">WollyDev</span> – a big Android fan, Developer and Tech enthusiast.  
-          The project I'm most proud of is <span class="text-sky-400 font-bold">Sharky</span>, a Discord Bot with continuous development and new features.  
-          I also love sharing giveaways and my projects. Feel free to explore and reach out if you have questions or just want to say hi! 😊
+    <!-- About -->
+    <section class="mt-10">
+      <h2 class="text-2xl mb-3">👤 About Me</h2>
+      <div class="card">
+        <p>
+          Hey! I'm <span class="text-sky-400 font-bold">WollyDev</span> – a big Android fan, developer and tech enthusiast.  
+          My main project is <span class="text-sky-400 font-bold">Sharky</span>, a Discord Bot with continuous updates and cool new features.  
+          I love sharing giveaways and projects. Feel free to explore and say hi! 😊
         </p>
       </div>
     </section>
 
     <!-- Giveaways -->
-    <section>
-      <h2 class="text-2xl font-bold mb-4">🎁 Giveaways</h2>
-      <div id="giveaway-section" class="grid gap-4">Loading giveaways...</div>
+    <section class="mt-10">
+      <div class="toggle-header text-2xl mb-3" data-target="giveaway-content">
+        <span class="arrow">›</span> 🎁 Giveaways
+      </div>
+      <div id="giveaway-content" class="toggle-content">
+        <div id="giveaway-section" class="grid gap-3 card">Loading giveaways...</div>
+      </div>
     </section>
 
     <!-- Projects -->
-    <section>
-      <h2 class="text-2xl font-bold mb-4">📂 My Projects</h2>
-      <div id="projects-section" class="grid gap-4">Loading projects...</div>
+    <section class="mt-6">
+      <div class="toggle-header text-2xl mb-3" data-target="projects-content">
+        <span class="arrow">›</span> 📂 My Projects
+      </div>
+      <div id="projects-content" class="toggle-content">
+        <div id="projects-section" class="grid gap-3 card">Loading projects...</div>
+      </div>
     </section>
 
     <!-- Devices -->
-    <section>
-      <h2 class="text-2xl font-bold mb-4">📱 My Devices</h2>
-      <div id="devices-section" class="grid gap-4">Loading devices...</div>
+    <section class="mt-6">
+      <div class="toggle-header text-2xl mb-3" data-target="devices-content">
+        <span class="arrow">›</span> 📱 My Devices
+      </div>
+      <div id="devices-content" class="toggle-content">
+        <div id="devices-section" class="grid gap-3 card">Loading devices...</div>
+      </div>
     </section>
 
-    <p class="text-center text-sm text-gray-400">© 2025 – Made with ❤ by WollyDev</p>
-  </main>
+    <footer>© 2025 – Made with ❤ by WollyDev</footer>
+  </div>
 
   <script>
+    // --- TOGGLE FUNCTION ---
+    document.querySelectorAll(".toggle-header").forEach(header => {
+      header.addEventListener("click", () => {
+        const targetId = header.getAttribute("data-target");
+        const content = document.getElementById(targetId);
+        const arrow = header.querySelector(".arrow");
+
+        content.classList.toggle("open");
+        arrow.classList.toggle("open");
+      });
+    });
+
     // --- GIVEAWAYS ---
     fetch("https://wollydev24.github.io/data/giveaway.json?nocache=" + Date.now())
       .then(r => r.json()).then(data => {
@@ -166,7 +187,7 @@
           data.items.forEach(g => {
             const div = document.createElement("div");
             div.className = "card";
-            div.innerHTML = `🎉 ${g.title}<br> 🕒 Ends: ${g.ends}`;
+            div.innerHTML = `🎉 ${g.title}<br>🕒 Ends: ${g.ends}`;
             section.appendChild(div);
           });
         } else {
@@ -215,6 +236,5 @@
         }
       });
   </script>
-
 </body>
 </html>
