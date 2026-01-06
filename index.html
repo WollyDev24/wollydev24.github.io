@@ -1,239 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WollyDev - GitHub Profile</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work in Progress</title>
+  <meta name="description" content="This website is currently under construction." />
   <style>
-    body {
-      font-family: "Inter", sans-serif;
-      background-color: #0d0d0d;
-      color: white;
-      overflow-x: hidden;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
-      background-size: 20px 20px;
-    }
+    :root {
+      --bg: #0e0e11;
+      --fg: #eaeaf0;
+      --muted: #a1a1aa;
+      --accent: #6ae3ff;
+      --card: #16161d;
+    }* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
+body {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background:
+    radial-gradient(900px 500px at 10% -10%, #3b82f6 0%, transparent 60%),
+    radial-gradient(800px 400px at 90% 10%, #22d3ee 0%, transparent 55%),
+    radial-gradient(700px 500px at 50% 120%, #a78bfa 0%, transparent 60%),
+    linear-gradient(180deg, #0b0b10, var(--bg));
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem;
+}
 
-    h1, h2 {
-      font-weight: 700;
-    }
+.container {
+  background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), var(--card);
+  padding: 3rem 3.5rem;
+  border-radius: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  animation: fadeUp 0.8s ease-out;
+}
 
-    .card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 1rem;
-      transition: 0.3s;
-    }
+h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.8rem;
+}
 
-    .card:hover {
-      background: rgba(255,255,255,0.1);
-      transform: translateY(-3px);
-    }
+p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
 
-    a.button {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.6rem 1rem;
-      border-radius: 8px;
-      background: rgba(255,255,255,0.1);
-      transition: 0.3s;
-    }
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(106, 227, 255, 0.12);
+  margin-bottom: 1.2rem;
+}
 
-    a.button:hover {
-      background: rgba(56,189,248,0.3);
-    }
+.progress {
+  width: 100%;
+  height: 8px;
+  background: #0b0b10;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
 
-    header img {
-      border-radius: 12px;
-      margin-top: 1rem;
-      height: 18rem; /* Alte Bannergröße */
-      object-fit: cover;
-      width: 100%;
-    }
+.progress span {
+  display: block;
+  height: 100%;
+  width: 85%;
+  background: linear-gradient(90deg, var(--accent), #9effc3);
+  border-radius: inherit;
+  animation: load 2s ease-out;
+}
 
-    footer {
-      text-align: center;
-      color: #aaa;
-      font-size: 0.85rem;
-      margin-top: 3rem;
-    }
+footer {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
 
-    /* Einklappbare Bereiche */
-    .toggle-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      user-select: none;
-      transition: 0.2s;
-    }
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-    .toggle-header:hover {
-      color: #38bdf8;
-    }
+@keyframes load {
+  from {
+    width: 0;
+  }
+  to {
+    width: 85%;
+  }
+}
 
-    .arrow {
-      transition: transform 0.3s ease;
-      display: inline-block;
-    }
+@media (max-width: 600px) {
+  .container {
+    padding: 2rem 1.8rem;
+    border-radius: 20px;
+  }
 
-    .arrow.open {
-      transform: rotate(90deg);
-    }
+  h1 {
+    font-size: 1.7rem;
+  }
 
-    .toggle-content {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.4s ease, opacity 0.3s ease;
-      opacity: 0;
-    }
+  p {
+    font-size: 0.95rem;
+  }
 
-    .toggle-content.open {
-      max-height: 1000px;
-      opacity: 1;
-      margin-top: 0.5rem;
-    }
+  .badge {
+    font-size: 0.7rem;
+  }
+
+  footer {
+    font-size: 0.75rem;
+  }
+}
+  to {
+    width: 85%;
+  }
+}
+
   </style>
 </head>
 <body>
+  <main class="container">
+    <div class="badge">Work in Progress</div>
+    <h1>Something awesome is coming ⭐</h1>
+    <p>
+      This website is currently under construction.
+      Please check back soon!
+    </p><div class="progress">
+  <span></span>
+</div>
 
-  <div class="container">
-    <!-- Hero -->
-    <header class="text-center">
-      <h1 class="text-4xl font-bold">Hi, I'm <span class="text-sky-400">WollyDev</span></h1>
-      <p class="mt-2 text-gray-300">
-        Android Fan • Developer • Tech Enthusiast 🚀
-      </p>
-      <div class="mt-4">
-        <a href="https://github.com/wollydev24" class="button">⭐ GitHub</a>
-        <a href="https://discord.gg/bapB8zz7VY" class="button">💬 Discord</a>
-        <a href="https://t.me/YouShadeKWGT" class="button">📨 Telegram</a>
-      </div>
-      <img src="https://raw.githubusercontent.com/WollyDev24/wollydev24.github.io/main/pictures/backround.jpg" alt="Banner">
-    </header>
+<footer>
+  © 2026 · WollyDev24
+</footer>
 
-    <!-- About -->
-    <section class="mt-10">
-      <h2 class="text-2xl mb-3">👤 About Me</h2>
-      <div class="card">
-        <p>
-          Hey! I'm <span class="text-sky-400 font-bold">WollyDev</span> – a big Android fan, developer and tech enthusiast.  
-          My main project is <span class="text-sky-400 font-bold">Sharky</span>, a Discord Bot with continuous development, check it out in my projects below!
-        </p>
-      </div>
-    </section>
-
-    <!-- Giveaways -->
-    <section class="mt-10">
-      <div class="toggle-header text-2xl mb-3" data-target="giveaway-content">
-        <span class="arrow">›</span> 🎁 Giveaways
-      </div>
-      <div id="giveaway-content" class="toggle-content">
-        <div id="giveaway-section" class="grid gap-3 card">Loading giveaways...</div>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section class="mt-6">
-      <div class="toggle-header text-2xl mb-3" data-target="projects-content">
-        <span class="arrow">›</span> 📂 My Projects
-      </div>
-      <div id="projects-content" class="toggle-content">
-        <div id="projects-section" class="grid gap-3 card">Loading projects...</div>
-      </div>
-    </section>
-
-    <!-- Devices -->
-    <section class="mt-6">
-      <div class="toggle-header text-2xl mb-3" data-target="devices-content">
-        <span class="arrow">›</span> 📱 My Devices
-      </div>
-      <div id="devices-content" class="toggle-content">
-        <div id="devices-section" class="grid gap-3 card">Loading devices...</div>
-      </div>
-    </section>
-
-    <footer>© 2025 – Made with ❤ by WollyDev</footer>
-  </div>
-
-  <script>
-    // --- TOGGLE FUNCTION ---
-    document.querySelectorAll(".toggle-header").forEach(header => {
-      header.addEventListener("click", () => {
-        const targetId = header.getAttribute("data-target");
-        const content = document.getElementById(targetId);
-        const arrow = header.querySelector(".arrow");
-
-        content.classList.toggle("open");
-        arrow.classList.toggle("open");
-      });
-    });
-
-    // --- GIVEAWAYS ---
-    fetch("https://wollydev24.github.io/data/giveaway.json?nocache=" + Date.now())
-      .then(r => r.json()).then(data => {
-        const section = document.getElementById("giveaway-section");
-        section.innerHTML = "";
-        if (data.active && data.items?.length > 0) {
-          data.items.forEach(g => {
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `🎉 ${g.title}<br>🕒 Ends: ${g.ends}`;
-            section.appendChild(div);
-          });
-        } else {
-          section.innerHTML = `<div class="card">❌ No giveaways right now.</div>`;
-        }
-      }).catch(() => {
-        document.getElementById("giveaway-section").innerHTML =
-          `<div class="card">⚠️ Could not load giveaways.</div>`;
-      });
-
-    // --- PROJECTS ---
-    fetch("https://wollydev24.github.io/data/projects.json?nocache=" + Date.now())
-      .then(r => r.json()).then(data => {
-        const section = document.getElementById("projects-section");
-        section.innerHTML = "";
-        if (data.projects?.length > 0) {
-          data.projects.forEach(p => {
-            const a = document.createElement("a");
-            a.className = "card";
-            a.href = p.url;
-            a.target = "_blank";
-            a.innerHTML = `${p.emoji} <b>${p.name}</b> – ${p.description}`;
-            section.appendChild(a);
-          });
-        } else {
-          section.innerHTML = `<div class="card">❌ No projects found.</div>`;
-        }
-      });
-
-    // --- DEVICES ---
-    fetch("https://wollydev24.github.io/data/devices.json?nocache=" + Date.now())
-      .then(r => r.json()).then(data => {
-        const section = document.getElementById("devices-section");
-        section.innerHTML = "";
-        if (data.devices?.length > 0) {
-          data.devices.forEach(d => {
-            const a = document.createElement("a");
-            a.className = "card";
-            a.href = d.url;
-            a.target = "_blank";
-            a.innerHTML = `${d.emoji || "📱"} <b>${d.name}</b> – ${d.description}`;
-            section.appendChild(a);
-          });
-        } else {
-          section.innerHTML = `<div class="card">❌ No devices listed.</div>`;
-        }
-      });
-  </script>
+  </main>
 </body>
 </html>
