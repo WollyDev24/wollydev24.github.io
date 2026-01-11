@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 – Page not found</title>
+  <meta name="description" content="The page you are looking for does not exist." />
+
+  <style>
+    :root {
+      --bg: #0e0e11;
+      --fg: #eaeaf0;
+      --muted: #a1a1aa;
+      --accent: #6ae3ff;
+      --card: #16161d;
+      --danger: #ff6a8b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background:
+        radial-gradient(900px 500px at 10% -10%, #3b82f6 0%, transparent 60%),
+        radial-gradient(800px 400px at 90% 10%, #22d3ee 0%, transparent 55%),
+        radial-gradient(700px 500px at 50% 120%, #a78bfa 0%, transparent 60%),
+        linear-gradient(180deg, #0b0b10, var(--bg));
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+    }
+
+    .container {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)),
+        var(--card);
+      padding: 3rem 3.5rem;
+      border-radius: 24px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
+      max-width: 520px;
+      width: 100%;
+      text-align: center;
+      animation: fadeUp 0.8s ease-out;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--danger);
+      background: rgba(255, 106, 139, 0.12);
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.8rem;
+    }
+
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    .actions a {
+      display: inline-block;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #001018;
+      background: linear-gradient(90deg, var(--accent), #9effc3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 10px 30px rgba(106, 227, 255, 0.35);
+    }
+
+    .actions a:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px rgba(106, 227, 255, 0.5);
+    }
+
+    footer {
+      margin-top: 2.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 2rem 1.8rem;
+        border-radius: 20px;
+      }
+
+      h1 {
+        font-size: 1.7rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <div class="badge">404 error</div>
+
+    <h1>Page not found 🚧</h1>
+
+    <p>
+      The page you’re looking for doesn’t exist<br />
+      or has been moved somewhere else.
+    </p>
+
+    <div class="actions">
+      <a href="/">Go back home</a>
+    </div>
+
+    <footer>
+      © 2026 · WollyDev24
+    </footer>
+  </main>
+</body>
+</html>
