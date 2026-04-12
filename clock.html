@@ -29,7 +29,31 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
+            margin: 0;
             overflow: hidden;
+            position: relative;
+        }
+
+        #bg-image-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+            transition: opacity 0.8s ease;
+        }
+
+        #bg-image-layer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Subtle dimming for readability */
+            z-index: -1;
         }
 
         .container {
@@ -38,7 +62,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 1rem;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
         }
 
         /* --- Search Bar UI --- */
@@ -756,6 +784,10 @@
         const menuPfp = document.getElementById('menu-pfp');
         const gearContainer = document.querySelector('.gear-container');
         const settingsWrapper = document.querySelector('.settings-wrapper');
+        const bgUpload = document.getElementById('bg-upload');
+        const bgUploadBtn = document.getElementById('bg-upload-btn');
+        const bgRemoveBtn = document.getElementById('bg-remove-btn');
+        const bgLayer = document.getElementById('bg-image-layer');
 
         const weights = [300, 400, 700, 800];
         const weightNames = ['Light', 'Regular', 'Bold', 'Black'];
@@ -842,6 +874,29 @@
             }
         });
 
+        // Background Logic
+        bgUploadBtn.addEventListener('click', () => bgUpload.click());
+        
+        bgUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    bgLayer.style.backgroundImage = `url(${event.target.result})`;
+                    bgLayer.style.opacity = '1';
+                    bgRemoveBtn.style.display = 'flex';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        bgRemoveBtn.addEventListener('click', () => {
+            bgLayer.style.backgroundImage = 'none';
+            bgLayer.style.opacity = '0';
+            bgRemoveBtn.style.display = 'none';
+            bgUpload.value = '';
+        });
+
         // Profile Logic
         nameInput.addEventListener('input', (e) => {
             displayName.innerText = e.target.value || 'Wolly';
@@ -902,6 +957,22 @@
                     
                     // Preview the uploaded image in the custom button
                     customPfpBtn.innerHTML = `<img src="${src}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
+                    customPfpBtn.style.borderStyle = 'solid';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateAllPfps(src) {
+            displayPfp.src = src;
+            menuPfp.src = src;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>tn.innerHTML = `<img src="${src}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
                     customPfpBtn.style.borderStyle = 'solid';
                 };
                 reader.readAsDataURL(file);
