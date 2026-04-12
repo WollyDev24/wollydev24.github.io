@@ -391,11 +391,69 @@
             100% { border-radius: 40px 24px 40px 24px; }
         }
 
-        .settings-wrapper:hover .settings-panel {
+        .settings-wrapper:hover .settings-panel,
+        .settings-wrapper.force-show .settings-panel {
             opacity: 1;
             pointer-events: all;
             transform: translateY(0) scale(1);
             animation: panel-blob-morph 6s infinite alternate ease-in-out;
+        }
+
+        /* --- Mobile Optimization --- */
+        @media (max-width: 768px) {
+            body {
+                background-color: #000000; /* Black background on mobile */
+            }
+
+            :root {
+                --clock-size: clamp(4rem, 15vw, 8rem);
+            }
+
+            #date {
+                font-size: 1.1rem;
+            }
+
+            .search-container {
+                width: 90vw;
+                padding: 10px 18px;
+            }
+
+            .search-container:focus-within {
+                width: 95vw;
+            }
+
+            #search-input {
+                font-size: 1rem;
+            }
+
+            .account-wrapper {
+                top: 15px;
+                right: 15px;
+            }
+
+            .account-menu {
+                position: fixed;
+                top: 70px;
+                right: 15px;
+                left: 15px;
+                width: calc(100vw - 30px);
+                max-width: none;
+            }
+
+            .settings-wrapper {
+                bottom: 15px;
+                left: 15px;
+            }
+
+            .settings-panel {
+                position: fixed;
+                bottom: 80px;
+                left: 15px;
+                right: 15px;
+                width: calc(100vw - 30px);
+                max-width: none;
+                max-height: 60vh;
+            }
         }
 
         .settings-header {
@@ -696,6 +754,8 @@
         const pfpOptions = document.querySelectorAll('.pfp-option');
         const displayPfp = document.getElementById('display-pfp');
         const menuPfp = document.getElementById('menu-pfp');
+        const gearContainer = document.querySelector('.gear-container');
+        const settingsWrapper = document.querySelector('.settings-wrapper');
 
         const weights = [300, 400, 700, 800];
         const weightNames = ['Light', 'Regular', 'Bold', 'Black'];
@@ -792,8 +852,23 @@
             else g1Ring.classList.remove('active');
         });
 
-        editProfileBtn.addEventListener('click', () => {
-            nameInput.focus();
+        editProfileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsWrapper.classList.add('force-show');
+            setTimeout(() => nameInput.focus(), 100);
+        });
+
+        // Toggle settings for mobile/touch
+        gearContainer.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsWrapper.classList.toggle('force-show');
+        });
+
+        // Close panels when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!settingsWrapper.contains(e.target)) {
+                settingsWrapper.classList.remove('force-show');
+            }
         });
 
         const pfpUpload = document.getElementById('pfp-upload');
