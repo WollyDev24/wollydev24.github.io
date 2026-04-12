@@ -22,7 +22,7 @@
         }
 
         body {
-            background-color: transparent; /* Background removed */
+            background-color: #000;
             color: var(--clock-color);
             font-family: 'M PLUS Rounded 1c', sans-serif;
             display: flex;
@@ -46,13 +46,14 @@
             background-repeat: no-repeat;
             z-index: -2;
             transition: opacity 0.8s ease;
+            opacity: 0;
         }
 
         #bg-image-layer::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4); /* Subtle dimming for readability */
+            background: rgba(0, 0, 0, 0.4);
             z-index: -1;
         }
 
@@ -65,8 +66,31 @@
             justify-content: center;
             gap: 1rem;
             width: 100%;
-            height: 100%;
+            max-width: 100%;
             padding: 20px;
+            z-index: 1;
+        }
+
+        #date {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        #clock {
+            font-size: var(--clock-size);
+            font-weight: var(--font-weight);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+            opacity: var(--clock-opacity);
+            white-space: nowrap;
+        }
+
+        .seconds {
+            font-size: 0.45em;
+            opacity: 0.6;
+            margin-left: 0.05em;
         }
 
         /* --- Search Bar UI --- */
@@ -100,11 +124,6 @@
             height: 22px;
             margin-right: 15px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-            transition: transform 0.4s ease;
-        }
-
-        .search-container:hover .google-icon {
-            transform: scale(1.1);
         }
 
         #search-input {
@@ -120,28 +139,6 @@
 
         #search-input::placeholder {
             color: rgba(255, 255, 255, 0.4);
-            font-weight: 300;
-        }
-
-        #date {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.8;
-        }
-
-        #clock {
-            font-size: var(--clock-size);
-            font-weight: var(--font-weight);
-            line-height: 1;
-            font-variant-numeric: tabular-nums;
-            letter-spacing: -0.02em;
-            opacity: var(--clock-opacity);
-        }
-
-        .seconds {
-            font-size: 0.45em;
-            opacity: 0.6;
-            margin-left: 0.05em;
         }
 
         /* --- Account Switcher UI --- */
@@ -161,10 +158,6 @@
             align-items: center;
             justify-content: center;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .account-container:hover {
-            transform: scale(1.05);
         }
 
         .pfp {
@@ -191,9 +184,7 @@
             animation: ring-rotate 4s linear infinite;
         }
 
-        .g1-ring.active {
-            opacity: 1;
-        }
+        .g1-ring.active { opacity: 1; }
 
         @keyframes ring-rotate {
             from { transform: rotate(0deg); }
@@ -225,44 +216,14 @@
             transform: translateY(0) scale(1);
         }
 
-        .menu-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding-bottom: 5px;
-        }
-
-        .menu-pfp {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
+        .menu-header { display: flex; align-items: center; gap: 15px; }
+        .menu-pfp { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
         .menu-info { display: flex; flex-direction: column; }
         .menu-name { font-weight: 700; font-size: 1rem; }
         .menu-email { font-size: 0.75rem; opacity: 0.6; }
-
-        .menu-divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 15px 0;
-        }
-
-        .menu-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .menu-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
+        .menu-divider { height: 1px; background: rgba(255, 255, 255, 0.1); margin: 15px 0; }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
+        .menu-item:hover { background: rgba(255, 255, 255, 0.08); }
 
         /* --- Ghost Settings UI --- */
         .settings-wrapper {
@@ -291,7 +252,6 @@
             height: 32px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border-radius: 50%;
             transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: -1;
@@ -305,13 +265,11 @@
             opacity: 0.3;
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             fill: var(--clock-color);
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
         }
 
         .settings-panel {
             background: rgba(15, 15, 15, 0.7);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             padding: 24px;
             border-radius: 24px;
             display: flex;
@@ -333,78 +291,9 @@
 
         .settings-panel::-webkit-scrollbar { display: none; }
 
-        .profile-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: white;
-            font-family: inherit;
-            font-size: 0.85rem;
-            outline: none;
-            width: 100%;
-            transition: all 0.3s;
-        }
-
-        .profile-input:focus {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .pfp-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 5px;
-        }
-
-        .pfp-option {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            object-fit: cover;
-            cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .pfp-option:hover {
-            transform: scale(1.2);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .pfp-option.active {
-            border-color: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-        }
-
-        .custom-pfp-trigger {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-        }
-
-        .custom-pfp-trigger:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-style: solid;
-        }
-
-        /* Hover States */
-        .settings-wrapper:hover .gear-icon {
-            opacity: 1;
-            transform: rotate(180deg) scale(1.1);
-        }
-
-        .settings-wrapper:hover .bubble-bg {
-            width: 55px;
-            height: 55px;
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.15);
-            animation: blob-morph 4s infinite alternate cubic-bezier(0.37, 0, 0.63, 1);
-        }
-
+        .settings-wrapper:hover .gear-icon { opacity: 1; transform: rotate(180deg) scale(1.1); }
+        .settings-wrapper:hover .bubble-bg { width: 55px; height: 55px; opacity: 1; animation: blob-morph 4s infinite alternate; }
+        
         @keyframes blob-morph {
             0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
             33% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; }
@@ -429,208 +318,43 @@
 
         /* --- Mobile Optimization --- */
         @media (max-width: 768px) {
-            body {
-                background-color: #000000; /* Black background on mobile */
-            }
-
-            :root {
-                --clock-size: clamp(4rem, 15vw, 8rem);
-            }
-
-            #date {
-                font-size: 1.1rem;
-            }
-
-            .search-container {
-                width: 90vw;
-                padding: 10px 18px;
-            }
-
-            .search-container:focus-within {
-                width: 95vw;
-            }
-
-            #search-input {
-                font-size: 1rem;
-            }
-
-            .account-wrapper {
-                top: 15px;
-                right: 15px;
-            }
-
-            .account-menu {
-                position: fixed;
-                top: 70px;
-                right: 15px;
-                left: 15px;
-                width: calc(100vw - 30px);
-                max-width: none;
-            }
-
-            .settings-wrapper {
-                bottom: 15px;
-                left: 15px;
-            }
-
-            .settings-panel {
-                position: fixed;
-                bottom: 80px;
-                left: 15px;
-                right: 15px;
-                width: calc(100vw - 30px);
-                max-width: none;
-                max-height: 60vh;
-            }
+            :root { --clock-size: clamp(3rem, 18vw, 7rem); }
+            #date { font-size: 1.1rem; }
+            .search-container { width: 90vw; padding: 10px 18px; }
+            .search-container:focus-within { width: 95vw; }
+            #search-input { font-size: 1rem; }
+            .account-wrapper { top: 15px; right: 15px; }
+            .account-menu { position: fixed; top: 70px; right: 15px; left: 15px; width: auto; }
+            .settings-wrapper { bottom: 15px; left: 15px; }
+            .settings-panel { position: fixed; bottom: 80px; left: 15px; right: 15px; width: auto; max-height: 60vh; }
         }
 
-        .settings-header {
-            font-weight: 800;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 5px;
-            opacity: 0.9;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
-        }
-
-        /* Input Styling */
-        .setting-item { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 8px; 
-        }
-
-        .setting-label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        label { 
-            font-size: 0.7rem; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            opacity: 0.5; 
-            font-weight: 700;
-        }
-
-        .value-display {
-            font-size: 0.7rem;
-            font-family: monospace;
-            opacity: 0.8;
-        }
-
-        /* Custom Slider */
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            outline: none;
-            transition: background 0.2s;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            background: #ffffff;
-            cursor: pointer;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        input[type="range"]:active::-webkit-slider-thumb {
-            transform: scale(1.3);
-        }
-
-        .color-presets {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 5px;
-        }
-
-        .color-swatch {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-
-        .color-swatch:hover {
-            transform: scale(1.3) rotate(15deg);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        .color-swatch.active {
-            border-color: #ffffff;
-            transform: scale(1.1);
-            box-shadow: 0 0 15px var(--clock-color);
-        }
-
-        #custom-color-btn {
-            background-size: 200% 200% !important;
-            animation: custom-gradient 3s linear infinite;
-        }
-
-        @keyframes custom-gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .checkbox-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .checkbox-item { 
-            display: flex;
-            align-items: center; 
-            gap: 8px; 
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 10px;
-            border-radius: 8px;
-            transition: background 0.2s;
-        }
-
-        .checkbox-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .checkbox-item input {
-            cursor: pointer;
-            accent-color: #ffffff;
-        }
-
-        .checkbox-item label {
-            cursor: pointer;
-            margin: 0;
-            opacity: 0.8;
-            text-transform: none;
-            letter-spacing: 0;
-            font-size: 0.75rem;
-        }
+        .settings-header { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; }
+        .setting-item { display: flex; flex-direction: column; gap: 8px; }
+        .setting-label-row { display: flex; justify-content: space-between; align-items: center; }
+        label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; font-weight: 700; }
+        .value-display { font-size: 0.7rem; font-family: monospace; opacity: 0.8; }
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; outline: none; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: #fff; cursor: pointer; border-radius: 50%; }
+        .color-presets { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 5px; }
+        .color-swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.1); transition: all 0.3s; }
+        .color-swatch.active { border-color: #fff; box-shadow: 0 0 15px var(--clock-color); }
+        .checkbox-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; cursor: pointer; background: rgba(255, 255, 255, 0.05); padding: 8px 10px; border-radius: 8px; }
+        .profile-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 8px 12px; color: white; width: 100%; outline: none; }
+        .pfp-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
+        .pfp-option { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.1); }
+        .pfp-option.active { border-color: #fff; }
+        .custom-pfp-trigger { display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); border: 2px dashed rgba(255, 255, 255, 0.2); }
     </style>
 </head>
 <body>
+    <div id="bg-image-layer"></div>
     <div class="account-wrapper">
         <div class="account-container" id="account-trigger">
             <div class="g1-ring" id="g1-ring"></div>
             <img src="pictures/picture.jpg" class="pfp" id="display-pfp" alt="Profile">
         </div>
-
         <div class="account-menu">
             <div class="menu-header">
                 <img src="pictures/picture.jpg" class="menu-pfp" id="menu-pfp" alt="Profile">
@@ -641,7 +365,7 @@
             </div>
             <div class="menu-divider"></div>
             <div class="menu-item" id="edit-profile-btn">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                 Manage Profile
             </div>
         </div>
@@ -664,9 +388,7 @@
     <div class="settings-wrapper">
         <div class="gear-container">
             <div class="bubble-bg"></div>
-            <svg class="gear-icon" viewBox="0 0 24 24">
-                <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.21-0.06,0.47,0.12,0.61l2.03,1.58C4.84,11.36,4.81,11.68,4.81,12c0,0.32,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.11-0.21,0.06-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
-            </svg>
+            <svg class="gear-icon" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.21-0.06,0.47,0.12,0.61l2.03,1.58C4.84,11.36,4.81,11.68,4.81,12c0,0.32,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.11-0.21,0.06-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
         </div>
 
         <div class="settings-panel">
@@ -688,71 +410,55 @@
                 </div>
                 <input type="file" id="pfp-upload" accept="image/*" style="display: none;">
             </div>
+            <div class="setting-item"><div class="checkbox-item"><input type="checkbox" id="g1-toggle"><label for="g1-toggle">Google One Ring</label></div></div>
+
+            <div class="menu-divider"></div>
+            <div class="settings-header">Background Settings</div>
             <div class="setting-item">
-                <div class="checkbox-item">
-                    <input type="checkbox" id="g1-toggle">
-                    <label for="g1-toggle">Google One Ring</label>
+                <div class="checkbox-row" style="grid-template-columns: 1fr;">
+                    <div class="checkbox-item" id="bg-upload-btn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        <label>Upload Background</label>
+                    </div>
+                    <div class="checkbox-item" id="bg-remove-btn" style="display: none;">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="#ff5f5f"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        <label style="color: #ff5f5f;">Remove Background</label>
+                    </div>
                 </div>
+                <input type="file" id="bg-upload" accept="image/*" style="display: none;">
             </div>
 
-            <div class="menu-divider" style="margin: 5px 0 10px 0;"></div>
-
+            <div class="menu-divider"></div>
             <div class="settings-header">Clock Settings</div>
-            
             <div class="setting-item">
-                <div class="setting-label-row">
-                    <label>Thickness</label>
-                    <span class="value-display" id="weight-val">Bold</span>
-                </div>
+                <div class="setting-label-row"><label>Thickness</label><span class="value-display" id="weight-val">Bold</span></div>
                 <input type="range" id="weight-slider" min="0" max="3" step="1" value="2">
             </div>
-
             <div class="setting-item">
-                <div class="setting-label-row">
-                    <label>Clock Size</label>
-                    <span class="value-display" id="size-val">12rem</span>
-                </div>
+                <div class="setting-label-row"><label>Size</label><span class="value-display" id="size-val">12rem</span></div>
                 <input type="range" id="size-slider" min="5" max="25" step="0.5" value="12">
             </div>
-
             <div class="setting-item">
-                <div class="setting-label-row">
-                    <label>Opacity</label>
-                    <span class="value-display" id="opacity-val">100%</span>
-                </div>
+                <div class="setting-label-row"><label>Opacity</label><span class="value-display" id="opacity-val">100%</span></div>
                 <input type="range" id="opacity-slider" min="10" max="100" step="5" value="100">
             </div>
-            
             <div class="setting-item">
-                <div class="setting-label-row">
-                    <label>Clock Color</label>
-                    <span class="value-display" id="color-val">White</span>
-                </div>
+                <div class="setting-label-row"><label>Color</label><span class="value-display" id="color-val">White</span></div>
                 <div class="color-presets">
-                    <div class="color-swatch active" style="background: #ffffff;" data-color="#ffffff" title="White"></div>
+                    <div class="color-swatch active" style="background: #fff;" data-color="#ffffff" title="White"></div>
                     <div class="color-swatch" style="background: #ff5f5f;" data-color="#ff5f5f" title="Sunset"></div>
                     <div class="color-swatch" style="background: #5fffaf;" data-color="#5fffaf" title="Mint"></div>
                     <div class="color-swatch" style="background: #5fafff;" data-color="#5fafff" title="Sky"></div>
                     <div class="color-swatch" style="background: #af5fff;" data-color="#af5fff" title="Lavender"></div>
-                    <div class="color-swatch" style="background: #fffb5f;" data-color="#fffb5f" title="Gold">Gold</div>
+                    <div class="color-swatch" style="background: #fffb5f;" data-color="#fffb5f" title="Gold"></div>
                     <div class="color-swatch" id="custom-color-btn" style="background: linear-gradient(45deg, #ff0000, #ff00ff, #0000ff, #00ffff, #00ff00, #ffff00, #ff0000);" title="Custom"></div>
                 </div>
-                <input type="color" id="color-picker" value="#ffffff" style="display: none;">
+                <input type="color" id="color-picker" style="display: none;">
             </div>
-
             <div class="checkbox-row">
-                <div class="checkbox-item">
-                    <input type="checkbox" id="date-toggle" checked>
-                    <label for="date-toggle">Date</label>
-                </div>
-                <div class="checkbox-item">
-                    <input type="checkbox" id="seconds-toggle" checked>
-                    <label for="seconds-toggle">Seconds</label>
-                </div>
-                <div class="checkbox-item">
-                    <input type="checkbox" id="format-toggle" checked>
-                    <label for="format-toggle">24h</label>
-                </div>
+                <div class="checkbox-item"><input type="checkbox" id="date-toggle" checked><label for="date-toggle">Date</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="seconds-toggle" checked><label for="seconds-toggle">Seconds</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="format-toggle" checked><label for="format-toggle">24h</label></div>
             </div>
         </div>
     </div>
@@ -797,40 +503,31 @@
             let h = now.getHours();
             const m = String(now.getMinutes()).padStart(2, '0');
             const s = String(now.getSeconds()).padStart(2, '0');
-            
             let ampmHtml = '';
             if (!formatToggle.checked) {
                 const ampm = h >= 12 ? 'PM' : 'AM';
-                h = h % 12;
-                h = h ? h : 12;
+                h = h % 12 || 12;
                 ampmHtml = `<span class="seconds" style="margin-left: 10px; font-size: 0.35em;">${ampm}</span>`;
             }
-            
             const hStr = String(h).padStart(2, '0');
             let secondsHtml = secondsToggle.checked ? `<span class="seconds">${s}</span>` : '';
-            
             clockEl.innerHTML = `${hStr}:${m}${secondsHtml}${ampmHtml}`;
-            
-            const options = { weekday: 'long', month: 'long', day: 'numeric' };
-            dateEl.innerText = now.toLocaleDateString(undefined, options);
+            dateEl.innerText = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
         }
 
         weightSlider.addEventListener('input', (e) => {
-            const val = e.target.value;
-            document.documentElement.style.setProperty('--font-weight', weights[val]);
-            weightVal.innerText = weightNames[val];
+            document.documentElement.style.setProperty('--font-weight', weights[e.target.value]);
+            weightVal.innerText = weightNames[e.target.value];
         });
 
         sizeSlider.addEventListener('input', (e) => {
-            const val = e.target.value;
-            document.documentElement.style.setProperty('--clock-size', val + 'rem');
-            sizeVal.innerText = val + 'rem';
+            document.documentElement.style.setProperty('--clock-size', e.target.value + 'rem');
+            sizeVal.innerText = e.target.value + 'rem';
         });
 
         opacitySlider.addEventListener('input', (e) => {
-            const val = e.target.value;
-            document.documentElement.style.setProperty('--clock-opacity', val / 100);
-            opacityVal.innerText = val + '%';
+            document.documentElement.style.setProperty('--clock-opacity', e.target.value / 100);
+            opacityVal.innerText = e.target.value + '%';
         });
 
         function updateClockColor(color, name) {
@@ -840,13 +537,9 @@
 
         colorSwatches.forEach(swatch => {
             swatch.addEventListener('click', () => {
-                if (swatch.id === 'custom-color-btn') {
-                    colorPicker.click();
-                } else {
-                    const color = swatch.dataset.color;
-                    const name = swatch.title;
-                    updateClockColor(color, name);
-                    
+                if (swatch.id === 'custom-color-btn') colorPicker.click();
+                else {
+                    updateClockColor(swatch.dataset.color, swatch.title);
                     colorSwatches.forEach(s => s.classList.remove('active'));
                     swatch.classList.add('active');
                 }
@@ -860,9 +553,7 @@
         });
 
         dateToggle.addEventListener('change', (e) => {
-            dateEl.style.visibility = e.target.checked ? 'visible' : 'hidden';
-            dateEl.style.height = e.target.checked ? 'auto' : '0';
-            dateEl.style.margin = e.target.checked ? '0 0 0.5rem 0' : '0';
+            dateEl.style.display = e.target.checked ? 'block' : 'none';
         });
 
         secondsToggle.addEventListener('change', updateClock);
@@ -874,9 +565,7 @@
             }
         });
 
-        // Background Logic
         bgUploadBtn.addEventListener('click', () => bgUpload.click());
-        
         bgUpload.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (file) {
@@ -897,33 +586,21 @@
             bgUpload.value = '';
         });
 
-        // Profile Logic
-        nameInput.addEventListener('input', (e) => {
-            displayName.innerText = e.target.value || 'Wolly';
-        });
-
-        g1Toggle.addEventListener('change', (e) => {
-            if (e.target.checked) g1Ring.classList.add('active');
-            else g1Ring.classList.remove('active');
-        });
-
+        nameInput.addEventListener('input', (e) => displayName.innerText = e.target.value || 'Wolly');
+        g1Toggle.addEventListener('change', (e) => g1Ring.classList.toggle('active', e.target.checked));
         editProfileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             settingsWrapper.classList.add('force-show');
             setTimeout(() => nameInput.focus(), 100);
         });
 
-        // Toggle settings for mobile/touch
         gearContainer.addEventListener('click', (e) => {
             e.stopPropagation();
             settingsWrapper.classList.toggle('force-show');
         });
 
-        // Close panels when clicking outside
         document.addEventListener('click', (e) => {
-            if (!settingsWrapper.contains(e.target)) {
-                settingsWrapper.classList.remove('force-show');
-            }
+            if (!settingsWrapper.contains(e.target)) settingsWrapper.classList.remove('force-show');
         });
 
         const pfpUpload = document.getElementById('pfp-upload');
@@ -931,12 +608,9 @@
 
         pfpOptions.forEach(option => {
             option.addEventListener('click', () => {
-                if (option.id === 'custom-pfp-btn') {
-                    pfpUpload.click();
-                } else {
-                    const src = option.dataset.src;
-                    updateAllPfps(src);
-                    
+                if (option.id === 'custom-pfp-btn') pfpUpload.click();
+                else {
+                    displayPfp.src = menuPfp.src = option.dataset.src;
                     pfpOptions.forEach(opt => opt.classList.remove('active'));
                     option.classList.add('active');
                 }
@@ -948,41 +622,14 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    const src = event.target.result;
-                    updateAllPfps(src);
-                    
-                    // Mark custom button as active
+                    displayPfp.src = menuPfp.src = event.target.result;
                     pfpOptions.forEach(opt => opt.classList.remove('active'));
                     customPfpBtn.classList.add('active');
-                    
-                    // Preview the uploaded image in the custom button
-                    customPfpBtn.innerHTML = `<img src="${src}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                    customPfpBtn.style.borderStyle = 'solid';
+                    customPfpBtn.innerHTML = `<img src="${event.target.result}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
                 };
                 reader.readAsDataURL(file);
             }
         });
-
-        function updateAllPfps(src) {
-            displayPfp.src = src;
-            menuPfp.src = src;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
-</body>
-</html>tn.innerHTML = `<img src="${src}" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">`;
-                    customPfpBtn.style.borderStyle = 'solid';
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function updateAllPfps(src) {
-            displayPfp.src = src;
-            menuPfp.src = src;
-        }
 
         setInterval(updateClock, 1000);
         updateClock();
