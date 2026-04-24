@@ -1,162 +1,238 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Work in Progress</title>
-  <meta name="description" content="This website is currently under construction." />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WollyDev24 | Portfolio</title>
+  <meta name="description" content="Kustom Creator, Designer, and Python Developer based in Germany.">
   <style>
     :root {
-      --bg: #0e0e11;
-      --fg: #eaeaf0;
-      --muted: #a1a1aa;
-      --accent: #6ae3ff;
-      --card: #16161d;
-    }* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+      --bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --text-main: #2d3748;
+      --text-muted: #718096;
+      --accent: #a0d8ef;
+      --accent-hover: #8ccbe6;
+      --border: #e2e8f0;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
 
-body {
-  min-height: 100vh;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-  background:
-    radial-gradient(
-      circle at top,
-      rgba(80, 255, 211, 0.18),
-      rgba(0, 255, 157, 0.08) 35%,
-      #0e0e11 70%
-    );
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem 1rem;
+    }
 
-  color: var(--fg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.2rem;
-}
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+      animation: fadeIn 0.8s ease-out;
+    }
 
-.container {
-  background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)), var(--card);
-  padding: 3rem 3.5rem;
-  border-radius: 24px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7);
-  max-width: 520px;
-  width: 100%;
-  text-align: center;
-  animation: fadeUp 0.8s ease-out;
-}
+    .profile-info {
+      margin-top: 1rem;
+    }
 
-h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.8rem;
-}
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.5rem;
+    }
 
-p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: var(--muted);
-  margin-bottom: 2rem;
-}
+    .tagline {
+      font-family: 'Courier New', Courier, monospace;
+      background: var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
 
-.badge {
-  display: inline-block;
-  padding: 0.35rem 0.75rem;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: rgba(106, 227, 255, 0.12);
-  margin-bottom: 1.2rem;
-}
+    .bio {
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-.progress {
-  width: 100%;
-  height: 8px;
-  background: #0b0b10;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 1.5rem;
-}
+    .location {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
 
-.progress span {
-  display: block;
-  height: 100%;
-  width: 85%;
-  background: linear-gradient(90deg, var(--accent), #9effc3);
-  border-radius: inherit;
-  animation: load 2s ease-out;
-}
+    section {
+      margin-bottom: 4rem;
+    }
 
-footer {
-  font-size: 0.8rem;
-  color: var(--muted);
-}
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
 
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+    h2::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 3px;
+      background: var(--accent);
+      margin: 0.5rem auto;
+      border-radius: 2px;
+    }
 
-@keyframes load {
-  from {
-    width: 0;
-  }
-  to {
-    width: 85%;
-  }
-}
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
 
-@media (max-width: 600px) {
-  .container {
-    padding: 2rem 1.8rem;
-    border-radius: 20px;
-  }
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
 
-  h1 {
-    font-size: 1.7rem;
-  }
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
 
-  p {
-    font-size: 0.95rem;
-  }
+    .project-emoji {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
 
-  .badge {
-    font-size: 0.7rem;
-  }
+    .project-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
 
-  footer {
-    font-size: 0.75rem;
-  }
-}
+    .project-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+    }
 
+    footer {
+      text-align: center;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .social-links {
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .social-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: var(--accent-hover);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 2rem; }
+      body { padding: 1.5rem 1rem; }
+    }
   </style>
 </head>
 <body>
-  <main class="container">
-    <div class="badge">Work in Progress</div>
-    <h1>Website in Work ⭐</h1>
-    <p>
-      This website is currently under construction.
-      Please check back soon!
-    </p><div class="progress">
-  <span></span>
-</div>
+  <div class="container">
+    <header>
+      <div class="profile-info">
+        <h1>WollyDev24</h1>
+        <code class="tagline">git commit -m "added new bugs"</code>
+        <p class="bio">
+          Kustom Creator & Designer • Python Developer • Beginner in Android Coding
+        </p>
+        <div class="location">
+          <span>📍 Germany</span>
+        </div>
+      </div>
+    </header>
 
-<footer>
-  © 2026 · WollyDev24
-</footer>
+    <section id="projects">
+      <h2>My Projects</h2>
+      <div class="projects-grid">
+        <a href="https://wollydev24.github.io/sharky" class="project-card">
+          <div class="project-emoji">🦈</div>
+          <div class="project-name">Sharky</div>
+          <p class="project-desc">An easy-to-use Open Source Discord Bot written in Python.</p>
+        </a>
 
-  </main>
+        <a href="https://github.com/wollydev24/YouShadeKWGT" class="project-card">
+          <div class="project-emoji">🌙</div>
+          <div class="project-name">YouShade Expressive</div>
+          <p class="project-desc">KWGT Widgets inspired by Material You Expressive design language.</p>
+        </a>
+
+        <a href="https://github.com/wollydev24/UselessPyScripts" class="project-card">
+          <div class="project-emoji">🐍</div>
+          <div class="project-name">Useless Python Scripts</div>
+          <p class="project-desc">A collection of miscellaneous Python scripts, just for fun.</p>
+        </a>
+
+        <a href="https://github.com/wollydev24/WindowsTools" class="project-card">
+          <div class="project-emoji">🖥️</div>
+          <div class="project-name">WindowsTools</div>
+          <p class="project-desc">A collection of useful tools and scripts for Windows power users.</p>
+        </a>
+      </div>
+    </section>
+
+    <footer>
+      <div class="social-links">
+        <a href="https://github.com/wollydev24">GitHub</a>
+        <a href="https://wollydev24.github.io/telegram">Telegram</a>
+        <a href="https://wollydev24.github.io/wollys_bio">About Me</a>
+      </div>
+      <p>© 2026 WollyDev24. Built with caffeine and bugs.</p>
+    </footer>
+  </div>
 </body>
 </html>
