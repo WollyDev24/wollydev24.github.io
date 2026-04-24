@@ -7,14 +7,15 @@
   <meta name="description" content="Kustom Creator, Designer, and Python Developer based in Germany.">
   <style>
     :root {
-      --bg: #f0f4f8;
-      --card-bg: #ffffff;
-      --text-main: #2d3748;
-      --text-muted: #718096;
-      --accent: #a0d8ef;
-      --accent-hover: #8ccbe6;
-      --border: #e2e8f0;
-      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --bg: #1a0b16; /* Deep Pink Dark Background */
+      --card-bg: #2d1425; /* Dark Pink Cards */
+      --text-main: #ffffff;
+      --text-muted: #e5b3d4;
+      --accent: #ff007f; /* Vibrant Neon Pink */
+      --accent-hover: #ff4da6;
+      --border: #4d223e;
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+      --shadow-hover: 0 25px 30px -5px rgba(255, 0, 127, 0.4), 0 15px 15px -5px rgba(255, 0, 127, 0.2);
     }
 
     * {
@@ -28,7 +29,7 @@
       background-color: var(--bg);
       color: var(--text-main);
       line-height: 1.6;
-      padding: 2rem 1rem;
+      padding: 8rem 1rem 6rem;
     }
 
     .container {
@@ -37,20 +38,33 @@
     }
 
     header {
-      text-align: center;
-      margin-bottom: 4rem;
+      text-align: left;
+      margin-bottom: 3rem;
       animation: fadeIn 0.8s ease-out;
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
     }
 
     .profile-info {
-      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 800;
       letter-spacing: -0.025em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.1rem;
+      color: var(--text-main);
+      line-height: 1.1;
     }
 
     .tagline {
@@ -58,84 +72,130 @@
       background: var(--border);
       padding: 0.2rem 0.6rem;
       border-radius: 4px;
-      font-size: 0.9rem;
-      color: var(--text-main);
+      font-size: 0.85rem;
+      color: var(--accent);
+      width: fit-content;
     }
 
-    .bio {
-      margin-top: 1.5rem;
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .location {
-      margin-top: 0.5rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
+    /* Tab Styles */
+    .tabs {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
     }
 
-    section {
-      margin-bottom: 4rem;
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      transition: all 0.2s;
+      border-radius: 8px;
     }
 
-    h2 {
+    .tab-btn.active {
+      color: var(--accent);
+      background: rgba(255, 0, 127, 0.1);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-content {
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .about-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .about-card h3 {
+      color: var(--accent);
+      margin-bottom: 1rem;
       font-size: 1.5rem;
-      margin-bottom: 2rem;
-      text-align: center;
-      position: relative;
     }
 
-    h2::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 3px;
-      background: var(--accent);
-      margin: 0.5rem auto;
-      border-radius: 2px;
+    .about-card p {
+      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .skill-item {
+      background: var(--bg);
+      padding: 0.75rem;
+      border-radius: 8px;
+      text-align: center;
+      border: 1px solid var(--border);
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .skill-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.3);
+      background: rgba(255, 0, 127, 0.05);
+    }
+
+    .hidden {
+      display: none;
     }
 
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+      gap: 2rem;
     }
 
     .project-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 1.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
+      padding: 2rem;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
       text-decoration: none;
       color: inherit;
       display: flex;
       flex-direction: column;
       height: 100%;
+      box-shadow: var(--shadow);
     }
 
     .project-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
+      transform: translateY(-12px);
+      box-shadow: var(--shadow-hover);
       border-color: var(--accent);
     }
 
     .project-emoji {
-      font-size: 2rem;
+      font-size: 2.5rem;
       margin-bottom: 1rem;
     }
 
     .project-name {
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
+      color: var(--accent);
     }
 
     .project-desc {
@@ -161,13 +221,15 @@
     }
 
     .social-links a {
-      color: var(--text-muted);
+      color: var(--accent);
       text-decoration: none;
       transition: color 0.2s;
+      font-weight: 600;
     }
 
     .social-links a:hover {
       color: var(--accent-hover);
+      text-decoration: underline;
     }
 
     @keyframes fadeIn {
@@ -176,39 +238,43 @@
     }
 
     @media (max-width: 640px) {
+      header { flex-direction: column; text-align: center; }
+      .profile-info { align-items: center; }
+      .tagline { margin: 0 auto; }
       h1 { font-size: 2rem; }
-      body { padding: 1.5rem 1rem; }
+      body { padding: 4rem 1rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
+      <img src="https://github.com/wollydev24.png" alt="WollyDev24" class="profile-pic">
       <div class="profile-info">
         <h1>WollyDev24</h1>
         <code class="tagline">git commit -m "added new bugs"</code>
-        <p class="bio">
-          Kustom Creator & Designer • Python Developer • Beginner in Android Coding
-        </p>
-        <div class="location">
+        <div class="location" style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
           <span>📍 Germany</span>
         </div>
       </div>
     </header>
 
-    <section id="projects">
-      <h2>My Projects</h2>
+    <nav class="tabs">
+      <button class="tab-btn active" onclick="switchTab('projects', this)">Projects</button>
+      <button class="tab-btn" onclick="switchTab('about', this)">About Me</button>
+    </nav>
+
+    <div id="projects-tab" class="tab-content">
       <div class="projects-grid">
+        <a href="https://github.com/wollydev24/YouShade" class="project-card">
+          <div class="project-emoji">🌙</div>
+          <div class="project-name">YouShade Expressive</div>
+          <p class="project-desc">KWGT Widgets inspired by Material You Expressive design language.</p>
+        </a>
         <a href="https://wollydev24.github.io/sharky" class="project-card">
           <div class="project-emoji">🦈</div>
           <div class="project-name">Sharky</div>
           <p class="project-desc">An easy-to-use Open Source Discord Bot written in Python.</p>
-        </a>
-
-        <a href="https://github.com/wollydev24/YouShadeKWGT" class="project-card">
-          <div class="project-emoji">🌙</div>
-          <div class="project-name">YouShade Expressive</div>
-          <p class="project-desc">KWGT Widgets inspired by Material You Expressive design language.</p>
         </a>
 
         <a href="https://github.com/wollydev24/UselessPyScripts" class="project-card">
@@ -216,23 +282,50 @@
           <div class="project-name">Useless Python Scripts</div>
           <p class="project-desc">A collection of miscellaneous Python scripts, just for fun.</p>
         </a>
-
-        <a href="https://github.com/wollydev24/WindowsTools" class="project-card">
-          <div class="project-emoji">🖥️</div>
-          <div class="project-name">WindowsTools</div>
-          <p class="project-desc">A collection of useful tools and scripts for Windows power users.</p>
-        </a>
       </div>
-    </section>
+    </div>
+
+    <div id="about-tab" class="tab-content hidden">
+      <div class="about-card">
+        <h3>Hello there! 👋</h3>
+        <p>
+          I'm a Kustom Creator and UI/UX Designer from Germany. I specialize in crafting modern, expressive interfaces and building functional & fun projects with Python.
+        </p>
+        <p>
+          Currently, I'm trying to lern Android coding. I love open-source and making tools that help (or just entertain) others.
+        </p>
+        
+        <div class="skills-grid">
+          <div class="skill-item">🎨 Kustom Design</div>
+          <div class="skill-item">🐍 Python</div>
+          <div class="skill-item">🤖 Android (Learning)</div>
+          <div class="skill-item">💻 UI/UX Design</div>
+        </div>
+      </div>
+    </div>
 
     <footer>
       <div class="social-links">
         <a href="https://github.com/wollydev24">GitHub</a>
         <a href="https://wollydev24.github.io/telegram">Telegram</a>
-        <a href="https://wollydev24.github.io/wollys_bio">About Me</a>
+        <a href="https://wollydev24.github.io/wollys_bio">Links</a>
       </div>
       <p>© 2026 WollyDev24. Built with caffeine and bugs.</p>
     </footer>
   </div>
+
+  <script>
+    function switchTab(tabId, btn) {
+      // Hide all tabs
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+      // Remove active class from all buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      // Show target tab
+      document.getElementById(tabId + '-tab').classList.remove('hidden');
+      // Set active button
+      btn.classList.add('active');
+    }
+  </script>
 </body>
 </html>
