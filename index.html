@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WollyDev24 | Portfolio</title>
-  <meta name="description" content="Kustom Creator, App Developer and Designer based in Germany.">
+  <meta name="description" content="Kustom Creator, App Developer and Designer from Germany.">
   <style>
     :root {
-      --bg: #1a0b16; /* Deep Pink Dark Background */
-      --card-bg: #2d1425; /* Dark Pink Cards */
+      --bg: #1a0b16;
+      /* Deep Pink Dark Background */
+      --card-bg: #2d1425;
+      /* Dark Pink Cards */
       --text-main: #ffffff;
       --text-muted: #e5b3d4;
-      --accent: #ff007f; /* Vibrant Neon Pink */
+      --accent: #ff007f;
+      /* Vibrant Neon Pink */
       --accent-hover: #ff4da6;
       --border: #4d223e;
       --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
@@ -233,19 +237,42 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 640px) {
-      header { flex-direction: column; text-align: center; }
-      .profile-info { align-items: center; }
-      .tagline { margin: 0 auto; }
-      h1 { font-size: 2rem; }
-      body { padding: 4rem 1rem; }
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-info {
+        align-items: center;
+      }
+
+      .tagline {
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      body {
+        padding: 4rem 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -253,7 +280,8 @@
       <div class="profile-info">
         <h1>WollyDev24</h1>
         <code class="tagline">git commit -m "added new bugs"</code>
-        <div class="location" style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+        <div class="location"
+          style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
           <span>📍 Germany</span>
         </div>
       </div>
@@ -278,15 +306,15 @@
         </a>
         <a href="https://wollydev24.github.io/sharky" class="project-card">
           <div class="project-emoji">🦈</div>
-          <div class="project-name">Sharky</div>
+          <div class="project-name">Sharky (depracted)</div>
           <p class="project-desc">An easy-to-use Open Source Discord Bot written in Python.</p>
         </a>
 
-        <a href="https://github.com/wollydev24/UselessPyScripts" class="project-card">
+        <!-- <a href="https://github.com/wollydev24/UselessPyScripts" class="project-card">
           <div class="project-emoji">🐍</div>
           <div class="project-name">Useless Python Scripts</div>
           <p class="project-desc">A collection of miscellaneous Python scripts, just for fun.</p>
-        </a>
+        </a> -->
       </div>
     </div>
 
@@ -294,12 +322,13 @@
       <div class="about-card">
         <h3>Hello there! 👋</h3>
         <p>
-          I'm a Kustom Creator and UI/UX Designer from Germany. I specialize in designing modern interfaces, coding with python and website development.
+          I'm a Kustom Creator and UI/UX Designer from Germany. I specialize in designing modern interfaces, coding with
+          python and website development.
         </p>
         <p>
           Currently, I'm trying to lern Android coding. I love open-source.
         </p>
-        
+
         <div class="skills-grid">
           <div class="skill-item">🎨 Kustom Design</div>
           <div class="skill-item">🐍 Python</div>
@@ -325,7 +354,7 @@
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
       // Remove active class from all buttons
       document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      
+
       // Show target tab
       document.getElementById(tabId + '-tab').classList.remove('hidden');
       // Set active button
@@ -333,4 +362,5 @@
     }
   </script>
 </body>
+
 </html>
