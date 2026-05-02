@@ -318,8 +318,46 @@
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .project-card:hover .project-emoji {
+    /* Desktop Hover Expansion */
+    @media (hover: hover) {
+      .project-card:hover .project-details {
+        max-height: 500px;
+        opacity: 1;
+        padding-bottom: 1.5rem;
+      }
+      .project-card:hover .chevron {
+        transform: rotate(90deg);
+        opacity: 1;
+        color: var(--accent);
+      }
+      .project-card:hover .project-emoji {
+        transform: scale(1.1);
+      }
+    }
+
+    /* Mobile/Click Expansion */
+    .project-card.expanded .project-details {
+      max-height: 600px;
+      opacity: 1;
+      padding-bottom: 1.5rem;
+    }
+
+    .project-card.expanded .chevron {
+      transform: rotate(90deg);
+      opacity: 1;
+      color: var(--accent);
+    }
+
+    .project-card.expanded .project-emoji {
       transform: scale(1.1);
+    }
+
+    .project-header {
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      width: 100%;
     }
 
     .project-info {
@@ -346,12 +384,6 @@
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
     }
 
-    .project-card:hover .chevron {
-      transform: rotate(90deg);
-      opacity: 1;
-      color: var(--accent);
-    }
-
     /* Expandable Content */
     .project-details {
       max-height: 0;
@@ -359,12 +391,6 @@
       overflow: hidden;
       transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
       padding: 0 1.5rem;
-    }
-
-    .project-card:hover .project-details {
-      max-height: 500px;
-      opacity: 1;
-      padding-bottom: 1.5rem;
     }
 
     .project-banner {
@@ -375,7 +401,7 @@
       border-radius: 20px;
       margin-top: 0.5rem;
       margin-bottom: 1.2rem;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(255, 255, 255, 0.05);
       box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
 
@@ -1233,22 +1259,49 @@
     initCanvas();
     animate();
 
-// Auto-scroll on hover for project cards
+// Project card interaction (Mobile optimization & Redirect control)
     document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        // If the card is not expanded, prevent the link and expand it instead
+        if (!card.classList.contains('expanded')) {
+          e.preventDefault();
+          
+          // Close other expanded cards
+          document.querySelectorAll('.project-card.expanded').forEach(other => {
+            if (other !== card) other.classList.remove('expanded');
+          });
+          
+          card.classList.add('expanded');
+          
+          // Smooth scroll into view
+          setTimeout(() => {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        }
+        // If it IS expanded, we let the default <a> behavior happen (redirect)
+      });
+      
+      // Desktop: Automatically 'expand' on hover so the first click works
       card.addEventListener('mouseenter', () => {
-        // Wait for the expansion animation to progress (500ms transition)
-        setTimeout(() => {
-          const rect = card.getBoundingClientRect();
-          const isBottomOffscreen = rect.bottom > window.innerHeight;
-          const isTopOffscreen = rect.top < 80; // Account for sticky tabs
+        if (window.matchMedia('(hover: hover)').matches) {
+          card.classList.add('expanded');
+          
+          // Auto-scroll logic for desktop
+          setTimeout(() => {
+            if (card.matches(':hover')) { // Double check we're still hovering
+              const rect = card.getBoundingClientRect();
+              if (rect.bottom > window.innerHeight || rect.top < 80) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }
+          }, 400);
+        }
+      });
 
-          if (isBottomOffscreen || isTopOffscreen) {
-            card.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center'
-            });
-          }
-        }, 300); // 400ms is the sweet spot for the 500ms transition
+      card.addEventListener('mouseleave', () => {
+        if (window.matchMedia('(hover: hover)').matches) {
+          card.classList.remove('expanded');
+        }
       });
     });
   </script>
