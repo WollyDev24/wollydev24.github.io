@@ -676,53 +676,69 @@
 
     .mode-preview {
       width: 100%;
-      height: 60px;
-      border-radius: 12px;
-      padding: 8px;
+      height: 85px;
+      border-radius: 16px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      border: 2px solid transparent;
-      transition: border-color 0.3s ease;
-      background: #f2f2f2;
+      gap: 8px;
+      border: 2.5px solid transparent;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      background: #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      position: relative;
     }
 
     .dark-preview {
       background: #000000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
 
+    /* Selected state border */
+    .mode-option input[type="radio"]:checked ~ .mode-preview,
     .mode-option:hover .mode-preview {
-      border-color: var(--border);
+      /* One UI doesn't always have a border on the card, but it's cleaner for web */
     }
 
     .preview-card {
-      width: 40px;
-      height: 8px;
-      border-radius: 4px;
-      background: #e0e0e0;
-    }
-
-    .dark-preview .preview-card {
-      background: #333333;
+      width: 30px;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--accent); /* Samsung Blue Accent */
     }
 
     .preview-text {
       width: 100%;
-      height: 30px;
-      border-radius: 6px;
-      background: #ffffff;
+      height: 40px;
+      border-radius: 10px;
+      background: #f2f2f2;
+      border: 1px solid #e5e5e5;
     }
 
     .dark-preview .preview-text {
       background: #1c1c1e;
+      border: 1px solid #2c2c2e;
+    }
+
+    /* Small status bar dot */
+    .mode-preview::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      right: 12px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #ccc;
     }
 
     .mode-label {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       cursor: pointer;
+      margin-top: 4px;
     }
 
     .mode-name {
@@ -948,7 +964,7 @@
             <div class="chevron">›</div>
           </div>
           <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/banner.png');"></div>
+            <div class="project-banner" style="background-image: url('pictures/YouShade.png');"></div>
             <p class="project-long-desc">
               A comprehensive collection of Kustom widgets bringing the Material You Expressive design language to any Android device. Featuring dynamic color support and highly customizable layouts.
             </p>
@@ -965,7 +981,7 @@
             <div class="chevron">›</div>
           </div>
           <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/backround.jpg');"></div>
+            <div class="project-banner" style="background-image: url('pictures/DSBmaterial.png');"></div>
             <p class="project-long-desc">
               A modern redesign of the DSBmobile app interface, focused on accessibility and a clean aesthetic. Built to provide a better user experience for students and teachers alike.
             </p>
@@ -982,7 +998,7 @@
             <div class="chevron">›</div>
           </div>
           <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/picture.jpg');"></div>
+            <div class="project-banner" style="background-image: url('pictures/placeholder.png');"></div>
             <p class="project-long-desc">
               A versatile and easy-to-use Discord bot that was designed to simplify server management and provide fun interactive features for community members.
             </p>
@@ -1127,7 +1143,7 @@
     const canvas = document.getElementById('canvas-bg');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    let mouse = { x: null, y: null, radius: 150 };
+    let mouse = { x: null, y: null, radius: 200 }; // Increased radius
 
     window.addEventListener('mousemove', (e) => {
       mouse.x = e.x;
@@ -1138,7 +1154,7 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       particles = [];
-      const numberOfParticles = (canvas.width * canvas.height) / 15000;
+      const numberOfParticles = (canvas.width * canvas.height) / 10000; // Increased count
       for (let i = 0; i < numberOfParticles; i++) {
         particles.push(new Particle());
       }
@@ -1148,9 +1164,9 @@
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 1.2 + 0.5;
-        this.speedX = Math.random() * 0.6 - 0.3;
-        this.speedY = Math.random() * 0.6 - 0.3;
+        this.size = Math.random() * 2 + 1; // Increased size
+        this.speedX = Math.random() * 1.2 - 0.6; // Increased speed
+        this.speedY = Math.random() * 1.2 - 0.6;
       }
       update() {
         this.x += this.speedX;
@@ -1160,21 +1176,21 @@
         if (this.y > canvas.height) this.y = 0;
         else if (this.y < 0) this.y = canvas.height;
 
-        // Mouse interaction
+        // More intense mouse interaction
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < mouse.radius) {
-          if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 2;
-          if (mouse.x > this.x && this.x > this.size * 10) this.x -= 2;
-          if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 2;
-          if (mouse.y > this.y && this.y > this.size * 10) this.y -= 2;
+          if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 3;
+          if (mouse.x > this.x && this.x > this.size * 10) this.x -= 3;
+          if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 3;
+          if (mouse.y > this.y && this.y > this.size * 10) this.y -= 3;
         }
       }
       draw() {
         const color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
         ctx.fillStyle = color;
-        ctx.globalAlpha = 0.4;
+        ctx.globalAlpha = 0.7; // Brighter particles
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -1191,8 +1207,8 @@
           let distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < 120) {
             ctx.strokeStyle = color;
-            ctx.globalAlpha = (1 - (distance / 120)) * 0.12;
-            ctx.lineWidth = 0.8;
+            ctx.globalAlpha = (1 - (distance / 120)) * 0.25; // Brighter lines
+            ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[a].x, particles[a].y);
             ctx.lineTo(particles[b].x, particles[b].y);
