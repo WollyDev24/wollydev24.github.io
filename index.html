@@ -225,20 +225,20 @@
       border-radius: 28px;
       top: 0.4rem;
       left: 0.4rem;
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
       z-index: 1;
     }
 
     .tab-btn:nth-child(2).active ~ .tab-slider {
-      transform: translateX(calc(100% + 0.4rem));
+      transform: translateX(100%);
     }
 
     .tab-btn:nth-child(3).active ~ .tab-slider {
-      transform: translateX(calc(200% + 0.8rem));
+      transform: translateX(200%);
     }
 
     .tab-content {
-      transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
     }
 
     .tab-content.hidden {
@@ -1012,7 +1012,7 @@
             <span class="settings-item-desc">Enable background image</span>
           </div>
           <label class="samsung-switch">
-            <input type="checkbox" id="background-toggle" checked onchange="toggleBackground()">
+            <input type="checkbox" id="background-toggle" onchange="toggleBackground()">
             <span class="slider"></span>
           </label>
         </div>
@@ -1302,7 +1302,10 @@
     }
 
     // Background
-    if (savedBackground === 'false') {
+    if (savedBackground === 'true') {
+      document.getElementById('background-toggle').checked = true;
+      document.body.classList.remove('no-background');
+    } else {
       document.getElementById('background-toggle').checked = false;
       document.body.classList.add('no-background');
     }
