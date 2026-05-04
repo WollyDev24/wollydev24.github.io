@@ -237,6 +237,16 @@
       transform: translateX(200%);
     }
 
+    /* Subtle leaning motion on hover - hints the direction without jumping */
+    .tabs:has(.tab-btn:nth-child(1).active) .tab-btn:nth-child(2):hover ~ .tab-slider { transform: translateX(24px); }
+    .tabs:has(.tab-btn:nth-child(1).active) .tab-btn:nth-child(3):hover ~ .tab-slider { transform: translateX(48px); }
+
+    .tabs:has(.tab-btn:nth-child(2).active) .tab-btn:nth-child(1):hover ~ .tab-slider { transform: translateX(calc(100% - 24px)); }
+    .tabs:has(.tab-btn:nth-child(2).active) .tab-btn:nth-child(3):hover ~ .tab-slider { transform: translateX(calc(100% + 24px)); }
+
+    .tabs:has(.tab-btn:nth-child(3).active) .tab-btn:nth-child(1):hover ~ .tab-slider { transform: translateX(calc(200% - 48px)); }
+    .tabs:has(.tab-btn:nth-child(3).active) .tab-btn:nth-child(2):hover ~ .tab-slider { transform: translateX(calc(200% - 24px)); }
+
     .tab-content {
       transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
     }
