@@ -1,0 +1,12 @@
+[
+  {
+    "title": "First blog post :3",
+    "date": "May 3, 2026",
+    "emoji": "👋",
+    "excerpt": "*boop* welcome",
+    "content": "This is the first post on my new blog.",
+    "images": [
+      "pictures/placeholder.png"
+    ]
+  }
+]

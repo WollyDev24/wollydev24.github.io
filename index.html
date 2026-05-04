@@ -8,19 +8,28 @@
   <meta name="description" content="Kustom Creator, App Developer and Designer from Germany.">
   <style>
     :root {
-      --bg: #000000;
-      /* OLED Black */
-      --card-bg: #1c1c1e;
-      --card-bg-hover: #242426;
-      /* Dark Grey One UI Card */
+      --bg: rgba(10, 15, 12, 0.4);
+      /* Deep dark teal-ish base */
+      --card-bg: rgba(30, 35, 32, 0.85);
+      --card-bg-hover: rgba(45, 50, 48, 0.9);
+      --accent-glass: rgba(255, 77, 77, 0.1);
+      /* Default accent tint */
+      /* Glassmorphism card bg */
       --text-main: #f5f5f5;
-      --text-muted: #8e8e93;
-      --accent: #007fff;
-      /* Default One UI Blue */
-      --accent-hover: var(--accent);
-      --border: #2c2c2e;
+      --text-muted: #a0acab;
+      --accent: #ff4d4d;
+      /* Character Hair Red */
+      --accent-hover: #ff6666;
+      --border: rgba(255, 255, 255, 0.1);
       --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       --border-radius: 26px;
+    }
+
+    /* Backdrop Filter for Glass effect */
+    .about-card, .projects-grid, .tabs, .settings-panel, .project-emoji {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background-color: var(--accent-glass);
     }
 
     /* Reduce Animations Support */
@@ -78,6 +87,40 @@
       line-height: 1.5;
       padding: 0 1.5rem 6rem;
       overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('pictures/backround.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: blur(30px) brightness(0.5);
+      z-index: -2;
+      transform: scale(1.1); /* Avoid white edges */
+      pointer-events: none;
+    }
+
+    .light-mode body::before {
+      filter: blur(30px) brightness(0.9) saturate(0.8);
+      opacity: 0.4;
+    }
+
+    body.no-background::before {
+      display: none;
+    }
+
+    body.no-background {
+      background-color: #0a0f0c; /* Solid version of the teal base */
+    }
+
+    .light-mode.no-background {
+      background-color: #f0f8f5;
     }
 
     .container {
@@ -124,7 +167,11 @@
       color: var(--accent);
       font-size: 0.85rem;
       margin: 0.2rem 0;
-      opacity: 0.9;
+      text-shadow: 0 0 8px rgba(255, 77, 77, 0.4);
+    }
+
+    .light-mode .tagline {
+      text-shadow: none;
     }
 
     .location {
@@ -173,7 +220,7 @@
     .tab-slider {
       position: absolute;
       height: calc(100% - 0.8rem);
-      width: calc(50% - 0.4rem);
+      width: calc(33.33% - 0.4rem);
       background: var(--accent);
       border-radius: 28px;
       top: 0.4rem;
@@ -183,7 +230,11 @@
     }
 
     .tab-btn:nth-child(2).active ~ .tab-slider {
-      transform: translateX(100%);
+      transform: translateX(calc(100% + 0.4rem));
+    }
+
+    .tab-btn:nth-child(3).active ~ .tab-slider {
+      transform: translateX(calc(200% + 0.8rem));
     }
 
     .tab-content {
@@ -318,19 +369,47 @@
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    /* Desktop Hover Expansion */
+    /* Gallery Styles */
+    .project-gallery {
+      display: flex;
+      gap: 0.8rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      margin-top: 1rem;
+    }
+
+    .project-gallery::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+
+    .gallery-img {
+      height: 160px;
+      border-radius: 14px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Desktop Hover Expansion for Projects only */
     @media (hover: hover) {
-      .project-card:hover .project-details {
+      .project-card:not(.blog-post):hover .project-details {
         max-height: 500px;
         opacity: 1;
         padding-bottom: 1.5rem;
       }
-      .project-card:hover .chevron {
+      .project-card:not(.blog-post):hover .chevron {
         transform: rotate(90deg);
         opacity: 1;
         color: var(--accent);
       }
-      .project-card:hover .project-emoji {
+      .project-card:not(.blog-post):hover .project-emoji {
         transform: scale(1.1);
       }
     }
@@ -412,17 +491,6 @@
       padding: 0 0.5rem;
     }
 
-    /* Full Screen Particle Background */
-    #canvas-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
-
     footer {
       text-align: center;
       margin-top: 6rem;
@@ -484,13 +552,15 @@
     }
 
     .light-mode {
-      --bg: #f2f2f2;
-      --card-bg: #ffffff;
-      --card-bg-hover: #f8f9fa;
-      --text-main: #000000;
-      --text-muted: #666666;
-      --border: #e5e5e5;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --bg: rgba(240, 248, 245, 0.5);
+      /* Soft mint-white */
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-bg-hover: rgba(240, 245, 242, 0.9);
+      --accent-glass: rgba(255, 255, 255, 0.2);
+      --text-main: #1a1c1b;
+      --text-muted: #5e6664;
+      --border: rgba(0, 0, 0, 0.1);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .settings-trigger {
@@ -926,12 +996,25 @@
             <span class="settings-item-desc">Choose your accent color</span>
           </div>
           <div class="color-picker">
-            <div class="color-dot active" style="background: #007fff;" onclick="setAccent('#007fff', this)"></div>
-            <div class="color-dot" style="background: #ff007f;" onclick="setAccent('#ff007f', this)"></div>
-            <div class="color-dot" style="background: #8a2be2;" onclick="setAccent('#8a2be2', this)"></div>
-            <div class="color-dot" style="background: #3cb371;" onclick="setAccent('#3cb371', this)"></div>
-            <div class="color-dot" style="background: #ff8c00;" onclick="setAccent('#ff8c00', this)"></div>
+            <div class="color-dot active" style="background: #ff4d4d;" onclick="setAccent('#ff4d4d', this)"></div>
+            <div class="color-dot" style="background: #57cc99;" onclick="setAccent('#57cc99', this)"></div>
+            <div class="color-dot" style="background: #e0aaff;" onclick="setAccent('#e0aaff', this)"></div>
+            <div class="color-dot" style="background: #8d6e63;" onclick="setAccent('#8d6e63', this)"></div>
+            <div class="color-dot" style="background: #d4e157;" onclick="setAccent('#d4e157', this)"></div>
           </div>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-item-info">
+            <span class="settings-item-title">Show background</span>
+            <span class="settings-item-desc">Enable background image</span>
+          </div>
+          <label class="samsung-switch">
+            <input type="checkbox" id="background-toggle" checked onchange="toggleBackground()">
+            <span class="slider"></span>
+          </label>
         </div>
       </div>
 
@@ -974,6 +1057,7 @@
 
     <nav class="tabs">
       <button class="tab-btn active" onclick="switchTab('projects', this)">Projects</button>
+      <button class="tab-btn" onclick="switchTab('blog', this)">Blog</button>
       <button class="tab-btn" onclick="switchTab('about', this)">About Me</button>
       <div class="tab-slider"></div>
     </nav>
@@ -1033,6 +1117,15 @@
       </div>
     </div>
 
+    <div id="blog-tab" class="tab-content hidden">
+      <div id="blog-grid" class="projects-grid">
+        <!-- Blog posts will be loaded here -->
+        <div class="loading-state" style="padding: 2rem; text-align: center; color: var(--text-muted);">
+          Loading blog posts...
+        </div>
+      </div>
+    </div>
+
     <div id="about-tab" class="tab-content hidden">
       <div class="about-card">
         <h3>Hello there! 👋</h3>
@@ -1053,7 +1146,6 @@
       </div>
     </div>
 
-    <canvas id="canvas-bg"></canvas>
     <footer>
       <div class="social-links">
         <a href="https://github.com/wollydev24">GitHub</a>
@@ -1063,6 +1155,61 @@
       <span class="copyright">© 2026 WollyDev24. Built with caffeine and bugs.</span>
     </footer>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+  <script>
+    async function extractPalette() {
+      const img = new Image();
+      img.crossOrigin = "Anonymous";
+      img.src = 'pictures/backround.jpg';
+      
+      img.onload = function() {
+        const colorThief = new ColorThief();
+        // Get 20 colors - ColorThief returns these roughly in order of appearance frequency
+        const palette = colorThief.getPalette(img, 20);
+        
+        const processedPalette = palette.map((rgb, index) => {
+          const r = rgb[0], g = rgb[1], b = rgb[2];
+          const saturation = Math.max(r, g, b) - Math.min(r, g, b);
+          
+          // SCORING ALGORITHM:
+          // We want colors that are BOTH common (low index) and vibrant (high saturation)
+          // indexWeight goes from 1.0 (most common) to 0.1 (least common)
+          const indexWeight = 1 - (index / 20);
+          const score = saturation * indexWeight;
+
+          const hex = "#" + rgb.map(x => {
+            const h = x.toString(16);
+            return h.length === 1 ? "0" + h : h;
+          }).join("");
+          return { hex, saturation, score };
+        });
+
+        // Filter for minimum vibrancy, then sort by the new combined score
+        const vibrantPalette = processedPalette
+          .filter(c => c.saturation > 45) // Stricter filter to avoid grey/brown mud
+          .sort((a, b) => b.score - a.score) // Highest score (vibrant + common) first
+          .slice(0, 5);
+
+        // Update color picker dots
+        const dots = document.querySelectorAll('.color-dot');
+        dots.forEach((dot, i) => {
+          if (vibrantPalette[i]) {
+            dot.style.background = vibrantPalette[i].hex;
+            dot.onclick = () => setAccent(vibrantPalette[i].hex, dot);
+          }
+        });
+
+        // If no saved accent, use the winner of the new ranking
+        if (!localStorage.getItem('accentColor') && vibrantPalette.length > 0) {
+          setAccent(vibrantPalette[0].hex);
+        }
+      };
+    }
+
+    // Call extraction
+    extractPalette();
+  </script>
 
   <script>
     function switchTab(tabId, btn) {
@@ -1099,7 +1246,15 @@
 
     function setAccent(color, el) {
       document.documentElement.style.setProperty('--accent', color);
+      // Add a subtle tint to the glass background (12% opacity)
+      document.documentElement.style.setProperty('--accent-glass', color + '1f'); 
       localStorage.setItem('accentColor', color);
+      
+      // Update tagline glow
+      const tagline = document.querySelector('.tagline');
+      if (tagline) {
+        tagline.style.textShadow = `0 0 8px ${color}66`; // 40% opacity
+      }
       
       // Update UI
       document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
@@ -1117,6 +1272,17 @@
       }
     }
 
+    function toggleBackground() {
+      const show = document.getElementById('background-toggle').checked;
+      if (show) {
+        document.body.classList.remove('no-background');
+        localStorage.setItem('showBackground', 'true');
+      } else {
+        document.body.classList.add('no-background');
+        localStorage.setItem('showBackground', 'false');
+      }
+    }
+
     function resetSettings() {
       localStorage.clear();
       window.location.reload();
@@ -1126,12 +1292,19 @@
     const savedTheme = localStorage.getItem('theme');
     const savedAccent = localStorage.getItem('accentColor');
     const savedReduce = localStorage.getItem('reduceAnimations');
+    const savedBackground = localStorage.getItem('showBackground');
     
     // Theme
     if (savedTheme === 'light') {
       setTheme('light');
     } else {
       setTheme('dark');
+    }
+
+    // Background
+    if (savedBackground === 'false') {
+      document.getElementById('background-toggle').checked = false;
+      document.body.classList.add('no-background');
     }
 
     // Accent Color
@@ -1165,105 +1338,59 @@
       }).join("");
     }
 
-// Particle Background Logic
-    const canvas = document.getElementById('canvas-bg');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let mouse = { x: null, y: null, radius: 200 }; // Increased radius
-
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.x;
-      mouse.y = e.y;
-    });
-
-    function initCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      particles = [];
-      const numberOfParticles = (canvas.width * canvas.height) / 10000; // Increased count
-      for (let i = 0; i < numberOfParticles; i++) {
-        particles.push(new Particle());
-      }
-    }
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1; // Increased size
-        this.speedX = Math.random() * 1.2 - 0.6; // Increased speed
-        this.speedY = Math.random() * 1.2 - 0.6;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > canvas.width) this.x = 0;
-        else if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        else if (this.y < 0) this.y = canvas.height;
-
-        // More intense mouse interaction
-        let dx = mouse.x - this.x;
-        let dy = mouse.y - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < mouse.radius) {
-          if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 3;
-          if (mouse.x > this.x && this.x > this.size * 10) this.x -= 3;
-          if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 3;
-          if (mouse.y > this.y && this.y > this.size * 10) this.y -= 3;
-        }
-      }
-      draw() {
-        const color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-        ctx.fillStyle = color;
-        ctx.globalAlpha = 0.7; // Brighter particles
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-    }
-
-    function connect() {
-      const color = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
-          let dx = particles[a].x - particles[b].x;
-          let dy = particles[a].y - particles[b].y;
-          let distance = Math.sqrt(dx * dx + dy * dy);
-          if (distance < 120) {
-            ctx.strokeStyle = color;
-            ctx.globalAlpha = (1 - (distance / 120)) * 0.25; // Brighter lines
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(particles[a].x, particles[a].y);
-            ctx.lineTo(particles[b].x, particles[b].y);
-            ctx.stroke();
-            ctx.globalAlpha = 1;
+    // Blog Loading logic
+    async function loadBlog() {
+      const blogGrid = document.getElementById('blog-grid');
+      try {
+        const response = await fetch('data/blog.json');
+        const blogPosts = await response.json();
+        
+        blogGrid.innerHTML = '';
+        blogPosts.forEach(post => {
+          const postElement = document.createElement('a');
+          postElement.href = 'javascript:void(0)';
+          postElement.className = 'project-card blog-post';
+          
+          let imagesHtml = '';
+          if (post.images && post.images.length > 0) {
+            imagesHtml = `<div class="project-gallery">
+              ${post.images.map(img => `<img src="${img}" class="gallery-img" alt="Blog Image">`).join('')}
+            </div>`;
           }
-        }
+
+          postElement.innerHTML = `
+            <div class="project-header">
+              <div class="project-emoji">${post.emoji || '📝'}</div>
+              <div class="project-info">
+                <div class="project-name">${post.title}</div>
+                <p class="project-desc">${post.date}</p>
+              </div>
+              <div class="chevron">›</div>
+            </div>
+            <div class="project-details">
+              <p class="project-long-desc">
+                <strong>${post.excerpt}</strong><br><br>
+                ${post.content}
+              </p>
+              ${imagesHtml}
+            </div>
+          `;
+          
+          setupCardInteraction(postElement);
+          blogGrid.appendChild(postElement);
+        });
+      } catch (error) {
+        console.error('Error loading blog:', error);
+        blogGrid.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--accent);">Failed to load blog posts.</div>';
       }
     }
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
-        particles[i].draw();
-      }
-      connect();
-      requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', initCanvas);
-    initCanvas();
-    animate();
-
-// Project card interaction (Mobile optimization & Redirect control)
-    document.querySelectorAll('.project-card').forEach(card => {
+    function setupCardInteraction(card) {
       card.addEventListener('click', (e) => {
-        // If the card is not expanded, prevent the link and expand it instead
-        if (!card.classList.contains('expanded')) {
+        const isExpanded = card.classList.contains('expanded');
+        
+        // If the card is not expanded, prevent link and expand
+        if (!isExpanded) {
           e.preventDefault();
           
           // Close other expanded cards
@@ -1273,36 +1400,51 @@
           
           card.classList.add('expanded');
           
-          // Smooth scroll into view
           setTimeout(() => {
             card.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }, 300);
-        }
-        // If it IS expanded, we let the default <a> behavior happen (redirect)
-      });
-      
-      // Desktop: Automatically 'expand' on hover so the first click works
-      card.addEventListener('mouseenter', () => {
-        if (window.matchMedia('(hover: hover)').matches) {
-          card.classList.add('expanded');
-          
-          // Auto-scroll logic for desktop
-          setTimeout(() => {
-            if (card.matches(':hover')) { // Double check we're still hovering
-              const rect = card.getBoundingClientRect();
-              if (rect.bottom > window.innerHeight || rect.top < 80) {
-                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-              }
-            }
-          }, 400);
+        } else {
+          // If already expanded and it's a blog post, close it
+          if (card.classList.contains('blog-post')) {
+            e.preventDefault();
+            card.classList.remove('expanded');
+          }
+          // If it's a project link, let the link follow (standard <a> behavior)
         }
       });
+    }
 
-      card.addEventListener('mouseleave', () => {
-        if (window.matchMedia('(hover: hover)').matches) {
-          card.classList.remove('expanded');
-        }
-      });
+    // Load blog data when the page loads
+    loadBlog();
+
+    // Initialize interaction for static project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+      if (!card.classList.contains('blog-post')) {
+        setupCardInteraction(card);
+
+        // Re-add hover listeners for projects only
+        card.addEventListener('mouseenter', () => {
+          if (window.matchMedia('(hover: hover)').matches) {
+            card.classList.add('expanded');
+            
+            // Auto-scroll logic for desktop
+            setTimeout(() => {
+              if (card.matches(':hover')) {
+                const rect = card.getBoundingClientRect();
+                if (rect.bottom > window.innerHeight || rect.top < 80) {
+                  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+              }
+            }, 400);
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (window.matchMedia('(hover: hover)').matches) {
+            card.classList.remove('expanded');
+          }
+        });
+      }
     });
   </script>
 </body>
