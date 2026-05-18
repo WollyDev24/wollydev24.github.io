@@ -90,22 +90,6 @@
       min-height: 100vh;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('pictures/backround.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: blur(30px) brightness(0.5);
-      z-index: -2;
-      transform: scale(1.1); /* Avoid white edges */
-      pointer-events: none;
-    }
-
     .light-mode body::before {
       filter: blur(30px) brightness(0.9) saturate(0.8);
       opacity: 0.4;
@@ -1012,19 +996,6 @@
             <div class="color-dot" style="background: #8d6e63;" onclick="setAccent('#8d6e63', this)"></div>
             <div class="color-dot" style="background: #d4e157;" onclick="setAccent('#d4e157', this)"></div>
           </div>
-        </div>
-      </div>
-
-      <div class="settings-group">
-        <div class="settings-item">
-          <div class="settings-item-info">
-            <span class="settings-item-title">Show background</span>
-            <span class="settings-item-desc">Enable background image</span>
-          </div>
-          <label class="samsung-switch">
-            <input type="checkbox" id="background-toggle" onchange="toggleBackground()">
-            <span class="slider"></span>
-          </label>
         </div>
       </div>
 
