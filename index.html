@@ -90,6 +90,22 @@
       min-height: 100vh;
     }
 
+/*     body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('pictures/backround.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: blur(30px) brightness(0.5);
+      z-index: -2;
+      transform: scale(1.1); /* Avoid white edges */
+
+    */
+
     .light-mode body::before {
       filter: blur(30px) brightness(0.9) saturate(0.8);
       opacity: 0.4;
@@ -1002,6 +1018,19 @@
       <div class="settings-group">
         <div class="settings-item">
           <div class="settings-item-info">
+<!--             <span class="settings-item-title">Show background</span>
+            <span class="settings-item-desc">Enable background image</span> -->
+          </div>
+          <label class="samsung-switch">
+            <input type="checkbox" id="background-toggle" onchange="toggleBackground()">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-item-info">
             <span class="settings-item-title">Reduce animations</span>
             <span class="settings-item-desc">Make transitions faster</span>
           </div>
@@ -1150,7 +1179,7 @@
         <a href="https://wolly.is-a.dev/503">Telegram</a>
         <a href="https://wolly.is-a.dev/503">Links</a>
       </div>
-      <span class="copyright">© 2026 WollyDev24. Built with bugs.</span>
+      <span class="copyright">© 2026 WollyDev24. Built with caffeine and bugs.</span>
     </footer>
   </div>
 
