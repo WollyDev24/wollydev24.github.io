@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 8 Start Screen - Store & Extensions</title>
+    <style>
+        @font-face {
+            font-family: 'Segoe UI';
+            src: local('Segoe UI Light'), local('Segoe UI');
+            font-weight: 100;
+        }
+
+        :root {
+            --win-bg: #004d60;
+            --tile-blue: #00a1f1;
+            --tile-purple: #4e148c;
+            --tile-green: #00a300;
+            --tile-orange: #ff8000;
+            --tile-red: #e51400;
+            --tile-teal: #00aba9;
+            --metro-bezier: cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--win-bg);
+            color: white;
+            transition: background-color 0.5s ease;
+        }
+
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('pictures/placeholder.png');
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            filter: brightness(0.6);
+            transition: transform 0.8s var(--metro-bezier), opacity 0.5s;
+        }
+
+        body.no-bg .background { opacity: 0; }
+
+        header {
+            position: absolute;
+            top: 60px;
+            left: 80px;
+            z-index: 10;
+            transition: opacity 0.4s;
+        }
+
+        h1.start-text { font-size: 56px; font-weight: 100; margin: 0; }
+
+        .user-section {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            z-index: 1000;
+            transition: opacity 0.4s, visibility 0.4s;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 5px 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border: 2px solid white;
+            background-image: url('https://github.com/wollydev24.png');
+            background-size: cover;
+        }
+
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 200px;
+            background: #1f1f1f;
+            border: 1px solid #333;
+            margin-top: 5px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+
+        .user-menu.active { display: flex; }
+        .user-menu-item { padding: 12px 20px; font-size: 14px; cursor: pointer; }
+        .user-menu-item:hover { background: #333; }
+
+        .scene {
+            perspective: 1500px;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 80px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .start-screen {
+            display: flex;
+            gap: 50px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s var(--metro-bezier), opacity 0.6s;
+            padding-right: 100px;
+        }
+
+        .tile-group {
+            display: grid;
+            grid-template-columns: repeat(2, 120px);
+            grid-auto-rows: 120px;
+            grid-gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .tile {
+            position: relative;
+            background-color: var(--tile-blue);
+            cursor: pointer;
+            transform-style: preserve-3d;
+            border: 2px solid transparent;
+            transition: border 0.2s, transform 0.1s;
+        }
+
+        .tile:hover { border-color: rgba(255,255,255,0.3); }
+        .tile.wide { grid-column: span 2; }
+        .tile-label { position: absolute; bottom: 8px; left: 10px; font-size: 13px; }
+
+        @keyframes tileFlip {
+            0% { transform: rotateY(0deg) scale(1); }
+            100% { transform: rotateY(-90deg) scale(1.2); opacity: 0; }
+        }
+
+        .tile.flipping { animation: tileFlip 0.6s forwards ease-in; z-index: 100; }
+        .start-screen.zoom-out { transform: translateZ(-500px) rotateY(15deg); opacity: 0; pointer-events: none; }
+
+        .app-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 200;
+            display: none;
+            flex-direction: column;
+            padding: 60px 80px;
+            box-sizing: border-box;
+            transform: rotateY(90deg) scale(0.9);
+            transform-origin: left center;
+            transition: transform 0.6s var(--metro-bezier), opacity 0.4s;
+            background: #1f1f1f;
+        }
+
+        .app-page.active { display: flex; opacity: 1; transform: rotateY(0deg) scale(1); }
+        .app-header { display: flex; align-items: center; gap: 30px; margin-bottom: 50px; }
+        .back-btn { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; background: none; color: white; font-size: 24px; cursor: pointer; }
+        .app-title { font-size: 48px; font-weight: 100; margin: 0; }
+
+        /* Store App UI */
+        .store-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            overflow-y: auto;
+        }
+
+        .store-item {
+            background: #2a2a2a;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border: 1px solid #444;
+        }
+
+        .store-item-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--tile-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .store-item-name { font-size: 18px; font-weight: 400; }
+        .install-btn {
+            background: var(--tile-green);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        .install-btn.installed { background: #555; cursor: default; }
+
+    </style>
+</head>
+<body>
+
+    <div class="background" id="bg"></div>
+
+    <header id="mainHeader">
+        <h1 class="start-text">Start</h1>
+    </header>
+
+    <div class="user-section" id="userSection">
+        <div class="user-profile" id="userProfileBtn">
+            <span class="user-name">WollyDev24</span>
+            <div class="user-avatar"></div>
+        </div>
+        <div class="user-menu" id="userMenu">
+            <div class="user-menu-item">Change account picture</div>
+            <div class="user-menu-item">Lock</div>
+            <div class="user-menu-item">Sign out</div>
+        </div>
+    </div>
+
+    <div class="scene">
+        <div class="start-screen" id="startScreen">
+            <div class="tile-group" id="group-main">
+                <div class="tile wide" style="background-color: #004d60;" onclick="openApp('settings')">
+                    <div class="tile-label">PC settings</div>
+                </div>
+                <div class="tile" style="background-color: var(--tile-blue);" onclick="openApp('mail')">
+                    <div class="tile-label">Mail</div>
+                </div>
+                <div class="tile" style="background-color: var(--tile-purple);" onclick="openApp('music')">
+                    <div class="tile-label">Music</div>
+                </div>
+                <div class="tile wide" style="background-color: var(--tile-orange);" onclick="openApp('photos')">
+                    <div class="tile-label">Photos</div>
+                </div>
+            </div>
+            <div class="tile-group" id="group-tools">
+                <div class="tile" style="background-color: var(--tile-teal);" onclick="openApp('store')">
+                    <div class="tile-label">Store</div>
+                </div>
+                <div class="tile" style="background-color: var(--tile-red);" onclick="openApp('maps')">
+                    <div class="tile-label">Maps</div>
+                </div>
+                <div class="tile wide" style="background-color: #2e8b57;" onclick="openApp('desktop')">
+                    <div class="tile-label">Desktop</div>
+                </div>
+            </div>
+            <!-- Dynamic Tiles will appear here -->
+            <div class="tile-group" id="group-dynamic"></div>
+        </div>
+    </div>
+
+    <!-- Store App -->
+    <div class="app-page" id="storeApp">
+        <div class="app-header">
+            <button class="back-btn" onclick="closeApp()">←</button>
+            <h1 class="app-title">Store</h1>
+        </div>
+        <div class="store-grid" id="storeCatalog">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- Generic App Overlay -->
+    <div class="app-page" id="genericApp">
+        <div class="app-header">
+            <button class="back-btn" onclick="closeApp()">←</button>
+            <h1 class="app-title" id="genericAppTitle">App</h1>
+        </div>
+        <p style="font-size: 24px; font-weight: 100;">Application content goes here.</p>
+    </div>
+
+    <script>
+        const startScreen = document.getElementById('startScreen');
+        const bg = document.getElementById('bg');
+        const header = document.getElementById('mainHeader');
+        const userSection = document.getElementById('userSection');
+        const userMenu = document.getElementById('userMenu');
+        const dynamicGroup = document.getElementById('group-dynamic');
+        let currentApp = null;
+
+        const availableApps = {
+            'weather': { name: 'Weather', color: '#0078d7', icon: '☀️', wide: false },
+            'calendar': { name: 'Calendar', color: '#d24726', icon: '📅', wide: true },
+            'finance': { name: 'Finance', color: '#15992a', icon: '📈', wide: false },
+            'news': { name: 'News', color: '#e61b1b', icon: '📰', wide: true }
+        };
+
+        let installedApps = new Set();
+
+        function renderStore() {
+            const catalog = document.getElementById('storeCatalog');
+            catalog.innerHTML = '';
+            Object.entries(availableApps).forEach(([id, app]) => {
+                const isInstalled = installedApps.has(id);
+                const item = document.createElement('div');
+                item.className = 'store-item';
+                item.innerHTML = `
+                    <div class="store-item-icon" style="background-color: ${app.color}">${app.icon}</div>
+                    <div class="store-item-name">${app.name}</div>
+                    <button class="install-btn ${isInstalled ? 'installed' : ''}" 
+                            onclick="${isInstalled ? '' : `installApp('${id}')`}">
+                        ${isInstalled ? 'Installed' : 'Install'}
+                    </button>
+                `;
+                catalog.appendChild(item);
+            });
+        }
+
+        function installApp(id) {
+            const app = availableApps[id];
+            installedApps.add(id);
+            
+            const tile = document.createElement('div');
+            tile.className = `tile ${app.wide ? 'wide' : ''}`;
+            tile.style.backgroundColor = app.color;
+            tile.onclick = () => openApp(id);
+            tile.innerHTML = `<div class="tile-label">${app.name}</div>`;
+            
+            // Add tilt effects
+            setupTileTilt(tile);
+            
+            dynamicGroup.appendChild(tile);
+            renderStore();
+        }
+
+        function setupTileTilt(tile) {
+            tile.addEventListener('mousedown', (e) => {
+                const rect = tile.getBoundingClientRect();
+                const tiltX = (e.clientY - rect.top - rect.height/2) / 5;
+                const tiltY = (rect.width/2 - (e.clientX - rect.left)) / 5;
+                tile.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(0.97)`;
+            });
+            tile.addEventListener('mouseup', () => tile.style.transform = '');
+            tile.addEventListener('mouseleave', () => tile.style.transform = '');
+        }
+
+        document.getElementById('userProfileBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            userMenu.classList.toggle('active');
+        });
+        document.addEventListener('click', () => userMenu.classList.remove('active'));
+
+        function openApp(appId) {
+            const tile = event.currentTarget;
+            tile.classList.add('flipping');
+            setTimeout(() => {
+                startScreen.classList.add('zoom-out');
+                header.style.opacity = '0';
+                userSection.style.opacity = '0';
+                userSection.style.visibility = 'hidden';
+            }, 100);
+
+            setTimeout(() => {
+                if (appId === 'store') {
+                    currentApp = document.getElementById('storeApp');
+                    renderStore();
+                } else {
+                    currentApp = document.getElementById('genericApp');
+                    document.getElementById('genericAppTitle').innerText = 
+                        availableApps[appId] ? availableApps[appId].name : appId.charAt(0).toUpperCase() + appId.slice(1);
+                    currentApp.style.background = getComputedStyle(tile).backgroundColor;
+                }
+                currentApp.style.display = 'flex';
+                setTimeout(() => currentApp.classList.add('active'), 10);
+                bg.style.transform = 'scale(1.1)';
+            }, 300);
+        }
+
+        function closeApp() {
+            if (!currentApp) return;
+            currentApp.classList.remove('active');
+            bg.style.transform = 'scale(1)';
+            header.style.opacity = '1';
+            userSection.style.opacity = '1';
+            userSection.style.visibility = 'visible';
+            setTimeout(() => {
+                currentApp.style.display = 'none';
+                startScreen.classList.remove('zoom-out');
+                document.querySelectorAll('.tile').forEach(t => t.classList.remove('flipping'));
+                currentApp = null;
+            }, 400);
+        }
+
+        // Initialize existing tiles
+        document.querySelectorAll('.tile').forEach(setupTileTilt);
+    </script>
+</body>
+</html>
