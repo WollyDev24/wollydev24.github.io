@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows 8 Start Screen - Store & Extensions</title>
+    <title>Windows 8 Customizable Start Screen</title>
     <style>
         @font-face {
             font-family: 'Segoe UI';
@@ -23,192 +23,119 @@
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
+            margin: 0; padding: 0; height: 100%; overflow: hidden;
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            background-color: var(--win-bg);
-            color: white;
+            background-color: var(--win-bg); color: white;
             transition: background-color 0.5s ease;
+            user-select: none;
         }
 
         .background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('pictures/placeholder.png');
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            filter: brightness(0.6);
+            background-size: cover; background-position: center;
+            z-index: -1; filter: brightness(0.6);
             transition: transform 0.8s var(--metro-bezier), opacity 0.5s;
         }
 
-        body.no-bg .background { opacity: 0; }
-
         header {
-            position: absolute;
-            top: 60px;
-            left: 80px;
-            z-index: 10;
+            position: absolute; top: 60px; left: 80px; z-index: 10;
             transition: opacity 0.4s;
         }
-
         h1.start-text { font-size: 56px; font-weight: 100; margin: 0; }
 
+        /* User Profile */
         .user-section {
-            position: absolute;
-            top: 60px;
-            right: 60px;
-            z-index: 1000;
+            position: absolute; top: 60px; right: 60px; z-index: 1000;
             transition: opacity 0.4s, visibility 0.4s;
         }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            padding: 5px 12px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border: 2px solid white;
-            background-image: url('https://github.com/wollydev24.png');
-            background-size: cover;
-        }
-
+        .user-profile { display: flex; align-items: center; gap: 15px; cursor: pointer; padding: 5px 12px; transition: background 0.2s; }
+        .user-profile:hover { background: rgba(255,255,255,0.1); }
+        .user-avatar { width: 40px; height: 40px; border: 2px solid white; background-image: url('https://github.com/wollydev24.png'); background-size: cover; }
         .user-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            width: 200px;
-            background: #1f1f1f;
-            border: 1px solid #333;
-            margin-top: 5px;
-            display: none;
-            flex-direction: column;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            z-index: 1001;
+            position: absolute; top: 100%; right: 0; width: 200px;
+            background: #1f1f1f; border: 1px solid #333; margin-top: 5px;
+            display: none; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 1001;
         }
-
         .user-menu.active { display: flex; }
         .user-menu-item { padding: 12px 20px; font-size: 14px; cursor: pointer; }
         .user-menu-item:hover { background: #333; }
 
+        /* Tile Scene */
         .scene {
-            perspective: 1500px;
-            height: 100%;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            padding-left: 80px;
-            overflow-x: auto;
-            overflow-y: hidden;
+            perspective: 1500px; height: 100%; width: 100%;
+            display: flex; align-items: center; padding-left: 80px;
+            overflow-x: auto; overflow-y: hidden;
         }
+        .scene::-webkit-scrollbar { height: 5px; }
+        .scene::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
 
-        .start-screen {
-            display: flex;
-            gap: 50px;
-            transform-style: preserve-3d;
-            transition: transform 0.8s var(--metro-bezier), opacity 0.6s;
+        .start-screen { 
+            display: grid;
+            grid-template-rows: repeat(3, 120px);
+            grid-auto-flow: column;
+            grid-auto-columns: 120px;
+            grid-gap: 10px;
+            transform-style: preserve-3d; 
+            transition: transform 0.8s var(--metro-bezier), opacity 0.6s; 
             padding-right: 100px;
         }
 
-        .tile-group {
-            display: grid;
-            grid-template-columns: repeat(2, 120px);
-            grid-auto-rows: 120px;
-            grid-gap: 10px;
-            flex-shrink: 0;
-        }
-
         .tile {
-            position: relative;
-            background-color: var(--tile-blue);
-            cursor: pointer;
-            transform-style: preserve-3d;
-            border: 2px solid transparent;
-            transition: border 0.2s, transform 0.1s;
+            position: relative; background-color: var(--tile-blue); cursor: pointer;
+            transform-style: preserve-3d; border: 2px solid transparent;
+            transition: border 0.2s, transform 0.1s, opacity 0.2s;
+            width: 120px; height: 120px;
         }
-
         .tile:hover { border-color: rgba(255,255,255,0.3); }
-        .tile.wide { grid-column: span 2; }
-        .tile-label { position: absolute; bottom: 8px; left: 10px; font-size: 13px; }
+        .tile.wide { grid-column: span 2; width: 250px; }
+        .tile.dragging { opacity: 0.5; transform: scale(0.9); }
+        .tile.selected { border: 2px solid white; }
+        .tile-label { position: absolute; bottom: 8px; left: 10px; font-size: 13px; pointer-events: none; }
 
         @keyframes tileFlip {
-            0% { transform: rotateY(0deg) scale(1); }
-            100% { transform: rotateY(-90deg) scale(1.2); opacity: 0; }
+            0% { transform: perspective(1500px) rotateY(0deg) scale(1); opacity: 1; }
+            100% { transform: perspective(1500px) rotateY(90deg) scale(4); opacity: 0; }
         }
+        .tile.flipping { animation: tileFlip 0.7s forwards var(--metro-bezier); z-index: 1000; pointer-events: none; }
+        .start-screen.zoom-out { transform: translateZ(-300px) rotateY(10deg); opacity: 0; pointer-events: none; }
 
-        .tile.flipping { animation: tileFlip 0.6s forwards ease-in; z-index: 100; }
-        .start-screen.zoom-out { transform: translateZ(-500px) rotateY(15deg); opacity: 0; pointer-events: none; }
+        /* Customization Bar */
+        .app-bar {
+            position: fixed; bottom: -100px; left: 0; width: 100%; height: 100px;
+            background: rgba(15, 15, 15, 0.95); z-index: 6000;
+            display: flex; justify-content: center; align-items: center; gap: 40px;
+            transition: bottom 0.3s var(--metro-bezier);
+            border-top: 1px solid #333;
+        }
+        .app-bar.active { bottom: 0; }
+        .bar-item {
+            display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer;
+            opacity: 0.8; transition: opacity 0.2s;
+        }
+        .bar-item:hover { opacity: 1; }
+        .bar-icon { width: 40px; height: 40px; border: 2px solid white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .bar-label { font-size: 12px; }
 
+        /* Apps */
         .app-page {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 200;
-            display: none;
-            flex-direction: column;
-            padding: 60px 80px;
-            box-sizing: border-box;
-            transform: rotateY(90deg) scale(0.9);
-            transform-origin: left center;
-            transition: transform 0.6s var(--metro-bezier), opacity 0.4s;
-            background: #1f1f1f;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000; display: none; flex-direction: column; padding: 60px 80px; box-sizing: border-box;
+            transform: perspective(1500px) rotateY(-90deg) scale(0.8); transform-origin: center;
+            transition: transform 0.6s var(--metro-bezier), opacity 0.4s; background: #1f1f1f;
         }
+        .app-page.active { display: flex; opacity: 1; transform: perspective(1500px) rotateY(0deg) scale(1); }
+        .app-header { display: flex; align-items: center; gap: 30px; margin-bottom: 40px; }
+        .back-btn { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; background: none; color: white; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
-        .app-page.active { display: flex; opacity: 1; transform: rotateY(0deg) scale(1); }
-        .app-header { display: flex; align-items: center; gap: 30px; margin-bottom: 50px; }
-        .back-btn { width: 45px; height: 45px; border-radius: 50%; border: 2px solid white; background: none; color: white; font-size: 24px; cursor: pointer; }
-        .app-title { font-size: 48px; font-weight: 100; margin: 0; }
-
-        /* Store App UI */
-        .store-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-            overflow-y: auto;
-        }
-
-        .store-item {
-            background: #2a2a2a;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            border: 1px solid #444;
-        }
-
-        .store-item-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--tile-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-        }
-
-        .store-item-name { font-size: 18px; font-weight: 400; }
-        .install-btn {
-            background: var(--tile-green);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 14px;
-        }
-        .install-btn.installed { background: #555; cursor: default; }
+        /* Charms Bar */
+        .charms-bar { position: fixed; top: 0; right: -100px; width: 100px; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 5000; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 40px; transition: right 0.3s var(--metro-bezier); }
+        .charms-bar.active { right: 0; }
+        .charms-clock { position: fixed; bottom: 60px; left: -500px; background: rgba(0, 0, 0, 0.8); padding: 30px 50px; display: flex; gap: 30px; align-items: center; z-index: 4900; transition: left 0.4s var(--metro-bezier); border-left: 10px solid var(--tile-blue); }
+        .charms-clock.active { left: 80px; }
+        .clock-time { font-size: 100px; font-weight: 100; line-height: 1; }
+        .charms-trigger { position: fixed; top: 0; right: 0; width: 20px; height: 100px; z-index: 5100; }
+        .charms-trigger.bottom { top: auto; bottom: 0; }
 
     </style>
 </head>
@@ -222,182 +149,222 @@
 
     <div class="user-section" id="userSection">
         <div class="user-profile" id="userProfileBtn">
-            <span class="user-name">WollyDev24</span>
-            <div class="user-avatar"></div>
+            <span class="user-name" id="currentUserName">WollyDev24</span>
+            <div class="user-avatar" id="currentUserAvatar"></div>
         </div>
         <div class="user-menu" id="userMenu">
-            <div class="user-menu-item">Change account picture</div>
+            <div class="user-menu-item" onclick="switchUser()">Switch User</div>
             <div class="user-menu-item">Lock</div>
-            <div class="user-menu-item">Sign out</div>
         </div>
     </div>
 
     <div class="scene">
         <div class="start-screen" id="startScreen">
-            <div class="tile-group" id="group-main">
-                <div class="tile wide" style="background-color: #004d60;" onclick="openApp('settings')">
-                    <div class="tile-label">PC settings</div>
-                </div>
-                <div class="tile" style="background-color: var(--tile-blue);" onclick="openApp('mail')">
-                    <div class="tile-label">Mail</div>
-                </div>
-                <div class="tile" style="background-color: var(--tile-purple);" onclick="openApp('music')">
-                    <div class="tile-label">Music</div>
-                </div>
-                <div class="tile wide" style="background-color: var(--tile-orange);" onclick="openApp('photos')">
-                    <div class="tile-label">Photos</div>
-                </div>
-            </div>
-            <div class="tile-group" id="group-tools">
-                <div class="tile" style="background-color: var(--tile-teal);" onclick="openApp('store')">
-                    <div class="tile-label">Store</div>
-                </div>
-                <div class="tile" style="background-color: var(--tile-red);" onclick="openApp('maps')">
-                    <div class="tile-label">Maps</div>
-                </div>
-                <div class="tile wide" style="background-color: #2e8b57;" onclick="openApp('desktop')">
-                    <div class="tile-label">Desktop</div>
-                </div>
-            </div>
-            <!-- Dynamic Tiles will appear here -->
-            <div class="tile-group" id="group-dynamic"></div>
+            <!-- Tiles populated by JS -->
         </div>
     </div>
 
-    <!-- Store App -->
-    <div class="app-page" id="storeApp">
-        <div class="app-header">
-            <button class="back-btn" onclick="closeApp()">←</button>
-            <h1 class="app-title">Store</h1>
+    <!-- App Pages (Placeholder structures) -->
+    <div class="app-page" id="settingsApp">
+        <div class="app-header"><button class="back-btn" onclick="closeApp()">←</button><h1>Settings</h1></div>
+    </div>
+    <div class="app-page" id="mailApp">
+        <div class="app-header"><button class="back-btn" onclick="closeApp()">←</button><h1>Mail</h1></div>
+    </div>
+    <div class="app-page" id="browserApp">
+        <div class="app-header"><button class="back-btn" onclick="closeApp()">←</button><h1>Internet Explorer</h1></div>
+    </div>
+
+    <!-- App Bar (Customization) -->
+    <div class="app-bar" id="appBar">
+        <div class="bar-item" onclick="resizeSelectedTile()">
+            <div class="bar-icon">↔️</div>
+            <div class="bar-label">Resize</div>
         </div>
-        <div class="store-grid" id="storeCatalog">
-            <!-- Populated by JS -->
+        <div class="bar-item" onclick="unpinSelectedTile()">
+            <div class="bar-icon">📌</div>
+            <div class="bar-label">Unpin</div>
         </div>
     </div>
 
-    <!-- Generic App Overlay -->
-    <div class="app-page" id="genericApp">
-        <div class="app-header">
-            <button class="back-btn" onclick="closeApp()">←</button>
-            <h1 class="app-title" id="genericAppTitle">App</h1>
-        </div>
-        <p style="font-size: 24px; font-weight: 100;">Application content goes here.</p>
+    <!-- Charms -->
+    <div class="charms-trigger" onmouseenter="showCharms()"></div>
+    <div class="charms-trigger bottom" onmouseenter="showCharms()"></div>
+    <div class="charms-bar" id="charmsBar" onmouseleave="hideCharms()">
+        <div class="charm-item" onclick="closeApp(); hideCharms();">Start</div>
+        <div class="charm-item" onclick="openApp('settings'); hideCharms();">Settings</div>
     </div>
+    <div class="charms-clock" id="charmsClock"><div class="clock-time" id="clockTime">12:00</div></div>
 
     <script>
         const startScreen = document.getElementById('startScreen');
-        const bg = document.getElementById('bg');
-        const header = document.getElementById('mainHeader');
-        const userSection = document.getElementById('userSection');
-        const userMenu = document.getElementById('userMenu');
-        const dynamicGroup = document.getElementById('group-dynamic');
-        let currentApp = null;
+        const tileMenu = document.getElementById('tileMenu');
+        let selectedTileId = null;
 
-        const availableApps = {
-            'weather': { name: 'Weather', color: '#0078d7', icon: '☀️', wide: false },
-            'calendar': { name: 'Calendar', color: '#d24726', icon: '📅', wide: true },
-            'finance': { name: 'Finance', color: '#15992a', icon: '📈', wide: false },
-            'news': { name: 'News', color: '#e61b1b', icon: '📰', wide: true }
+        let tileData = [
+            { id: 'settings', name: 'PC settings', color: '#004d60', size: 'wide' },
+            { id: 'mail', name: 'Mail', color: '--tile-blue', size: 'square' },
+            { id: 'music', name: 'Music', color: '--tile-purple', size: 'square' },
+            { id: 'photos', name: 'Photos', color: '--tile-orange', size: 'large' },
+            { id: 'maps', name: 'Maps', color: '--tile-red', size: 'square' },
+            { id: 'browser', name: 'Internet Explorer', color: '#0078d7', size: 'square' },
+            { id: 'weather', name: 'Weather', color: '#2b5797', size: 'square' },
+            { id: 'news', name: 'News', color: '#e3a21a', size: 'wide' }
+        ];
+
+        function renderTiles() {
+            startScreen.innerHTML = '';
+            tileData.forEach((tile, index) => {
+                const div = document.createElement('div');
+                div.className = `tile ${tile.size}`;
+                div.id = `tile-${tile.id}`;
+                div.dataset.id = tile.id;
+                div.style.backgroundColor = tile.color.startsWith('--') ? `var(${tile.color})` : tile.color;
+                div.innerHTML = `<div class="tile-label">${tile.name}</div>`;
+                
+                // Click Events
+                div.onclick = (e) => { 
+                    if(tileMenu.classList.contains('active')) return;
+                    openApp(tile.id); 
+                };
+
+                div.oncontextmenu = (e) => {
+                    e.preventDefault();
+                    showTileMenu(tile.id, e.clientX, e.clientY);
+                };
+                
+                // Drag and Drop Logic
+                div.draggable = true;
+
+                div.ondragstart = (e) => {
+                    e.dataTransfer.setData('text/plain', tile.id);
+                    div.classList.add('dragging');
+                    const img = new Image();
+                    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+                    e.dataTransfer.setDragImage(img, 0, 0);
+                    hideTileMenu();
+                };
+
+                div.ondragend = () => {
+                    div.classList.remove('dragging');
+                    saveNewOrder();
+                };
+
+                div.ondragover = (e) => {
+                    e.preventDefault();
+                    const draggingElement = document.querySelector('.dragging');
+                    if (!draggingElement || draggingElement === div) return;
+
+                    const container = div.parentNode;
+                    const children = Array.from(container.children);
+                    const draggingIndex = children.indexOf(draggingElement);
+                    const targetIndex = children.indexOf(div);
+
+                    if (draggingIndex < targetIndex) {
+                        container.insertBefore(draggingElement, div.nextSibling);
+                    } else {
+                        container.insertBefore(draggingElement, div);
+                    }
+                };
+
+                startScreen.appendChild(div);
+            });
+        }
+
+        function saveNewOrder() {
+            const currentTiles = Array.from(startScreen.children);
+            const newOrder = currentTiles.map(el => {
+                const id = el.dataset.id;
+                return tileData.find(t => t.id === id);
+            }).filter(t => t !== undefined);
+            tileData = newOrder;
+        }
+
+        function showTileMenu(id, x, y) {
+            selectedTileId = id;
+            document.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
+            const tileEl = document.getElementById(`tile-${id}`);
+            tileEl.classList.add('selected');
+
+            // Position menu under tile
+            const rect = tileEl.getBoundingClientRect();
+            tileMenu.style.left = `${rect.left}px`;
+            tileMenu.style.top = `${rect.bottom + 5}px`;
+            
+            // Mark active size
+            const tile = tileData.find(t => t.id === id);
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active-size');
+                if (item.innerText.toLowerCase().includes(tile.size)) {
+                    item.classList.add('active-size');
+                }
+            });
+
+            tileMenu.classList.add('active');
+        }
+
+        function hideTileMenu() {
+            tileMenu.classList.remove('active');
+            document.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
+        }
+
+        function setTileSize(size) {
+            const tile = tileData.find(t => t.id === selectedTileId);
+            if (tile) {
+                tile.size = size;
+                renderTiles();
+            }
+            hideTileMenu();
+        }
+
+        function unpinSelectedTile() {
+            tileData = tileData.filter(t => t.id !== selectedTileId);
+            hideTileMenu();
+            renderTiles();
+        }
+
+        // Global Clicks
+        document.onclick = (e) => {
+            if (!e.target.closest('.tile') && !e.target.closest('.tile-menu')) {
+                hideTileMenu();
+            }
         };
 
-        let installedApps = new Set();
-
-        function renderStore() {
-            const catalog = document.getElementById('storeCatalog');
-            catalog.innerHTML = '';
-            Object.entries(availableApps).forEach(([id, app]) => {
-                const isInstalled = installedApps.has(id);
-                const item = document.createElement('div');
-                item.className = 'store-item';
-                item.innerHTML = `
-                    <div class="store-item-icon" style="background-color: ${app.color}">${app.icon}</div>
-                    <div class="store-item-name">${app.name}</div>
-                    <button class="install-btn ${isInstalled ? 'installed' : ''}" 
-                            onclick="${isInstalled ? '' : `installApp('${id}')`}">
-                        ${isInstalled ? 'Installed' : 'Install'}
-                    </button>
-                `;
-                catalog.appendChild(item);
-            });
-        }
-
-        function installApp(id) {
-            const app = availableApps[id];
-            installedApps.add(id);
-            
-            const tile = document.createElement('div');
-            tile.className = `tile ${app.wide ? 'wide' : ''}`;
-            tile.style.backgroundColor = app.color;
-            tile.onclick = () => openApp(id);
-            tile.innerHTML = `<div class="tile-label">${app.name}</div>`;
-            
-            // Add tilt effects
-            setupTileTilt(tile);
-            
-            dynamicGroup.appendChild(tile);
-            renderStore();
-        }
-
-        function setupTileTilt(tile) {
-            tile.addEventListener('mousedown', (e) => {
-                const rect = tile.getBoundingClientRect();
-                const tiltX = (e.clientY - rect.top - rect.height/2) / 5;
-                const tiltY = (rect.width/2 - (e.clientX - rect.left)) / 5;
-                tile.style.transform = `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(0.97)`;
-            });
-            tile.addEventListener('mouseup', () => tile.style.transform = '');
-            tile.addEventListener('mouseleave', () => tile.style.transform = '');
-        }
-
-        document.getElementById('userProfileBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            userMenu.classList.toggle('active');
-        });
-        document.addEventListener('click', () => userMenu.classList.remove('active'));
-
-        function openApp(appId) {
-            const tile = event.currentTarget;
+        // Standard App Logic
+        let currentApp = null;
+        function openApp(id) {
+            const tile = document.getElementById(`tile-${id}`);
             tile.classList.add('flipping');
             setTimeout(() => {
-                startScreen.classList.add('zoom-out');
-                header.style.opacity = '0';
-                userSection.style.opacity = '0';
-                userSection.style.visibility = 'hidden';
+                document.getElementById('startScreen').classList.add('zoom-out');
+                document.getElementById('mainHeader').style.opacity = '0';
+                document.getElementById('userSection').style.opacity = '0';
             }, 100);
-
             setTimeout(() => {
-                if (appId === 'store') {
-                    currentApp = document.getElementById('storeApp');
-                    renderStore();
-                } else {
-                    currentApp = document.getElementById('genericApp');
-                    document.getElementById('genericAppTitle').innerText = 
-                        availableApps[appId] ? availableApps[appId].name : appId.charAt(0).toUpperCase() + appId.slice(1);
-                    currentApp.style.background = getComputedStyle(tile).backgroundColor;
-                }
+                currentApp = document.getElementById(id + 'App') || document.getElementById('settingsApp');
                 currentApp.style.display = 'flex';
                 setTimeout(() => currentApp.classList.add('active'), 10);
-                bg.style.transform = 'scale(1.1)';
             }, 300);
         }
 
         function closeApp() {
             if (!currentApp) return;
             currentApp.classList.remove('active');
-            bg.style.transform = 'scale(1)';
-            header.style.opacity = '1';
-            userSection.style.opacity = '1';
-            userSection.style.visibility = 'visible';
             setTimeout(() => {
                 currentApp.style.display = 'none';
-                startScreen.classList.remove('zoom-out');
+                document.getElementById('startScreen').classList.remove('zoom-out');
+                document.getElementById('mainHeader').style.opacity = '1';
+                document.getElementById('userSection').style.opacity = '1';
                 document.querySelectorAll('.tile').forEach(t => t.classList.remove('flipping'));
                 currentApp = null;
             }, 400);
         }
 
-        // Initialize existing tiles
-        document.querySelectorAll('.tile').forEach(setupTileTilt);
+        function showCharms() { charmsBar.classList.add('active'); charmsClock.classList.add('active'); updateClock(); }
+        function hideCharms() { charmsBar.classList.remove('active'); charmsClock.classList.remove('active'); }
+        function updateClock() { document.getElementById('clockTime').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}); }
+
+        renderTiles();
     </script>
 </body>
 </html>
