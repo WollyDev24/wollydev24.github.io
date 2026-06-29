@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Windows 8</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --bg: #000; --fg: #fff; --dim: #555; --border: #1a1a1a; }
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      background: var(--bg); color: var(--fg);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      transition: background .3s;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0;
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 24px 24px; pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <p style="font-family:'Space Mono',monospace;font-size:13px;color:#555">empty</p>
+</body>
+</html>

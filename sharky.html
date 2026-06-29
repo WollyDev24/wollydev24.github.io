@@ -1,124 +1,539 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sharky - Discord Bot</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Sharky – Discord Bot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
-    .fade-up { opacity:0; transform: translateY(20px); animation: fadeUp 0.8s forwards; }
-    .fade-up-delay { opacity:0; transform: translateY(20px); animation: fadeUp 0.8s forwards 0.4s; }
-    @keyframes fadeUp { to { opacity:1; transform: translateY(0); } }
-    .floaty { animation: floaty 6s ease-in-out infinite; }
-    @keyframes floaty { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
-    .spin-slow { animation: spin 18s linear infinite; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #000;
+      --fg: #fff;
+      --dim: #555;
+      --border: #1a1a1a;
+      --card: #0d0d0d;
+      --accent: #fff;
+    }
+    .light-mode {
+      --bg: #f5f5f5;
+      --fg: #111;
+      --dim: #888;
+      --border: #ddd;
+      --card: #fff;
+      --accent: #000;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      transition: background .3s, color .3s;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    header, main, footer { position: relative; z-index: 1; }
+
+    /* ── theme toggle ── */
+    #themeToggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 99;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--fg);
+      transition: .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #themeToggle:hover { border-color: var(--fg); }
+
+    /* ── layout ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ── header ── */
+    header {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp .5s ease;
+    }
+    .header-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      text-decoration: none;
+      color: var(--fg);
+    }
+    .header-left img {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .header-left h1 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.35rem;
+      letter-spacing: -.02em;
+    }
+    .header-left p {
+      font-size: .8rem;
+      color: var(--dim);
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .5rem;
+    }
+    nav a {
+      padding: .4rem .85rem;
+      border-radius: 999px;
+      font-size: .82rem;
+      text-decoration: none;
+      color: var(--fg);
+      border: 1px solid transparent;
+      transition: .2s;
+    }
+    nav a:hover { border-color: var(--border); }
+    nav .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      border: 1px solid var(--border);
+      padding: .4rem 1rem;
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: .78rem;
+      transition: .2s;
+    }
+    nav .btn-ghost:hover {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    /* ── hero ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      padding: 4rem 0;
+      animation: fadeUp .6s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.2rem;
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+    .hero p {
+      color: var(--dim);
+      margin-top: 1rem;
+      font-size: 1.05rem;
+      max-width: 520px;
+    }
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: 1.5rem;
+    }
+    .btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .55rem 1.4rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--fg);
+      font-family: 'Space Mono', monospace;
+      font-size: .82rem;
+      text-decoration: none;
+      transition: .2s;
+    }
+    .btn-pill:hover {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    /* hero right */
+    .hero-right { position: relative; }
+    .banner-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--card);
+    }
+    .banner-card img {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      display: block;
+    }
+    .banner-card .banner-text {
+      padding: 1rem 1.25rem;
+    }
+    .banner-card .banner-text h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.05rem;
+      letter-spacing: -.02em;
+    }
+    .banner-card .banner-text p {
+      font-size: .82rem;
+      color: var(--dim);
+      margin-top: .25rem;
+    }
+
+    /* floating features card */
+    .float-card {
+      display: none;
+      position: absolute;
+      left: -24px;
+      top: 24px;
+      width: 170px;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      font-family: 'Space Mono', monospace;
+      font-size: .75rem;
+      animation: floaty 6s ease-in-out infinite;
+    }
+    .float-card .fc-title {
+      font-weight: 600;
+      letter-spacing: -.02em;
+      margin-bottom: .5rem;
+    }
+    .float-card ul {
+      list-style: none;
+    }
+    .float-card ul li {
+      padding: .2rem 0;
+      color: var(--dim);
+    }
+    .float-card ul li::before {
+      content: '· ';
+      color: var(--fg);
+    }
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ── sections ── */
+    section {
+      padding: 3rem 0;
+      animation: fadeUp .6s ease;
+      animation-fill-mode: both;
+    }
+    section h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4rem;
+      letter-spacing: -.02em;
+      margin-bottom: .25rem;
+    }
+    section > p {
+      color: var(--dim);
+      font-size: .95rem;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .card-grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem;
+      transition: .2s;
+    }
+    .card:hover { border-color: var(--fg); }
+    .card .card-title {
+      font-family: 'Space Mono', monospace;
+      font-size: .9rem;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      margin-bottom: .4rem;
+    }
+    .card .card-desc {
+      font-size: .82rem;
+      color: var(--dim);
+    }
+    .dot-divider {
+      display: flex;
+      gap: 5px;
+      margin: .4rem 0 .6rem;
+    }
+    .dot-divider span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--dim);
+    }
+    .dot-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .dot-badge::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--dim);
+    }
+
+    /* ── footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 0;
+      margin-top: 1rem;
+    }
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .footer-inner .copy {
+      font-size: .8rem;
+      color: var(--dim);
+      font-family: 'Space Mono', monospace;
+    }
+    .footer-inner .copy a {
+      color: var(--dim);
+    }
+    .footer-links {
+      display: flex;
+      gap: .5rem;
+    }
+    .footer-links a {
+      padding: .3rem .75rem;
+      border-radius: 999px;
+      font-size: .8rem;
+      text-decoration: none;
+      color: var(--fg);
+      border: 1px solid transparent;
+      transition: .2s;
+    }
+    .footer-links a:hover { border-color: var(--border); }
+
+    /* ── responsive ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 0; }
+      .hero h2 { font-size: 1.6rem; }
+      .float-card { display: none !important; }
+      .card-grid-3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) {
+      header { padding: 1rem 0; }
+      .header-inner { flex-direction: column; align-items: flex-start; }
+      nav { width: 100%; }
+      .hero h2 { font-size: 1.35rem; }
+      .hero-buttons { flex-direction: column; }
+      .btn-pill { justify-content: center; }
+      .card-grid { grid-template-columns: 1fr; }
+      section { padding: 2rem 0; }
+    }
+
+    @media (min-width: 769px) {
+      .float-card { display: block; }
+    }
   </style>
 </head>
-<body class="relative bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-slate-100 antialiased">
+<body>
+  <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">○</button>
 
-  <!-- Animated Background Shapes -->
-  <div class="absolute inset-0 -z-10 overflow-hidden">
-    <div class="absolute -top-40 left-1/2 w-[1000px] md:w-[1400px] h-[1000px] md:h-[1400px] -translate-x-1/2 rounded-full blur-3xl opacity-30 spin-slow" style="background: linear-gradient(135deg, #0ea5e9, #a78bfa)"></div>
-    <div class="absolute bottom-[-200px] md:bottom-[-300px] right-0 w-[500px] md:w-[800px] h-[500px] md:h-[800px] rounded-full blur-2xl opacity-20 spin-slow" style="background: linear-gradient(135deg, #06b6d4, #ef4444)"></div>
-  </div>
-
-  <!-- Header -->
-  <header class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-4 fade-up">
-    <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="flex items-center gap-3">
-      <img src="https://raw.githubusercontent.com/WollyDev24/Sharky/main/resources/SharkyProfile.png" alt="Sharky" class="w-10 h-10 md:w-12 md:h-12 rounded-lg shadow-2xl">
-      <div>
-        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">Sharky</h1>
-        <p class="text-xs md:text-sm opacity-70">YouShadeCommunity — Frickin' awesome Discord bot</p>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="header-inner">
+        <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="header-left">
+          <img src="https://raw.githubusercontent.com/WollyDev24/Sharky/main/resources/SharkyProfile.png" alt="Sharky">
+          <div>
+            <h1>Sharky</h1>
+            <p>YouShadeCommunity — Frickin' awesome Discord bot</p>
+          </div>
+        </a>
+        <nav>
+          <a href="#features">Features</a>
+          <a href="#setup">Setup</a>
+          <a href="#contribute">Contribute</a>
+          <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="btn-ghost">View on GitHub</a>
+        </nav>
       </div>
-    </a>
-    <nav class="flex flex-wrap justify-center md:justify-end items-center gap-2 md:gap-3 w-full md:w-auto">
-      <a href="#features" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Features</a>
-      <a href="#setup" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Setup</a>
-      <a href="#contribute" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Contribute</a>
-      <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="mt-2 md:mt-0 inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full font-medium hover:scale-105 transition">View on GitHub</a>
-    </nav>
-  </header>
+    </header>
 
-  <!-- Hero -->
-  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-      <div class="fade-up">
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight animate-pulse">Sharky — The Discord bot your server deserves</h2>
-        <p class="mt-4 text-base sm:text-lg text-slate-300">Moderation, greetings, activity control and fast utilities — built in Python and easy to self-host. Perfect for communities that want control and fun features.</p>
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="inline-flex items-center gap-2 bg-sky-500/95 px-4 py-2 rounded-lg font-semibold shadow hover:shadow-lg transform hover:-translate-y-1 transition">⭐ Star on GitHub</a>
-          <a href="#setup" class="inline-flex items-center gap-2 border border-white/10 px-4 py-2 rounded-lg font-medium hover:bg-white/5 transition">⚡ Quick Setup</a>
-          <a href="#contribute" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 transition">🤝 Contribute</a>
-        </div>
-      </div>
-
-      <div class="relative fade-up-delay">
-        <div class="rounded-2xl overflow-hidden shadow-2xl border border-white/10 floaty">
-          <img src="https://raw.githubusercontent.com/WollyDev24/Sharky/main/resources/SharkyWebsite.png" alt="Sharky banner" class="w-full max-h-72 object-cover">
-          <div class="p-4 bg-gradient-to-t from-black/40 to-transparent">
-            <h3 class="text-lg md:text-xl font-bold">YouShadeBot → Sharky</h3>
-            <p class="text-xs md:text-sm opacity-70 mt-1">A rebrand and continuous improvements — ready to drop into your server.</p>
+    <main>
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <h2>Sharky — The Discord bot your server deserves</h2>
+          <p>Moderation, greetings, activity control and fast utilities — built in Python and easy to self-host. Perfect for communities that want control and fun features.</p>
+          <div class="hero-buttons">
+            <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="btn-pill">★ Star on GitHub</a>
+            <a href="#setup" class="btn-pill">⚡ Quick Setup</a>
+            <a href="#contribute" class="btn-pill">🤝 Contribute</a>
           </div>
         </div>
+        <div class="hero-right">
+          <div class="banner-card">
+            <img src="https://raw.githubusercontent.com/WollyDev24/Sharky/main/resources/SharkyWebsite.png" alt="Sharky banner">
+            <div class="banner-text">
+              <h3>YouShadeBot → Sharky</h3>
+              <p>A rebrand and continuous improvements — ready to drop into your server.</p>
+            </div>
+          </div>
+          <div class="float-card">
+            <div class="fc-title">✨ Features</div>
+            <ul>
+              <li>Greetings</li>
+              <li>Activity changer</li>
+              <li>Ping & Info</li>
+            </ul>
+          </div>
+        </div>
+      </section>
 
-        <!-- Floating Rotating Card -->
-        <div class="hidden sm:block absolute -left-6 top-6 w-40 md:w-44 p-3 rounded-xl bg-white/10 backdrop-blur-md text-xs shadow-xl spin-slow">
-          <div class="font-semibold">✨ Features</div>
-          <ul class="mt-2 leading-snug">
-            <li>Greetings</li>
-            <li>Activity changer</li>
-            <li>Ping & Info</li>
-          </ul>
+      <!-- Features -->
+      <section id="features">
+        <span class="dot-badge">Features</span>
+        <div class="dot-divider"><span></span><span></span><span></span><span></span><span></span></div>
+        <h3>Features Available</h3>
+        <p>Quick overview of what Sharky already supports.</p>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-title">Greet user via Command</div>
+            <div class="card-desc">Manually greet a new user.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Automatic Greet Message</div>
+            <div class="card-desc">Sends auto welcome messages.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Info Command</div>
+            <div class="card-desc">Show server / bot info.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Bot Activity Changer</div>
+            <div class="card-desc">Change presence/activity.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Ping Command</div>
+            <div class="card-desc">Check latency.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Moderation</div>
+            <div class="card-desc">Kick/Ban helpers & checks.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Setup -->
+      <section id="setup">
+        <span class="dot-badge">Setup</span>
+        <div class="dot-divider"><span></span><span></span><span></span><span></span><span></span></div>
+        <h3>Setup Guide</h3>
+        <p>Please Look in the Wiki for that</p>
+        <div class="hero-buttons" style="margin-top:1.25rem">
+          <a href="https://wollydev24.github.io/sharky/wiki" target="_blank" class="btn-pill">Wiki</a>
+        </div>
+      </section>
+
+      <!-- Contribute -->
+      <section id="contribute">
+        <span class="dot-badge">Contribute</span>
+        <div class="dot-divider"><span></span><span></span><span></span><span></span><span></span></div>
+        <h3>Contribute</h3>
+        <p>PRs, issues and messages on the support server are welcome. See the README for more specifics.</p>
+        <div class="card-grid card-grid-3">
+          <div class="card">
+            <div class="card-title">Want to help?</div>
+            <div class="card-desc">Open issues, suggest features, or fix bugs.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Contact</div>
+            <div class="card-desc">Support Server & Telegram listed in the repo.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">Planned Features</div>
+            <div class="card-desc">Announcements, Whisper Messages, Notes.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-inner">
+        <div class="copy">© 2025 Sharky — Built by WollyDev24. <a href="https://github.com/WollyDev24/Sharky" style="text-decoration:underline">Repository</a></div>
+        <div class="footer-links">
+          <a href="https://github.com/WollyDev24/Sharky" target="_blank">GitHub</a>
+          <a href="https://discord.gg/bapB8zz7VY">Discord</a>
+          <a href="https://t.me/SharkyUpdates">Telegram</a>
         </div>
       </div>
-    </section>
+    </footer>
+  </div>
 
-    <!-- Features -->
-    <section id="features" class="mt-16 fade-up">
-      <h3 class="text-xl md:text-2xl font-bold">Features Available</h3>
-      <p class="mt-2 text-slate-300">Quick overview of what Sharky already supports.</p>
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="p-4 rounded-xl bg-white/5 hover:-translate-y-1 transition floaty"><div class="font-semibold">Greet user via Command</div><div class="mt-2 text-sm text-slate-300">Manually greet a new user.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 hover:-translate-y-1 transition floaty"><div class="font-semibold">Automatic Greet Message</div><div class="mt-2 text-sm text-slate-300">Sends auto welcome messages.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 hover:-translate-y-1 transition floaty"><div class="font-semibold">Info Command</div><div class="mt-2 text-sm text-slate-300">Show server / bot info.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 hover:-translate-y-1 transition floaty"><div class="font-semibold">Bot Activity Changer</div><div class="mt-2 text-sm text-slate-300">Change presence/activity.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 hover:-translate-y-1 transition floaty"><div class="font-semibold">Ping Command</div><div class="mt-2 text-sm text-slate-300">Check latency.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 hover:-translate-y-1 transition floaty"><div class="font-semibold">Moderation</div><div class="mt-2 text-sm text-slate-300">Kick/Ban helpers & checks.</div></div>
-      </div>
-    </section>
-
-    <!-- Setup -->
-    <section id="setup" class="mt-16 fade-up">
-      <h3 class="text-xl md:text-2xl font-bold">Setup Guide</h3>
-      <p class="mt-2 text-slate-300">Please Look in the Wiki for that</p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="https://wollydev24.github.io/sharky/wiki" target="_blank" class="inline-flex items-center gap-2 bg-emerald-500/95 px-4 py-2 rounded-lg font-semibold shadow hover:shadow-lg transform hover:-translate-y-1 transition">Wiki</a>
-      </div>
-    </section>
-
-    <!-- Contribute -->
-    <section id="contribute" class="mt-16 mb-24 fade-up">
-      <h3 class="text-xl md:text-2xl font-bold">Contribute</h3>
-      <p class="mt-2 text-slate-300">PRs, issues and messages on the support server are welcome. See the README for more specifics.</p>
-      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="p-4 rounded-xl bg-white/5 floaty"><div class="font-semibold">Want to help?</div><div class="mt-2 text-sm text-slate-300">Open issues, suggest features, or fix bugs.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 floaty"><div class="font-semibold">Contact</div><div class="mt-2 text-sm text-slate-300">Support Server & Telegram listed in the repo.</div></div>
-        <div class="p-4 rounded-xl bg-white/5 floaty"><div class="font-semibold">Planned Features</div><div class="mt-2 text-sm text-slate-300">Announcements, Whisper Messages, Notes.</div></div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer -->
-  <footer class="border-t border-white/10 py-8 mt-12">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-      <div class="text-xs md:text-sm text-slate-400">© 2025 Sharky — Built by WollyDev24. <a href="https://github.com/WollyDev24/Sharky" class="underline">Repository</a></div>
-      <div class="flex flex-wrap justify-center md:justify-end items-center gap-2">
-        <a href="https://github.com/WollyDev24/Sharky" target="_blank" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">GitHub</a>
-        <a href="https://discord.gg/bapB8zz7VY" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Discord</a>
-        <a href="https://t.me/SharkyUpdates" class="text-sm px-3 py-2 rounded-md hover:bg-white/5">Telegram</a>
-      </div>
-    </div>
-  </footer>
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      const btn = document.getElementById('themeToggle');
+      btn.textContent = document.body.classList.contains('light-mode') ? '\u25CF' : '\u25CB';
+      localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    }
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('themeToggle').textContent = '\u25CF';
+    }
+  </script>
 </body>
 </html>

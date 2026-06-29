@@ -1,272 +1,366 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pastel Clock Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      background: linear-gradient(-45deg, #ffd1dc, #b5e0f5, #d9c7ff, #f7e6c4);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      overflow: hidden;
-      transition: background 0.5s ease, color 0.5s ease;
-      padding: 1rem;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    body.dark {
-      background: linear-gradient(-45deg, #0d1117, #1b2735, #2a1a3f, #162f42);
-      background-size: 400% 400%;
-      animation: darkGradientShift 15s ease infinite;
-      color: #e6edf3;
-    }
-
-    @keyframes darkGradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .clock {
-      font-size: 5rem;
-      font-weight: bold;
-      text-align: center;
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-      transition: font-family 0.3s ease, color 0.5s ease;
-      word-break: break-word;
-    }
-
-    body.dark .clock {
-      text-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-    }
-
-    .message {
-      margin-top: 0.5rem;
-      font-size: 1.1rem;
-      text-align: center;
-      opacity: 0.9;
-      transition: opacity 0.3s ease;
-    }
-
-    .search {
-      margin-top: 1.5rem;
-      width: 100%;
-      max-width: 300px;
-    }
-
-    .search input {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      border-radius: 1rem;
-      padding: 0.8rem 1.2rem;
-      width: 100%;
-      color: white;
-      font-size: 1rem;
-      backdrop-filter: blur(10px);
-      transition: background 0.3s ease, color 0.5s ease;
-    }
-
-    .search input::placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .search input:focus {
-      outline: none;
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    body.dark .search input {
-      background: rgba(255, 255, 255, 0.1);
-      color: #e6edf3;
-    }
-
-    /* Settings toggle button */
-    .settings-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      font-size: 1.5rem;
-      background: rgba(255,255,255,0.15);
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      z-index: 1000;
-    }
-
-    .settings-toggle:hover {
-      background: rgba(255,255,255,0.3);
-    }
-
-    /* Settings panel */
-    .settings-panel {
-      position: fixed;
-      top: 70px;
-      right: 20px;
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      padding: 1rem;
-      color: white;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      width: 200px;
-      z-index: 999;
-    }
-
-    body.dark .settings-panel {
-      background: rgba(255,255,255,0.1);
-      color: #e6edf3;
-    }
-
-    select {
-      background: transparent;
-      border: 1px solid white;
-      border-radius: 8px;
-      padding: 0.4rem;
-      color: white;
-      font-weight: bold;
-      width: 100%;
-    }
-
-    option {
-      color: black;
-    }
-
-    .toggle-btn {
-      cursor: pointer;
-      font-size: 1.2rem;
-      background: rgba(255, 255, 255, 0.15);
-      border: none;
-      border-radius: 50%;
-      width: 35px;
-      height: 35px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: background 0.3s ease;
-    }
-
-    .toggle-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Mobile adjustments */
-    @media (max-width: 480px) {
-      .clock { font-size: 3.5rem; }
-      .message { font-size: 1rem; }
-      .settings-panel { width: 160px; padding: 0.8rem; top: 60px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clock Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital@0;1&family=Orbitron:wght@500&family=Pacifico&family=Poppins:wght@500&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #000;
+  --fg: #fff;
+  --dim: #555;
+  --border: #1a1a1a;
+  --card: #0d0d0d;
+  --accent: #fff;
+}
+.light-mode {
+  --bg: #fff;
+  --fg: #000;
+  --dim: #aaa;
+  --border: #e5e5e5;
+  --card: #f5f5f5;
+  --accent: #000;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: Inter, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  padding: 1rem;
+  transition: background .3s ease, color .3s ease;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+.glyph-row {
+  font-family: 'Space Mono', monospace;
+  color: var(--border);
+  font-size: 0.5rem;
+  letter-spacing: 6px;
+  text-align: center;
+  margin: 0.5rem 0;
+  z-index: 1;
+  position: relative;
+  user-select: none;
+  opacity: 0.6;
+}
+.dot-divider {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 0.75rem 0;
+  z-index: 1;
+  position: relative;
+}
+.dot-divider span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 70px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s ease;
+}
+.theme-toggle:hover {
+  background: var(--border);
+}
+.settings-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .2s ease;
+}
+.settings-toggle:hover {
+  background: var(--border);
+}
+.settings-panel {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  width: 200px;
+  z-index: 99;
+}
+.settings-panel.visible {
+  display: flex;
+}
+.settings-panel label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+select {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem;
+  color: var(--fg);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  width: 100%;
+  transition: .2s ease;
+}
+select:focus {
+  outline: none;
+  border-color: var(--fg);
+}
+option {
+  background: var(--card);
+  color: var(--fg);
+}
+.panel-toggle-btn {
+  cursor: pointer;
+  font-size: 1rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem;
+  color: var(--fg);
+  font-family: 'Space Mono', monospace;
+  transition: .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.panel-toggle-btn:hover {
+  background: var(--border);
+}
+.clock-wrapper {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.clock {
+  font-family: 'Space Mono', monospace;
+  font-size: 7rem;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1;
+  color: var(--fg);
+  transition: font-family .3s ease, color .3s ease;
+  letter-spacing: 4px;
+}
+.message {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--dim);
+  font-family: 'Space Mono', monospace;
+  letter-spacing: 1px;
+}
+.search {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 320px;
+  position: relative;
+  z-index: 1;
+}
+.search input {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.8rem 1.2rem;
+  width: 100%;
+  color: var(--fg);
+  font-size: 0.9rem;
+  font-family: 'Space Mono', monospace;
+  transition: .3s ease;
+}
+.search input::placeholder {
+  color: var(--dim);
+}
+.search input:focus {
+  outline: none;
+  border-color: var(--fg);
+}
+.search-hint {
+  font-size: 0.6rem;
+  color: var(--dim);
+  font-family: 'Space Mono', monospace;
+  text-align: right;
+  margin-top: 0.25rem;
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+@media (max-width: 500px) {
+  .clock { font-size: 4rem; letter-spacing: 2px; }
+  .message { font-size: 0.9rem; }
+  .settings-panel { width: 180px; padding: 0.8rem; top: 60px; right: 10px; }
+  .settings-toggle { top: 10px; right: 10px; width: 36px; height: 36px; }
+  .theme-toggle { top: 10px; right: 56px; width: 36px; height: 36px; }
+}
+</style>
 </head>
 <body>
-  <button id="settingsToggle" class="settings-toggle" title="Settings">⚙️</button>
-  
-  <div class="settings-panel" id="settingsPanel">
-    <label for="fontSelect">🛠 Clock Font:</label>
-    <select id="fontSelect">
-      <option value="'Inter', sans-serif">Inter</option>
-      <option value="'Poppins', sans-serif">Poppins</option>
-      <option value="'Roboto Mono', monospace">Roboto Mono</option>
-      <option value="'Pacifico', cursive">Pacifico</option>
-      <option value="'Orbitron', sans-serif">Orbitron</option>
-    </select>
-    <button id="themeToggle" class="toggle-btn" title="Toggle theme">🌙</button>
-  </div>
 
+<button class="theme-toggle" id="themeToggle">●</button>
+<button class="settings-toggle" id="settingsToggle" title="Settings">⚙</button>
+
+<div class="settings-panel" id="settingsPanel">
+  <label>Clock Font</label>
+  <select id="fontSelect">
+    <option value="'Space Mono', monospace">Space Mono</option>
+    <option value="'Inter', sans-serif">Inter</option>
+    <option value="'Poppins', sans-serif">Poppins</option>
+    <option value="'Roboto Mono', monospace">Roboto Mono</option>
+    <option value="'Pacifico', cursive">Pacifico</option>
+    <option value="'Orbitron', sans-serif">Orbitron</option>
+  </select>
+  <label>Appearance</label>
+  <button id="panelThemeBtn" class="panel-toggle-btn"><span>●</span> Dark Mode</button>
+</div>
+
+<div class="glyph-row">• · • · • · • · • · • · • · • · • ·</div>
+
+<div class="clock-wrapper">
   <div class="clock" id="clock">00:00</div>
-  <div class="message" id="message">Have a wonderful day! 🌸</div>
-
-  <div class="search">
-    <input type="text" id="searchInput" placeholder="Search the web..." onkeypress="handleSearch(event)">
+  <div class="dot-divider">
+    <span></span><span></span><span></span><span></span><span></span>
   </div>
+  <div class="message" id="message">Good evening!</div>
+</div>
 
-  <script>
-    // Clock update
-    function updateClock() {
-      const now = new Date();
-      const hours = String(now.getHours()).padStart(2, "0");
-      const minutes = String(now.getMinutes()).padStart(2, "0");
-      document.getElementById("clock").textContent = `${hours}:${minutes}`;
+<div class="search">
+  <input type="text" id="searchInput" placeholder="Search the web..." onkeypress="handleSearch(event)">
+  <div class="search-hint">[enter] google</div>
+</div>
+
+<div class="glyph-row">• · • · • · • · • · • · • · • · • ·</div>
+
+<script>
+// Clock
+function updateClock() {
+  var now = new Date();
+  var hours = String(now.getHours()).padStart(2, '0');
+  var minutes = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('clock').textContent = hours + ':' + minutes;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// Greeting
+var hour = new Date().getHours();
+var messageEl = document.getElementById('message');
+if (hour < 12) messageEl.textContent = 'Good morning! ☀️';
+else if (hour < 18) messageEl.textContent = 'Good afternoon! 🌤️';
+else messageEl.textContent = 'Good evening! 🌙';
+
+// Search
+function handleSearch(event) {
+  if (event.key === 'Enter') {
+    var query = event.target.value.trim();
+    if (query) {
+      window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+  }
+}
 
-    // Greeting
-    const hour = new Date().getHours();
-    const message = document.getElementById("message");
-    if (hour < 12) message.textContent = "Good morning! ☀️";
-    else if (hour < 18) message.textContent = "Good afternoon! 🌤️";
-    else message.textContent = "Good evening! 🌙";
+// Font changer
+var fontSelect = document.getElementById('fontSelect');
+var savedFont = localStorage.getItem('clockFont');
+if (savedFont) {
+  document.getElementById('clock').style.fontFamily = savedFont;
+  fontSelect.value = savedFont;
+}
+fontSelect.addEventListener('change', function(e) {
+  var selectedFont = e.target.value;
+  document.getElementById('clock').style.fontFamily = selectedFont;
+  localStorage.setItem('clockFont', selectedFont);
+});
 
-    // Font changer (only for clock)
-    const fontSelect = document.getElementById("fontSelect");
-    const savedFont = localStorage.getItem("clockFont");
-    if (savedFont) {
-      document.getElementById("clock").style.fontFamily = savedFont;
-      fontSelect.value = savedFont;
-    }
-    fontSelect.addEventListener("change", (e) => {
-      const selectedFont = e.target.value;
-      document.getElementById("clock").style.fontFamily = selectedFont;
-      localStorage.setItem("clockFont", selectedFont);
-    });
+// Theme toggle (fixed button)
+var themeToggle = document.getElementById('themeToggle');
+function setTheme(isLight) {
+  if (isLight) {
+    document.body.classList.add('light-mode');
+    themeToggle.textContent = '○';
+  } else {
+    document.body.classList.remove('light-mode');
+    themeToggle.textContent = '●';
+  }
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+}
+themeToggle.addEventListener('click', function() {
+  setTheme(!document.body.classList.contains('light-mode'));
+});
+if (localStorage.getItem('theme') === 'light') {
+  setTheme(true);
+}
 
-    // Search
-    function handleSearch(event) {
-      if (event.key === "Enter") {
-        const query = event.target.value.trim();
-        if (query) {
-          window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank");
-        }
-      }
-    }
+// Settings panel
+var settingsToggle = document.getElementById('settingsToggle');
+var settingsPanel = document.getElementById('settingsPanel');
+settingsToggle.addEventListener('click', function() {
+  settingsPanel.classList.toggle('visible');
+});
 
-    // Dark mode toggle
-    const themeToggle = document.getElementById("themeToggle");
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark") {
-      document.body.classList.add("dark");
-      themeToggle.textContent = "☀️";
-    }
-
-    themeToggle.addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-      const isDark = document.body.classList.contains("dark");
-      themeToggle.textContent = isDark ? "☀️" : "🌙";
-      localStorage.setItem("theme", isDark ? "dark" : "light");
-    });
-
-    // Settings toggle
-    const settingsToggle = document.getElementById("settingsToggle");
-    const settingsPanel = document.getElementById("settingsPanel");
-    settingsToggle.addEventListener("click", () => {
-      settingsPanel.style.display = settingsPanel.style.display === "flex" ? "none" : "flex";
-    });
-  </script>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Orbitron:wght@500&family=Pacifico&family=Poppins:wght@500&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+// Panel theme button sync
+var panelThemeBtn = document.getElementById('panelThemeBtn');
+panelThemeBtn.addEventListener('click', function() {
+  var isLight = document.body.classList.contains('light-mode');
+  setTheme(!isLight);
+});
+(function syncPanelBtn() {
+  var isLight = document.body.classList.contains('light-mode');
+  panelThemeBtn.innerHTML = '<span>' + (isLight ? '○' : '●') + '</span> ' + (isLight ? ' Light Mode' : ' Dark Mode');
+})();
+var _origSetTheme = setTheme;
+setTheme = function(isLight) {
+  _origSetTheme(isLight);
+  panelThemeBtn.innerHTML = '<span>' + (isLight ? '○' : '●') + '</span> ' + (isLight ? ' Light Mode' : ' Dark Mode');
+};
+</script>
 </body>
 </html>

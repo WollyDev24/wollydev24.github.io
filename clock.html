@@ -4,27 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghost Settings Clock</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=M+PLUS+Rounded+1c:wght@300;400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --clock-color: #ffffff;
-            --font-weight: 700;
-            --clock-size: 12rem;
-            --clock-opacity: 1;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #000;
+            --fg: #fff;
+            --dim: #555;
+            --border: #1a1a1a;
+            --card: #0d0d0d;
+            --accent: #fff;
+            --clock-color: #ffffff;
+            --font-weight: 700;
+            --clock-size: 12rem;
+            --clock-opacity: 1;
+        }
+
+        .light-mode {
+            --bg: #fff;
+            --fg: #000;
+            --dim: #aaa;
+            --border: #e8e8e8;
+            --card: #f5f5f5;
+            --accent: #000;
+            --clock-color: #000000;
+        }
+
         body {
-            background-color: transparent;
+            background-color: var(--bg);
             color: var(--clock-color);
-            font-family: 'M PLUS Rounded 1c', sans-serif;
+            font-family: 'Inter', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,10 +47,30 @@
             margin: 0;
             overflow: hidden;
             position: relative;
-            transition: background-color 0.4s ease;
+            transition: background-color 0.3s;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle, var(--border) 1px, transparent 1px);
+            background-size: 24px 24px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body.has-bg::before {
+            display: none;
         }
 
         body.solid-bg {
+            background-color: #000 !important;
+        }
+        body.solid-bg::before {
+            display: none;
+        }
+        .light-mode.solid-bg {
             background-color: #000 !important;
         }
 
@@ -62,8 +96,30 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.5);
             z-index: -1;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 28px;
+            right: 82px;
+            z-index: 300;
+            cursor: pointer;
+            font-size: 1.3rem;
+            color: var(--fg);
+            opacity: 0.4;
+            transition: opacity 0.2s, transform 0.2s;
+            line-height: 1;
+            font-family: 'Inter', sans-serif;
+            background: none;
+            border: none;
+            outline: none;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.8;
+            transform: scale(1.15);
         }
 
         .container {
@@ -80,10 +136,24 @@
             z-index: 1;
         }
 
+        .glyph-row {
+            color: var(--dim);
+            font-size: 0.6rem;
+            letter-spacing: 0.5em;
+            font-family: 'Space Mono', monospace;
+            opacity: 0.5;
+            margin-bottom: 0.25rem;
+            pointer-events: none;
+        }
+
         #date {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.8;
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+            opacity: 0.6;
+            font-family: 'Space Mono', 'M PLUS Rounded 1c', monospace;
+            letter-spacing: 0.05em;
+            font-weight: 400;
+            color: var(--clock-color);
         }
 
         #clock {
@@ -95,79 +165,82 @@
             opacity: var(--clock-opacity);
             white-space: nowrap;
             display: inline-block;
+            font-family: 'Space Mono', 'M PLUS Rounded 1c', monospace;
         }
 
         .seconds {
             font-size: 0.45em;
-            opacity: 0.6;
+            opacity: 0.5;
             margin-left: 0.05em;
         }
 
-        /* --- Search Bar UI --- */
         .search-container {
             position: relative;
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            padding: 12px 24px;
-            width: 450px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px 18px;
+            width: 420px;
             max-width: 90vw;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-top: 0.5rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: border-color 0.3s, width 0.3s;
+            margin-top: 0.75rem;
         }
 
         .search-container:focus-within {
-            width: 550px;
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 45px rgba(0,0,0,0.4);
-            transform: translateY(-5px);
+            width: 520px;
+            border-color: var(--dim);
         }
 
         .google-icon {
-            width: 22px;
-            height: 22px;
-            margin-right: 15px;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            flex-shrink: 0;
         }
 
         #search-input {
             background: none;
             border: none;
-            color: white;
-            font-family: inherit;
-            font-size: 1.1rem;
+            color: var(--fg);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
             font-weight: 400;
             width: 100%;
             outline: none;
         }
 
         #search-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: var(--dim);
+        }
+
+        .dot-badge {
+            display: inline-block;
+            width: 4px;
+            height: 4px;
+            background: var(--dim);
+            border-radius: 50%;
+            vertical-align: middle;
+            flex-shrink: 0;
         }
 
         /* --- Account Switcher UI --- */
         .account-wrapper {
             position: fixed;
-            top: 25px;
-            right: 25px;
+            top: 20px;
+            right: 20px;
             z-index: 200;
         }
 
         .account-container {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             cursor: pointer;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .pfp {
@@ -175,74 +248,64 @@
             height: 32px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 1.5px solid var(--border);
             z-index: 2;
         }
 
         .g1-ring {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
             border-radius: 50%;
-            padding: 2px;
-            background: conic-gradient(#4285f4, #ea4335, #fbbc05, #34a853, #4285f4);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: destination-out;
-            mask-composite: exclude;
+            border: 1.5px solid var(--dim);
             opacity: 0;
-            transition: opacity 0.3s ease;
-            animation: ring-rotate 4s linear infinite;
+            transition: opacity 0.3s, border-color 0.3s;
         }
 
-        .g1-ring.active { opacity: 1; }
-
-        @keyframes ring-rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .g1-ring.active {
+            opacity: 1;
+            border-color: var(--fg);
         }
 
         .account-menu {
             position: absolute;
-            top: 55px;
+            top: 50px;
             right: 0;
-            width: 280px;
-            background: rgba(15, 15, 15, 0.8);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            width: 260px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 18px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
             opacity: 0;
             pointer-events: none;
-            transform: translateY(-10px) scale(0.95);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
+            transform: translateY(-8px);
+            transition: all 0.3s ease;
+            color: var(--fg);
         }
 
         .account-wrapper:hover .account-menu {
             opacity: 1;
             pointer-events: all;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
         }
 
-        .menu-header { display: flex; align-items: center; gap: 15px; }
-        .menu-pfp { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
-        .menu-info { display: flex; flex-direction: column; }
-        .menu-name { font-weight: 700; font-size: 1rem; }
-        .menu-email { font-size: 0.75rem; opacity: 0.6; }
-        .menu-divider { height: 1px; background: rgba(255, 255, 255, 0.1); margin: 15px 0; }
-        .menu-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s; }
-        .menu-item:hover { background: rgba(255, 255, 255, 0.08); }
+        .menu-header { display: flex; align-items: center; gap: 14px; }
+        .menu-pfp { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+        .menu-info { display: flex; flex-direction: column; gap: 2px; }
+        .menu-name { font-weight: 600; font-size: 0.95rem; }
+        .menu-email { font-size: 0.7rem; color: var(--dim); }
+        .dot-divider { border: none; border-top: 1px dotted var(--border); margin: 14px 0; }
+        .menu-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; transition: background 0.15s; color: var(--fg); }
+        .menu-item:hover { background: var(--border); }
 
-        /* --- Ghost Settings UI --- */
+        /* --- Settings UI --- */
         .settings-wrapper {
             position: fixed;
-            bottom: 25px;
-            left: 25px;
+            bottom: 20px;
+            left: 20px;
             display: flex;
             align-items: flex-end;
-            gap: 15px;
+            gap: 12px;
             z-index: 100;
         }
 
@@ -251,49 +314,48 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
+            width: 44px;
+            height: 44px;
             cursor: pointer;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            transition: border-color 0.2s;
         }
 
-        .bubble-bg {
-            position: absolute;
-            width: 32px;
-            height: 32px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(8px);
-            border-radius: 50%;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: -1;
-            opacity: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .gear-container:hover {
+            border-color: var(--dim);
         }
 
         .gear-icon {
-            width: 28px;
-            height: 28px;
-            opacity: 0.3;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            fill: var(--clock-color);
+            width: 22px;
+            height: 22px;
+            opacity: 0.4;
+            transition: opacity 0.3s, transform 0.5s;
+            fill: var(--fg);
+        }
+
+        .gear-container:hover .gear-icon {
+            opacity: 0.8;
+            transform: rotate(90deg);
         }
 
         .settings-panel {
-            background: rgba(15, 15, 15, 0.7);
-            backdrop-filter: blur(20px);
-            padding: 24px;
-            border-radius: 24px;
+            background: var(--card);
+            padding: 20px;
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
             opacity: 0;
             pointer-events: none;
-            transform: translateY(20px) scale(0.95);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            color: white;
-            font-size: 0.85rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            width: 280px;
+            transform: translateY(12px);
+            transition: all 0.3s ease;
+            color: var(--fg);
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.5);
+            width: 270px;
             max-height: 80vh;
             overflow-y: auto;
             scrollbar-width: none;
@@ -301,68 +363,257 @@
 
         .settings-panel::-webkit-scrollbar { display: none; }
 
-        .settings-wrapper:hover .gear-icon { opacity: 1; transform: rotate(180deg) scale(1.1); }
-        .settings-wrapper:hover .bubble-bg { width: 55px; height: 55px; opacity: 1; animation: blob-morph 4s infinite alternate; }
-        
-        @keyframes blob-morph {
-            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-            33% { border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%; }
-            66% { border-radius: 30% 70% 70% 30% / 50% 40% 70% 50%; }
-            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
-        }
-
-        @keyframes panel-blob-morph {
-            0% { border-radius: 24px 40px 24px 40px; }
-            33% { border-radius: 40px 24px 50px 24px; }
-            66% { border-radius: 24px 50px 24px 40px; }
-            100% { border-radius: 40px 24px 40px 24px; }
-        }
-
-        .settings-wrapper:hover .settings-panel,
         .settings-wrapper.force-show .settings-panel {
             opacity: 1;
             pointer-events: all;
-            transform: translateY(0) scale(1);
-            animation: panel-blob-morph 6s infinite alternate ease-in-out;
+            transform: translateY(0);
         }
 
-        /* --- Mobile Optimization --- */
+        .settings-header {
+            font-weight: 600;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding-bottom: 8px;
+            border-bottom: 1px dotted var(--border);
+            color: var(--dim);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .setting-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dim);
+            font-weight: 500;
+        }
+        .checkbox-item label {
+            font-size: 0.7rem;
+            text-transform: none;
+            letter-spacing: 0;
+            color: var(--fg);
+            opacity: 0.8;
+        }
+
+        .value-display {
+            font-size: 0.65rem;
+            font-family: 'Space Mono', monospace;
+            color: var(--dim);
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 3px;
+            background: var(--border);
+            border-radius: 0;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--fg);
+            cursor: pointer;
+            border-radius: 0;
+        }
+
+        .color-presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            border: 1.5px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .color-swatch.active {
+            border-color: var(--fg);
+        }
+
+        .color-swatch:not(.active):hover {
+            border-color: var(--dim);
+        }
+
+        .checkbox-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 4px;
+            transition: background 0.15s;
+            color: var(--fg);
+        }
+
+        .checkbox-item:hover {
+            background: var(--border);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid var(--dim);
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked {
+            background: var(--fg);
+            border-color: var(--fg);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--bg);
+        }
+
+        .profile-input {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 6px 10px;
+            color: var(--fg);
+            width: 100%;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            transition: border-color 0.2s;
+        }
+
+        .profile-input:focus {
+            border-color: var(--dim);
+        }
+
+        .profile-input::placeholder {
+            color: var(--dim);
+        }
+
+        .pfp-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .pfp-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+            cursor: pointer;
+            border: 1.5px solid var(--border);
+            transition: border-color 0.2s;
+        }
+
+        .pfp-option.active {
+            border-color: var(--fg);
+        }
+
+        .pfp-option:not(.active):hover {
+            border-color: var(--dim);
+        }
+
+        .custom-pfp-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: 1.5px dashed var(--dim);
+            border-radius: 50%;
+        }
+
+        .btn-remove {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            color: var(--fg);
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .btn-remove:hover {
+            border-color: #ff5f5f;
+            color: #ff5f5f;
+        }
+
+        .btn-remove svg path {
+            fill: currentColor;
+        }
+
         @media (max-width: 768px) {
-            body:not(.solid-bg) {
-                background-color: #000;
-            }
             :root { --clock-size: clamp(3rem, 18vw, 7rem); }
-            #date { font-size: 1.1rem; }
-            .search-container { width: 90vw; padding: 10px 18px; }
+            #date { font-size: 1rem; }
+            .theme-toggle { top: 18px; right: 70px; font-size: 1.1rem; }
+            .search-container { width: 90vw; padding: 8px 14px; }
             .search-container:focus-within { width: 95vw; }
-            #search-input { font-size: 1rem; }
-            .account-wrapper { top: 15px; right: 15px; }
-            .account-menu { position: fixed; top: 70px; right: 15px; left: 15px; width: auto; }
-            .settings-wrapper { bottom: 15px; left: 15px; }
-            .settings-panel { position: fixed; bottom: 80px; left: 15px; right: 15px; width: auto; max-height: 60vh; }
+            #search-input { font-size: 0.9rem; }
+            .account-wrapper { top: 14px; right: 14px; }
+            .account-menu { position: fixed; top: 60px; right: 14px; left: 14px; width: auto; }
+            .settings-wrapper { bottom: 14px; left: 14px; }
+            .settings-panel { position: fixed; bottom: 70px; left: 14px; right: 14px; width: auto; max-height: 60vh; }
+            .glyph-row { font-size: 0.45rem; }
         }
 
-        .settings-header { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px; }
-        .setting-item { display: flex; flex-direction: column; gap: 8px; }
-        .setting-label-row { display: flex; justify-content: space-between; align-items: center; }
-        label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; font-weight: 700; }
-        .value-display { font-size: 0.7rem; font-family: monospace; opacity: 0.8; }
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; outline: none; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: #fff; cursor: pointer; border-radius: 50%; }
-        .color-presets { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 5px; }
-        .color-swatch { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.1); transition: all 0.3s; }
-        .color-swatch.active { border-color: #fff; box-shadow: 0 0 15px var(--clock-color); }
-        .checkbox-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .checkbox-item { display: flex; align-items: center; gap: 8px; cursor: pointer; background: rgba(255, 255, 255, 0.05); padding: 8px 10px; border-radius: 8px; }
-        .profile-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 8px 12px; color: white; width: 100%; outline: none; }
-        .pfp-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; }
-        .pfp-option { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; cursor: pointer; border: 2px solid rgba(255, 255, 255, 0.1); }
-        .pfp-option.active { border-color: #fff; }
-        .custom-pfp-trigger { display: flex; align-items: center; justify-content: center; background: rgba(255, 255, 255, 0.1); border: 2px dashed rgba(255, 255, 255, 0.2); }
+        @media (max-width: 768px) and (hover: none) {
+            .account-menu {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .account-menu.open {
+                opacity: 1;
+                pointer-events: all;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 <body>
     <div id="bg-image-layer"></div>
+
+    <button class="theme-toggle" id="theme-toggle">○</button>
+
     <div class="account-wrapper">
         <div class="account-container" id="account-trigger">
             <div class="g1-ring" id="g1-ring"></div>
@@ -376,15 +627,16 @@
                     <div class="menu-email">Personal Account</div>
                 </div>
             </div>
-            <div class="menu-divider"></div>
+            <hr class="dot-divider">
             <div class="menu-item" id="edit-profile-btn">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
                 Manage Profile
             </div>
         </div>
     </div>
 
     <div class="container">
+        <div class="glyph-row">············</div>
         <div id="date">Monday, April 13</div>
         <div id="clock">00:00<span class="seconds">00</span></div>
         <div class="search-container">
@@ -400,12 +652,11 @@
 
     <div class="settings-wrapper">
         <div class="gear-container">
-            <div class="bubble-bg"></div>
             <svg class="gear-icon" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.91,7.62,6.29L5.23,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.72,8.87 c-0.11,0.21-0.06,0.47,0.12,0.61l2.03,1.58C4.84,11.36,4.81,11.68,4.81,12c0,0.32,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.11-0.21,0.06-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
         </div>
 
         <div class="settings-panel">
-            <div class="settings-header">Profile Settings</div>
+            <div class="settings-header"><span class="dot-badge"></span> Profile Settings</div>
             <div class="setting-item">
                 <label>Display Name</label>
                 <input type="text" id="name-input" class="profile-input" placeholder="Wolly">
@@ -418,19 +669,24 @@
                     <img src="pictures/s8.png" class="pfp-option" data-src="pictures/s8.png" title="S8">
                     <img src="pictures/s8plus.png" class="pfp-option" data-src="pictures/s8plus.png" title="S8+">
                     <div class="pfp-option custom-pfp-trigger" id="custom-pfp-btn" title="Upload Custom">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
                     </div>
                 </div>
                 <input type="file" id="pfp-upload" accept="image/*" style="display: none;">
             </div>
-            <div class="setting-item"><div class="checkbox-item"><input type="checkbox" id="g1-toggle"><label for="g1-toggle">Google One Ring</label></div></div>
+            <div class="setting-item">
+                <div class="checkbox-item">
+                    <input type="checkbox" id="g1-toggle">
+                    <label for="g1-toggle">Google One Ring</label>
+                </div>
+            </div>
 
-            <div class="menu-divider"></div>
-            <div class="settings-header">Background Settings</div>
+            <hr class="dot-divider">
+            <div class="settings-header"><span class="dot-badge"></span> Background Settings</div>
             <div class="setting-item">
                 <div class="checkbox-row">
                     <div class="checkbox-item" id="bg-upload-btn" title="Upload Image">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
                         <label>Image</label>
                     </div>
                     <div class="checkbox-item" id="solid-bg-toggle">
@@ -438,15 +694,15 @@
                         <label for="solid-bg-check">Black</label>
                     </div>
                 </div>
-                <div class="checkbox-item" id="bg-remove-btn" style="display: none; margin-top: 10px; justify-content: center;">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="#ff5f5f"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-                    <label style="color: #ff5f5f;">Remove Image</label>
+                <div id="bg-remove-btn" class="btn-remove" style="display: none; margin-top: 6px;">
+                    <svg viewBox="0 0 24 24" width="14" height="14"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                    Remove Image
                 </div>
                 <input type="file" id="bg-upload" accept="image/*" style="display: none;">
             </div>
 
-            <div class="menu-divider"></div>
-            <div class="settings-header">Clock Settings</div>
+            <hr class="dot-divider">
+            <div class="settings-header"><span class="dot-badge"></span> Clock Settings</div>
             <div class="setting-item">
                 <div class="setting-label-row"><label>Thickness</label><span class="value-display" id="weight-val">Bold</span></div>
                 <input type="range" id="weight-slider" min="0" max="3" step="1" value="2">
@@ -512,11 +768,13 @@
         const bgRemoveBtn = document.getElementById('bg-remove-btn');
         const bgLayer = document.getElementById('bg-image-layer');
         const solidBgCheck = document.getElementById('solid-bg-check');
+        const pfpUpload = document.getElementById('pfp-upload');
+        const customPfpBtn = document.getElementById('custom-pfp-btn');
+        const themeToggle = document.getElementById('theme-toggle');
 
         const weights = [300, 400, 700, 800];
         const weightNames = ['Light', 'Regular', 'Bold', 'Black'];
 
-        // --- Core Clock Function ---
         function updateClock() {
             const now = new Date();
             let h = now.getHours();
@@ -534,7 +792,6 @@
             dateEl.innerText = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
         }
 
-        // --- Settings Persistence ---
         function saveSettings() {
             const settings = {
                 weight: weightSlider.value,
@@ -558,7 +815,6 @@
             if (!saved) return;
             const s = JSON.parse(saved);
 
-            // Apply Clock Settings
             weightSlider.value = s.weight;
             document.documentElement.style.setProperty('--font-weight', weights[s.weight]);
             weightVal.innerText = weightNames[s.weight];
@@ -584,7 +840,6 @@
             secondsToggle.checked = s.secondsShow;
             formatToggle.checked = s.format24h;
 
-            // Apply Profile Settings
             nameInput.value = s.name || '';
             displayName.innerText = s.name || 'Wolly';
             g1Toggle.checked = s.g1Ring;
@@ -594,19 +849,24 @@
                 pfpOptions.forEach(opt => opt.classList.toggle('active', opt.dataset.src === s.pfp));
             }
 
-            // Apply Background Settings
             solidBgCheck.checked = s.solidBg;
             document.body.classList.toggle('solid-bg', s.solidBg);
-            
+
             const savedWallpaper = localStorage.getItem('clockWallpaper');
             if (savedWallpaper) {
                 bgLayer.style.backgroundImage = `url(${savedWallpaper})`;
                 bgLayer.classList.add('active');
                 bgRemoveBtn.style.display = 'flex';
+                document.body.classList.add('has-bg');
             }
         }
 
-        // --- Event Listeners ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            themeToggle.textContent = document.body.classList.contains('light-mode') ? '●' : '○';
+            localStorage.setItem('clockTheme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
         weightSlider.addEventListener('input', (e) => {
             document.documentElement.style.setProperty('--font-weight', weights[e.target.value]);
             weightVal.innerText = weightNames[e.target.value];
@@ -670,6 +930,7 @@
                     bgLayer.style.backgroundImage = `url(${src})`;
                     bgLayer.classList.add('active');
                     bgRemoveBtn.style.display = 'flex';
+                    document.body.classList.add('has-bg');
                     localStorage.setItem('clockWallpaper', src);
                     saveSettings();
                 };
@@ -682,6 +943,7 @@
             bgLayer.classList.remove('active');
             bgRemoveBtn.style.display = 'none';
             bgUpload.value = '';
+            document.body.classList.remove('has-bg');
             localStorage.removeItem('clockWallpaper');
             saveSettings();
         });
@@ -744,7 +1006,14 @@
             }
         });
 
-        // Initialize
+        themeToggle.addEventListener('click', toggleTheme);
+
+        const savedTheme = localStorage.getItem('clockTheme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '●';
+        }
+
         loadSettings();
         setInterval(updateClock, 1000);
         updateClock();

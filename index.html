@@ -1,1482 +1,570 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WollyDev24 | Portfolio</title>
-  <meta name="description" content="Kustom Creator, App Developer and Designer from Germany.">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WollyDev24</title>
+  <meta name="description" content="Kustom Creator, App Developer and Designer from Germany." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet" />
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     :root {
-      --bg: rgba(10, 15, 12, 0.4);
-      /* Deep dark teal-ish base */
-      --card-bg: rgba(30, 35, 32, 0.85);
-      --card-bg-hover: rgba(45, 50, 48, 0.9);
-      --accent-glass: rgba(255, 77, 77, 0.1);
-      /* Default accent tint */
-      /* Glassmorphism card bg */
-      --text-main: #f5f5f5;
-      --text-muted: #a0acab;
-      --accent: #ff4d4d;
-      /* Character Hair Red */
-      --accent-hover: #ff6666;
-      --border: rgba(255, 255, 255, 0.1);
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      --border-radius: 26px;
+      --bg: #000;
+      --fg: #fff;
+      --dim: #555;
+      --border: #1a1a1a;
+      --card: #0d0d0d;
+      --accent: #fff;
     }
-
-    /* Backdrop Filter for Glass effect */
-    .about-card, .projects-grid, .tabs, .settings-panel, .project-emoji {
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background-color: var(--accent-glass);
-    }
-
-    /* Reduce Animations Support */
-    body.reduce-animations *,
-    body.reduce-animations ::before,
-    body.reduce-animations ::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
-    }
-
-    /* Color Picker Styles */
-    .color-picker {
-      display: flex;
-      gap: 0.8rem;
-      padding: 0.5rem 0;
-      flex-wrap: wrap;
-    }
-
-    .color-dot {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 3px solid transparent;
-      transition: transform 0.2s, border-color 0.2s;
-      position: relative;
-    }
-
-    .color-dot.active {
-      border-color: #ffffff;
-      transform: scale(1.1);
-    }
-
-    .light-mode .color-dot.active {
-      border-color: #000000;
-    }
-
-    .color-dot:active {
-      transform: scale(0.9);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
+    .light-mode {
+      --bg: #fff;
+      --fg: #000;
+      --dim: #aaa;
+      --border: #e8e8e8;
+      --card: #f5f5f5;
+      --accent: #000;
     }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg);
-      color: var(--text-main);
-      line-height: 1.5;
-      padding: 0 1.5rem 6rem;
-      overflow-x: hidden;
+      font-family: Inter, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
       min-height: 100vh;
+      transition: background .4s ease, color .4s ease;
     }
 
-/*     body::before {
+    body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('pictures/backround.jpg');
-      background-size: cover;
-      background-position: center;
-      filter: blur(30px) brightness(0.5);
-      z-index: -2;
-      transform: scale(1.1); /* Avoid white edges */
-
-    */
-
-    .light-mode body::before {
-      filter: blur(30px) brightness(0.9) saturate(0.8);
-      opacity: 0.4;
-    }
-
-    body.no-background::before {
-      display: none;
-    }
-
-    body.no-background {
-      background-color: #0a0f0c; /* Solid version of the teal base */
-    }
-
-    .light-mode.no-background {
-      background-color: #f0f8f5;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+      background-size: 24px 24px;
+      z-index: 0;
+      pointer-events: none;
+      transition: background-image .4s ease;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 640px;
       margin: 0 auto;
-    }
-
-    /* One UI Large Header for Reachability */
-    header {
-      padding: 7rem 0.5rem 3.5rem;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      gap: 1.8rem;
-      animation: slideDown 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .profile-pic {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 3px solid var(--card-bg);
-      box-shadow: var(--shadow);
-      flex-shrink: 0;
-    }
-
-    .header-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.1rem;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--text-main);
-      line-height: 1.1;
-    }
-
-    .tagline {
-      display: block;
-      font-family: 'Courier New', Courier, monospace;
-      color: var(--accent);
-      font-size: 0.85rem;
-      margin: 0.2rem 0;
-      text-shadow: 0 0 8px rgba(255, 77, 77, 0.4);
-    }
-
-    .light-mode .tagline {
-      text-shadow: none;
-    }
-
-    .location {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    /* One UI Tab Style */
-    .tabs {
-      display: flex;
-      background: var(--card-bg);
-      padding: 0.4rem;
-      border-radius: 32px;
-      margin-bottom: 2.5rem;
-      position: sticky;
-      top: 1rem;
-      z-index: 100;
-      box-shadow: var(--shadow);
+      padding: 0 20px;
       position: relative;
-    }
-
-    .tab-btn {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--text-muted);
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      padding: 0.8rem 1rem;
-      transition: color 0.3s ease;
-      border-radius: 28px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .tab-btn.active {
-      color: #ffffff;
-    }
-
-    /* Refined Tab Animation */
-    .tab-slider {
-      position: absolute;
-      height: calc(100% - 0.8rem);
-      width: calc(33.33% - 0.4rem);
-      background: var(--accent);
-      border-radius: 28px;
-      top: 0.4rem;
-      left: 0.4rem;
-      transition: transform 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
       z-index: 1;
     }
 
-    .tab-btn:nth-child(2).active ~ .tab-slider {
-      transform: translateX(100%);
-    }
-
-    .tab-btn:nth-child(3).active ~ .tab-slider {
-      transform: translateX(200%);
-    }
-
-    /* Subtle leaning motion on hover - hints the direction without jumping */
-    .tabs:has(.tab-btn:nth-child(1).active) .tab-btn:nth-child(2):hover ~ .tab-slider { transform: translateX(24px); }
-    .tabs:has(.tab-btn:nth-child(1).active) .tab-btn:nth-child(3):hover ~ .tab-slider { transform: translateX(48px); }
-
-    .tabs:has(.tab-btn:nth-child(2).active) .tab-btn:nth-child(1):hover ~ .tab-slider { transform: translateX(calc(100% - 24px)); }
-    .tabs:has(.tab-btn:nth-child(2).active) .tab-btn:nth-child(3):hover ~ .tab-slider { transform: translateX(calc(100% + 24px)); }
-
-    .tabs:has(.tab-btn:nth-child(3).active) .tab-btn:nth-child(1):hover ~ .tab-slider { transform: translateX(calc(200% - 48px)); }
-    .tabs:has(.tab-btn:nth-child(3).active) .tab-btn:nth-child(2):hover ~ .tab-slider { transform: translateX(calc(200% - 24px)); }
-
-    .tab-content {
-      transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-    }
-
-    .tab-content.hidden {
-      display: none;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-
-    .tab-content:not(.hidden) {
-      display: block;
-      animation: contentFadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    @keyframes contentFadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .about-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--border-radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
-      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .about-card:hover {
-      transform: scale(1.01);
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 0.75rem;
-      margin-top: 2rem;
-    }
-
-    .skill-item {
-      background: var(--bg);
-      padding: 0.8rem;
-      border-radius: 20px;
-      text-align: center;
-      border: 1px solid var(--border);
-      font-weight: 500;
-      font-size: 0.9rem;
-      color: var(--text-main);
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s ease, border-color 0.3s ease;
-    }
-
-    .skill-item:hover {
-      border-color: var(--accent);
-      background: rgba(0, 127, 255, 0.08);
-      transform: translateY(-4px) scale(1.02);
-    }
-
-    .projects-grid {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--border-radius);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-
-    .project-card {
-      text-decoration: none;
-      color: inherit;
-      display: flex;
-      flex-direction: column;
-      background: transparent;
-      transition: background-color 0.3s ease;
-      position: relative;
-    }
-
-    .project-card:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      right: 1.5rem;
-      left: 5rem; /* Align with text */
-      height: 1px;
-      background-color: var(--border);
-      transition: opacity 0.3s ease;
-    }
-
-    .project-card:hover {
-      background-color: var(--card-bg-hover);
-      z-index: 2;
-    }
-
-    .project-card:hover::after {
-      opacity: 0;
-    }
-
-    .project-card:active {
-      background-color: var(--card-bg-hover);
-      filter: brightness(0.9);
-      transform: scale(0.985);
-      transition: transform 0.1s ease;
-    }
-
-    .project-header {
-      padding: 1.2rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      width: 100%;
-    }
-
-    .project-emoji {
-      font-size: 1.8rem;
-      background: var(--bg);
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 14px;
-      flex-shrink: 0;
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    /* Gallery Styles */
-    .project-gallery {
-      display: flex;
-      gap: 0.8rem;
-      overflow-x: auto;
-      padding-bottom: 1rem;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none;  /* IE and Edge */
-      margin-top: 1rem;
-    }
-
-    .project-gallery::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
-
-    .gallery-img {
-      height: 160px;
-      border-radius: 14px;
-      flex-shrink: 0;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease;
-    }
-
-    .gallery-img:hover {
-      transform: scale(1.02);
-    }
-
-    /* Desktop Hover Expansion for Projects only */
-    @media (hover: hover) {
-      .project-card:not(.blog-post):hover .project-details {
-        max-height: 500px;
-        opacity: 1;
-        padding-bottom: 1.5rem;
-      }
-      .project-card:not(.blog-post):hover .chevron {
-        transform: rotate(90deg);
-        opacity: 1;
-        color: var(--accent);
-      }
-      .project-card:not(.blog-post):hover .project-emoji {
-        transform: scale(1.1);
-      }
-    }
-
-    /* Mobile/Click Expansion */
-    .project-card.expanded .project-details {
-      max-height: 600px;
-      opacity: 1;
-      padding-bottom: 1.5rem;
-    }
-
-    .project-card.expanded .chevron {
-      transform: rotate(90deg);
-      opacity: 1;
-      color: var(--accent);
-    }
-
-    .project-card.expanded .project-emoji {
-      transform: scale(1.1);
-    }
-
-    .project-header {
-      padding: 1.2rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1.2rem;
-      width: 100%;
-    }
-
-    .project-info {
-      flex-grow: 1;
-    }
-
-    .project-name {
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-      color: var(--text-main);
-    }
-
-    .project-desc {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      line-height: 1.3;
-    }
-
-    .chevron {
-      color: var(--text-muted);
-      font-size: 1rem;
-      opacity: 0.5;
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
-    }
-
-    /* Expandable Content */
-    .project-details {
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-      transition: max-height 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
-      padding: 0 1.5rem;
-    }
-
-    .project-banner {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background-size: cover;
-      background-position: center;
-      border-radius: 20px;
-      margin-top: 0.5rem;
-      margin-bottom: 1.2rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    }
-
-    .project-long-desc {
-      font-size: 0.92rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      padding: 0 0.5rem;
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 6rem;
-      padding: 2rem 1rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .social-links {
-      margin-bottom: 1.5rem;
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-    }
-
-    .social-links a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-
-    .social-links a:hover {
-      color: var(--accent-hover);
-      text-decoration: underline;
-    }
-
-    .copyright {
-      display: block;
-      margin-top: 0.5rem;
-      opacity: 0.8;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes slideDown {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .light-mode {
-      --bg: rgba(240, 248, 245, 0.5);
-      /* Soft mint-white */
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-bg-hover: rgba(240, 245, 242, 0.9);
-      --accent-glass: rgba(255, 255, 255, 0.2);
-      --text-main: #1a1c1b;
-      --text-muted: #5e6664;
-      --border: rgba(0, 0, 0, 0.1);
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
-
-    .settings-trigger {
+    /* theme toggle */
+    #theme {
       position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 44px;
-      height: 44px;
-      background: var(--card-bg);
+      top: 24px;
+      right: 24px;
+      z-index: 100;
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1000;
-      box-shadow: var(--shadow);
-      transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .settings-trigger.hidden {
-      opacity: 0;
-      transform: scale(0.5) rotate(90deg);
-      pointer-events: none;
-    }
-
-    .settings-panel {
-      position: fixed;
-      top: 1.5rem;
-      right: 1.5rem;
-      width: 360px;
-      height: auto;
-      background: rgba(28, 28, 30, 0.75);
-      backdrop-filter: blur(25px) saturate(180%);
-      -webkit-backdrop-filter: blur(25px) saturate(180%);
-      z-index: 1001;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5),
-                  inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      clip-path: circle(22px at calc(100% - 22px) 22px);
-      transform: scale(0.9);
-      transform-origin: top right;
-    }
-
-    .light-mode .settings-panel {
-      background: rgba(255, 255, 255, 0.75);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1),
-                  inset 0 0 0 1px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .settings-panel.open {
-      border-radius: 36px;
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1);
-      clip-path: circle(130% at 85% 15%);
-    }
-
-    .settings-panel.open::-webkit-scrollbar {
-      display: none;
-    }
-
-    /* Organic Content Fade-In - Slightly slower than the blob */
-    .settings-panel > * {
-      opacity: 0;
-      transform: translateY(15px);
-      transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .settings-panel.open > * {
-      opacity: 1;
-      transform: translateY(0);
-      transition-delay: 0.15s;
-    }
-
-    /* Staggered items for 'Settings' feel */
-    .settings-panel.open .settings-header { transition-delay: 0.15s; }
-    .settings-panel.open .settings-group:nth-of-type(1) { transition-delay: 0.2s; }
-    .settings-panel.open .settings-group:nth-of-type(2) { transition-delay: 0.25s; }
-    .settings-panel.open .settings-group:nth-of-type(3) { transition-delay: 0.3s; }
-    .settings-panel.open .settings-group:nth-of-type(4) { transition-delay: 0.35s; }
-    .settings-panel.open .settings-footer { transition-delay: 0.4s; }
-
-    .settings-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-
-    .settings-overlay.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .settings-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-
-    .settings-header h2 {
-      font-size: 1.3rem;
-      font-weight: 700;
-    }
-
-    .close-btn {
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border-radius: 50%;
-      background: var(--card-bg);
-      color: var(--text-main);
-      transition: transform 0.2s ease;
-    }
-
-    .close-btn:active {
-      transform: scale(0.9);
-    }
-
-    .settings-group {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(5px);
-      border-radius: 24px;
-      overflow: hidden;
-      margin-bottom: 0.8rem;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      flex-shrink: 0;
-    }
-
-    .light-mode .settings-group {
-      background: rgba(0, 0, 0, 0.03);
-      border: 1px solid rgba(0, 0, 0, 0.03);
-    }
-
-    .settings-item {
-      padding: 1rem 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: background-color 0.2s;
-      position: relative;
-    }
-
-    .settings-item:not(:last-child)::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 1.5rem;
-      right: 1.5rem;
-      height: 1px;
-      background-color: var(--border);
-    }
-
-    .settings-item:active {
-      background-color: rgba(128, 128, 128, 0.1);
-    }
-
-    .settings-item-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .settings-item-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .settings-item-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    /* One UI Display Mode Selector */
-    .display-mode-container {
-      display: flex;
-      padding: 1rem;
-      gap: 1.2rem;
-      justify-content: center;
-    }
-
-    .mode-option {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.6rem;
-      cursor: pointer;
-    }
-
-    .mode-preview {
-      width: 100%;
-      height: 85px;
-      border-radius: 16px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border: 2.5px solid transparent;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-      background: #ffffff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      position: relative;
-    }
-
-    .dark-preview {
-      background: #000000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-
-    /* Selected state border */
-    .mode-option input[type="radio"]:checked ~ .mode-preview,
-    .mode-option:hover .mode-preview {
-      /* One UI doesn't always have a border on the card, but it's cleaner for web */
-    }
-
-    .preview-card {
-      width: 30px;
-      height: 6px;
-      border-radius: 3px;
-      background: var(--accent); /* Samsung Blue Accent */
-    }
-
-    .preview-text {
-      width: 100%;
+      color: var(--dim);
+      width: 40px;
       height: 40px;
-      border-radius: 10px;
-      background: #f2f2f2;
-      border: 1px solid #e5e5e5;
+      border-radius: 50%;
+      cursor: pointer;
+      font-family: Space Mono, monospace;
+      font-size: 14px;
+      transition: background .25s, color .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    #theme:hover { color: var(--fg); transform: scale(1.1); }
+    #theme:active { transform: scale(.9); }
+
+    /* entrance animations */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: .3; }
+    }
+    @keyframes glyphPulse {
+      0%, 100% { opacity: .15; }
+      50% { opacity: .3; }
     }
 
-    .dark-preview .preview-text {
-      background: #1c1c1e;
-      border: 1px solid #2c2c2e;
+    header {
+      padding: 80px 0 48px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      animation: fadeDown .6s ease both;
     }
 
-    /* Small status bar dot */
-    .mode-preview::before {
-      content: "";
-      position: absolute;
-      top: 6px;
-      right: 12px;
+    .dot-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 4px;
+      padding: 8px;
+      background: var(--card);
+    }
+    .dot-logo span {
+      border-radius: 50%;
+      background: var(--fg);
+      opacity: .15;
+      transition: opacity .3s;
+    }
+    .dot-logo span.on { opacity: 1; }
+    .dot-logo span:nth-child(1) { animation: dotPulse 2s ease-in-out infinite; animation-delay: 0s; }
+    .dot-logo span:nth-child(6) { animation: dotPulse 2s ease-in-out infinite; animation-delay: .3s; }
+    .dot-logo span:nth-child(11) { animation: dotPulse 2s ease-in-out infinite; animation-delay: .6s; }
+    .dot-logo span:nth-child(16) { animation: dotPulse 2s ease-in-out infinite; animation-delay: .9s; }
+
+    .head-info { flex: 1; }
+    h1 {
+      font-family: Space Mono, monospace;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: -.01em;
+      text-transform: uppercase;
+    }
+    h1 span { opacity: .35; transition: opacity .3s; }
+    .tag {
+      font-family: Space Mono, monospace;
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 2px;
+    }
+    .loc {
+      font-size: 12px;
+      color: var(--dim);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .loc-dot {
+      display: inline-block;
       width: 4px;
       height: 4px;
       border-radius: 50%;
-      background: #ccc;
+      background: var(--dim);
     }
 
-    .mode-label {
+    /* nav */
+    .tabs {
       display: flex;
-      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 32px;
+      padding: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      animation: fadeUp .6s ease both;
+      animation-delay: .1s;
+    }
+    .tab {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--dim);
+      font-family: Space Mono, monospace;
+      font-size: 12px;
+      font-weight: 400;
+      cursor: pointer;
+      padding: 10px 16px;
+      border-radius: 100px;
+      transition: background .3s ease, color .3s ease, transform .2s ease;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .tab:active { transform: scale(.95); }
+    .tab.active {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* panels */
+    .p {
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1);
+    }
+    .p.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .p.h {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+    }
+
+    /* dot badge */
+    .dot-badge {
+      display: flex;
       align-items: center;
       gap: 6px;
-      cursor: pointer;
-      margin-top: 4px;
+      font-family: Space Mono, monospace;
+      font-size: 11px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
     }
-
-    .mode-name {
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-main);
-    }
-
-    /* Custom Radio Styling */
-    .mode-label input[type="radio"] {
-      appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid #8e8e93;
-      border-radius: 50%;
-      outline: none;
-      cursor: pointer;
-      position: relative;
-      transition: all 0.2s;
-    }
-
-    .mode-label input[type="radio"]:checked {
-      border-color: var(--accent);
-      background-color: var(--accent);
-    }
-
-    .mode-label input[type="radio"]:checked::after {
+    .dot-badge::before {
       content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 8px;
-      height: 8px;
-      background: white;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
+      background: var(--fg);
+      transition: background .3s;
     }
 
-    .mode-option:hover input[type="radio"] {
-      border-color: var(--accent);
-    }
-
-    /* Bouncy Samsung One UI Switch - Refined */
-    .samsung-switch {
-      position: relative;
-      display: inline-block;
-      width: 46px;
-      height: 26px;
-    }
-
-    .samsung-switch input {
+    /* cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
       opacity: 0;
-      width: 0;
-      height: 0;
+      transform: translateY(12px);
+    }
+    .card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .card + .card { margin-top: 8px; }
+    .card a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px;
+      transition: background .25s ease;
+    }
+    .card a:hover { background: var(--border); }
+
+    .c-icon {
+      font-size: 18px;
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      border-radius: 12px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .card a:hover .c-icon {
+      transform: scale(1.05);
+      border-color: var(--fg);
+    }
+    .c-body { flex: 1; min-width: 0; }
+    .c-title {
+      font-family: Space Mono, monospace;
+      font-size: 13px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .3px;
+    }
+    .c-desc { font-size: 13px; color: var(--dim); margin-top: 2px; }
+    .c-arrow {
+      color: var(--dim);
+      font-family: Space Mono, monospace;
+      font-size: 16px;
+      opacity: .4;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .card a:hover .c-arrow { opacity: 1; transform: translateX(4px); }
+
+    /* about */
+    .about-card { padding: 28px; }
+    .about-card h2 {
+      font-family: Space Mono, monospace;
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 16px;
+    }
+    .about-card p {
+      font-size: 14px;
+      color: var(--dim);
+      margin-bottom: 8px;
+      line-height: 1.7;
     }
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #8e8e93;
-      transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-      border-radius: 26px;
+    .skill-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 6px;
+      margin-top: 20px;
     }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      border-radius: 50%;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      transform: translateX(0);
-    }
-
-    input:checked + .slider {
-      background-color: var(--accent);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
-
-    /* Professional 'Liquid' Active Effect */
-    .samsung-switch:active .slider:before {
-      transform: scale(1.15) translateX(0);
-    }
-
-    input:checked + .slider:active:before {
-      transform: scale(1.15) translateX(17.4px); /* Slightly less than 20 to feel 'weighted' */
-    }
-
-    .settings-footer {
+    .skill {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
       text-align: center;
-      padding: 2rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-family: Space Mono, monospace;
+      font-size: 11px;
+      color: var(--dim);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      transition: border-color .25s ease, color .25s ease, transform .2s ease;
     }
+    .skill:hover {
+      border-color: var(--fg);
+      color: var(--fg);
+      transform: translateY(-2px);
+    }
+    .skill:active { transform: scale(.95); }
 
-    @media (max-width: 480px) {
-      .settings-panel.open {
-        padding: 1rem;
-      }
+    /* footer */
+    footer {
+      margin-top: 64px;
+      padding: 32px 0 48px;
+      text-align: center;
+      animation: fadeUp .6s ease both;
+      animation-delay: .4s;
+    }
+    .dot-divider {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .dot-divider span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--dim);
+      opacity: .4;
+      transition: opacity .3s;
+    }
+    .links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+    .links a {
+      color: var(--dim);
+      text-decoration: none;
+      font-family: Space Mono, monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color .25s ease;
+      position: relative;
+    }
+    .links a::before {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: var(--fg);
+      opacity: 0;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .links a:hover { color: var(--fg); }
+    .links a:hover::before { opacity: 1; transform: translateX(-50%) scale(1.5); }
+
+    .cr {
+      font-size: 11px;
+      color: var(--dim);
+      font-family: Space Mono, monospace;
+    }
+    .cr span { opacity: .4; }
+
+    .glyph-row {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 24px;
+      animation: glyphPulse 3s ease-in-out infinite;
+    }
+    .glyph-row span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--fg);
+      transition: background .3s;
+    }
+    .glyph-row span:nth-child(3n+1) { opacity: 1; }
+    .glyph-row span:nth-child(3n+2) { opacity: .5; }
+    .glyph-row span:nth-child(3n+3) { opacity: .25; }
+
+    @media (max-width: 500px) {
+      header { padding: 60px 0 32px; gap: 16px; }
+      .dot-logo { width: 52px; height: 52px; padding: 6px; gap: 3px; }
+      h1 { font-size: 18px; }
+      .tabs { gap: 2px; padding: 3px; }
+      .tab { font-size: 11px; padding: 8px 12px; }
+      .card a { padding: 14px 16px; }
+      .about-card { padding: 20px; }
     }
   </style>
 </head>
-
 <body>
+
   <div class="container">
-    <div class="settings-trigger" onclick="toggleSettings()">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5ZM19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.97 19.05 5.05L16.56 6.05C16.04 5.65 15.48 5.32 14.87 5.07L14.49 2.42C14.46 2.18 14.25 2 14 2H10C9.75 2 9.54 2.18 9.51 2.42L9.13 5.07C8.52 5.32 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.97 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11.02C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.66 4.57 12.98L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.95C7.96 18.35 8.52 18.68 9.13 18.93L9.51 21.58C9.54 21.82 9.75 22 10 22H14C14.25 22 14.46 21.82 14.49 21.58L14.87 18.93C15.48 18.67 16.04 18.34 16.56 17.95L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98Z"/></svg>
-    </div>
+    <button id="theme" onclick="toggleTheme()">&#x25CB;</button>
 
-    <div id="settings-overlay" class="settings-overlay" onclick="toggleSettings()"></div>
-    <div id="settings-panel" class="settings-panel">
-      <div class="settings-header">
-        <h2>Settings</h2>
-        <div class="close-btn" onclick="toggleSettings()">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-        </div>
-      </div>
-      
-      <div class="settings-group">
-        <div class="display-mode-container">
-          <div class="mode-option" onclick="setTheme('light')">
-            <div class="mode-preview light-preview">
-              <div class="preview-card"></div>
-              <div class="preview-text"></div>
-            </div>
-            <label class="mode-label">
-              <input type="radio" name="theme" id="radio-light">
-              <span class="mode-name">Light</span>
-            </label>
-          </div>
-          <div class="mode-option" onclick="setTheme('dark')">
-            <div class="mode-preview dark-preview">
-              <div class="preview-card"></div>
-              <div class="preview-text"></div>
-            </div>
-            <label class="mode-label">
-              <input type="radio" name="theme" id="radio-dark" checked>
-              <span class="mode-name">Dark</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-group">
-        <div class="settings-item" style="flex-direction: column; align-items: flex-start; gap: 0.8rem;">
-          <div class="settings-item-info">
-            <span class="settings-item-title">Theme color</span>
-            <span class="settings-item-desc">Choose your accent color</span>
-          </div>
-          <div class="color-picker">
-            <div class="color-dot active" style="background: #ff4d4d;" onclick="setAccent('#ff4d4d', this)"></div>
-            <div class="color-dot" style="background: #57cc99;" onclick="setAccent('#57cc99', this)"></div>
-            <div class="color-dot" style="background: #e0aaff;" onclick="setAccent('#e0aaff', this)"></div>
-            <div class="color-dot" style="background: #8d6e63;" onclick="setAccent('#8d6e63', this)"></div>
-            <div class="color-dot" style="background: #d4e157;" onclick="setAccent('#d4e157', this)"></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="settings-group">
-        <div class="settings-item">
-          <div class="settings-item-info">
-<!--             <span class="settings-item-title">Show background</span>
-            <span class="settings-item-desc">Enable background image</span> -->
-          </div>
-          <label class="samsung-switch">
-            <input type="checkbox" id="background-toggle" onchange="toggleBackground()">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="settings-group">
-        <div class="settings-item">
-          <div class="settings-item-info">
-            <span class="settings-item-title">Reduce animations</span>
-            <span class="settings-item-desc">Make transitions faster</span>
-          </div>
-          <label class="samsung-switch">
-            <input type="checkbox" id="reduce-animations-toggle" onchange="toggleAnimations()">
-            <span class="slider"></span>
-          </label>
-        </div>
-      </div>
-
-      <div class="settings-group">
-        <div class="settings-item" onclick="resetSettings()">
-          <div class="settings-item-info">
-            <span class="settings-item-title">Reset settings</span>
-            <span class="settings-item-desc">Clear all customizations</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="settings-footer">
-        One UI Portfolio Version 1.0.0
-      </div>
-    </div>
     <header>
-      <img src="https://github.com/wollydev24.png" alt="WollyDev24" class="profile-pic">
-      <div class="header-info">
-        <h1>WollyDev24</h1>
-        <code class="tagline">git commit -m "added new bugs"</code>
-        <div class="location">
-          <span>📍 Germany</span>
-        </div>
+      <div class="dot-logo">
+        <span class="on"></span><span></span><span></span><span></span>
+        <span></span><span class="on"></span><span></span><span></span>
+        <span></span><span></span><span class="on"></span><span></span>
+        <span></span><span></span><span></span><span class="on"></span>
+      </div>
+      <div class="head-info">
+        <h1>Wolly<span>Dev</span>24</h1>
+        <div class="tag">git commit -m "added new bugs"</div>
+        <div class="loc"><span class="loc-dot"></span> Germany</div>
       </div>
     </header>
 
     <nav class="tabs">
-      <button class="tab-btn active" onclick="switchTab('projects', this)">Projects</button>
-      <button class="tab-btn" onclick="switchTab('blog', this)">Blog</button>
-      <button class="tab-btn" onclick="switchTab('about', this)">About Me</button>
-      <div class="tab-slider"></div>
+      <button class="tab active" onclick="switchTab('projects',this)">Projects</button>
+      <button class="tab" onclick="switchTab('blog',this)">Blog</button>
+      <button class="tab" onclick="switchTab('about',this)">About</button>
     </nav>
 
-    <div id="projects-tab" class="tab-content">
-      <div class="projects-grid">
-        <a href="https://github.com/wollydev24/YouShade" class="project-card">
-          <div class="project-header">
-            <div class="project-emoji">🌙</div>
-            <div class="project-info">
-              <div class="project-name">YouShade Expressive</div>
-              <p class="project-desc">KWGT Widgets inspired by Material You.</p>
-            </div>
-            <div class="chevron">›</div>
-          </div>
-          <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/YouShade.png');"></div>
-            <p class="project-long-desc">
-              A comprehensive collection of Kustom widgets bringing the Material You Expressive design language to any Android device. Featuring dynamic color support and highly customizable layouts.
-            </p>
-          </div>
-        </a>
-
-        <a href="https://github.com/wollydev24/DSB_Material" class="project-card">
-          <div class="project-header">
-            <div class="project-emoji">🎓</div>
-            <div class="project-info">
-              <div class="project-name">DSBmaterial</div>
-              <p class="project-desc">Material You alternative for DSBmobile.</p>
-            </div>
-            <div class="chevron">›</div>
-          </div>
-          <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/DSBmaterial.png');"></div>
-            <p class="project-long-desc">
-              A modern redesign of the DSBmobile app interface, focused on accessibility and a clean aesthetic. Built to provide a better user experience for students and teachers alike.
-            </p>
-          </div>
-        </a>
-
-        <a href="https://github.com/wollydev24/DSBwatch" class="project-card">
-          <div class="project-header">
-            <div class="project-emoji">⌚</div>
-            <div class="project-info">
-              <div class="project-name">DSBwatch</div>
-              <p class="project-desc">Get DSBmobile on your watch with an modern and usable Ui.</p>
-            </div>
-            <div class="chevron">›</div>
-          </div>
-          <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/DSBwatchBanner.png');"></div>
-            <p class="project-long-desc">
-              First (and only) DSBmobile app for WearOS, focused on usability and a clean aesthetic. Built to provide a good user experience on your wrist.
-            </p>
-          </div>
-        </a>
-
-        <a href="https://wollydev24.github.io/sharky" class="project-card">
-          <div class="project-header">
-            <div class="project-emoji">🦈</div>
-            <div class="project-info">
-              <div class="project-name">Sharky (depracted)</div>
-              <p class="project-desc">Open Source Discord Bot written in Python.</p>
-            </div>
-            <div class="chevron">›</div>
-          </div>
-          <div class="project-details">
-            <div class="project-banner" style="background-image: url('pictures/placeholder.png');"></div>
-            <p class="project-long-desc">
-              A versatile and easy-to-use Discord bot that was designed to simplify server management and provide fun interactive features for community members.
-            </p>
-          </div>
-        </a>
-      </div>
+    <div id="p-projects" class="p active">
+      <div class="dot-badge">Featured work</div>
+      <div class="card"><a href="https://github.com/wollydev24/YouShade"><span class="c-icon">&#x1F319;</span><span class="c-body"><span class="c-title">YouShade Expressive</span><span class="c-desc">KWGT Widgets inspired by Material You</span></span><span class="c-arrow">&rarr;</span></a></div>
+      <div class="card"><a href="https://github.com/wollydev24/DSB_Material"><span class="c-icon">&#x1F393;</span><span class="c-body"><span class="c-title">DSBmaterial</span><span class="c-desc">Material You alternative for DSBmobile</span></span><span class="c-arrow">&rarr;</span></a></div>
+      <div class="card"><a href="https://github.com/wollydev24/DSBwatch"><span class="c-icon">&#x231A;</span><span class="c-body"><span class="c-title">DSBwatch</span><span class="c-desc">DSBmobile on your watch &mdash; modern UI</span></span><span class="c-arrow">&rarr;</span></a></div>
+      <div class="card"><a href="https://wollydev24.github.io/sharky"><span class="c-icon">&#x1F988;</span><span class="c-body"><span class="c-title">Sharky</span><span class="c-desc">Open source Discord bot written in Python</span></span><span class="c-arrow">&rarr;</span></a></div>
     </div>
 
-    <div id="blog-tab" class="tab-content hidden">
-      <div id="blog-grid" class="projects-grid">
-        <!-- Blog posts will be loaded here -->
-        <div class="loading-state" style="padding: 2rem; text-align: center; color: var(--text-muted);">
-          Loading blog posts...
-        </div>
-      </div>
+    <div id="p-blog" class="p h">
+      <div class="dot-badge">Latest posts</div>
+      <div id="blog-list"></div>
     </div>
 
-    <div id="about-tab" class="tab-content hidden">
-      <div class="about-card">
-        <h3>Hello there! 👋</h3>
-        <p>
-          I'm a Kustom Creator and UI/UX Designer from Germany. I specialize in designing modern interfaces, coding with
-          python and website development.
-        </p>
-        <p>
-          Currently, I'm trying to lern Android coding. I love open-source.
-        </p>
-
-        <div class="skills-grid">
-          <div class="skill-item">🎨 Kustom Design</div>
-          <div class="skill-item">🐍 Python</div>
-          <div class="skill-item">🤖 Android (Learning)</div>
-          <div class="skill-item">💻 UI/UX Design</div>
+    <div id="p-about" class="p h">
+      <div class="dot-badge">Info</div>
+      <div class="card about-card">
+        <h2>Hello there &#x1F44B;</h2>
+        <p>I'm a Kustom Creator and UI/UX Designer from Germany. I design modern interfaces, write Python, and build websites.</p>
+        <p>Currently learning Android development. Open-source enthusiast.</p>
+        <div class="skill-grid">
+          <span class="skill">Kustom Design</span>
+          <span class="skill">Python</span>
+          <span class="skill">Android</span>
+          <span class="skill">UI/UX Design</span>
         </div>
       </div>
     </div>
 
     <footer>
-      <div class="social-links">
+      <div class="dot-divider">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="glyph-row">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+      <div class="links">
         <a href="https://github.com/wollydev24">GitHub</a>
         <a href="https://wolly.is-a.dev/404">Telegram</a>
         <a href="https://wolly.is-a.dev/404">Links</a>
       </div>
-      <span class="copyright">© 2026 WollyDev24. Built with caffeine and bugs.</span>
+      <span class="cr"><span>&#x24D2;</span> 2026 WollyDev24 &middot; Built with caffeine and bugs</span>
     </footer>
   </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
   <script>
-    async function extractPalette() {
-      const img = new Image();
-      img.crossOrigin = "Anonymous";
-      img.src = 'pictures/backround.jpg';
-      
-      img.onload = function() {
-        const colorThief = new ColorThief();
-        // Get 20 colors - ColorThief returns these roughly in order of appearance frequency
-        const palette = colorThief.getPalette(img, 20);
-        
-        const processedPalette = palette.map((rgb, index) => {
-          const r = rgb[0], g = rgb[1], b = rgb[2];
-          const saturation = Math.max(r, g, b) - Math.min(r, g, b);
-          
-          // SCORING ALGORITHM:
-          // We want colors that are BOTH common (low index) and vibrant (high saturation)
-          // indexWeight goes from 1.0 (most common) to 0.1 (least common)
-          const indexWeight = 1 - (index / 20);
-          const score = saturation * indexWeight;
+    function switchTab(id, btn) {
+      var panels = document.querySelectorAll('.p');
+      var target = document.getElementById('p-' + id);
 
-          const hex = "#" + rgb.map(x => {
-            const h = x.toString(16);
-            return h.length === 1 ? "0" + h : h;
-          }).join("");
-          return { hex, saturation, score };
-        });
-
-        // Filter for minimum vibrancy, then sort by the new combined score
-        const vibrantPalette = processedPalette
-          .filter(c => c.saturation > 45) // Stricter filter to avoid grey/brown mud
-          .sort((a, b) => b.score - a.score) // Highest score (vibrant + common) first
-          .slice(0, 5);
-
-        // Update color picker dots
-        const dots = document.querySelectorAll('.color-dot');
-        dots.forEach((dot, i) => {
-          if (vibrantPalette[i]) {
-            dot.style.background = vibrantPalette[i].hex;
-            dot.onclick = () => setAccent(vibrantPalette[i].hex, dot);
-          }
-        });
-
-        // If no saved accent, use the winner of the new ranking
-        if (!localStorage.getItem('accentColor') && vibrantPalette.length > 0) {
-          setAccent(vibrantPalette[0].hex);
+      panels.forEach(function(p) {
+        if (p !== target) {
+          p.classList.remove('active');
+          setTimeout(function() { p.classList.add('h'); }, 400);
         }
-      };
-    }
+      });
 
-    // Call extraction
-    extractPalette();
-  </script>
+      target.classList.remove('h');
+      void target.offsetWidth;
+      target.classList.add('active');
+      setTimeout(function() { showCards(target); }, 50);
 
-  <script>
-    function switchTab(tabId, btn) {
-      // Hide all tabs
-      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
-      // Remove active class from all buttons
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-
-      // Show target tab
-      document.getElementById(tabId + '-tab').classList.remove('hidden');
-      // Set active button
+      document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
     }
-    function toggleSettings() {
-      const panel = document.getElementById('settings-panel');
-      const overlay = document.getElementById('settings-overlay');
-      const trigger = document.querySelector('.settings-trigger');
-      panel.classList.toggle('open');
-      overlay.classList.toggle('open');
-      trigger.classList.toggle('hidden');
-    }
-    function setTheme(mode) {
-      const isDark = (mode === 'dark');
-      if (isDark) {
-        document.body.classList.remove('light-mode');
-        document.getElementById('radio-dark').checked = true;
-        localStorage.setItem('theme', 'dark');
-      } else {
-        document.body.classList.add('light-mode');
-        document.getElementById('radio-light').checked = true;
-        localStorage.setItem('theme', 'light');
-      }
-    }
 
-    function setAccent(color, el) {
-      document.documentElement.style.setProperty('--accent', color);
-      // Add a subtle tint to the glass background (12% opacity)
-      document.documentElement.style.setProperty('--accent-glass', color + '1f'); 
-      localStorage.setItem('accentColor', color);
-      
-      // Update tagline glow
-      const tagline = document.querySelector('.tagline');
-      if (tagline) {
-        tagline.style.textShadow = `0 0 8px ${color}66`; // 40% opacity
-      }
-      
-      // Update UI
-      document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
-      if (el) el.classList.add('active');
-    }
-
-    function toggleAnimations() {
-      const reduce = document.getElementById('reduce-animations-toggle').checked;
-      if (reduce) {
-        document.body.classList.add('reduce-animations');
-        localStorage.setItem('reduceAnimations', 'true');
-      } else {
-        document.body.classList.remove('reduce-animations');
-        localStorage.setItem('reduceAnimations', 'false');
-      }
-    }
-
-    function toggleBackground() {
-      const show = document.getElementById('background-toggle').checked;
-      if (show) {
-        document.body.classList.remove('no-background');
-        localStorage.setItem('showBackground', 'true');
-      } else {
-        document.body.classList.add('no-background');
-        localStorage.setItem('showBackground', 'false');
-      }
-    }
-
-    function resetSettings() {
-      localStorage.clear();
-      window.location.reload();
-    }
-
-    // Initialize theme and settings
-    const savedTheme = localStorage.getItem('theme');
-    const savedAccent = localStorage.getItem('accentColor');
-    const savedReduce = localStorage.getItem('reduceAnimations');
-    const savedBackground = localStorage.getItem('showBackground');
-    
-    // Theme
-    if (savedTheme === 'light') {
-      setTheme('light');
-    } else {
-      setTheme('dark');
-    }
-
-    // Background
-    if (savedBackground === 'true') {
-      document.getElementById('background-toggle').checked = true;
-      document.body.classList.remove('no-background');
-    } else {
-      document.getElementById('background-toggle').checked = false;
-      document.body.classList.add('no-background');
-    }
-
-    // Accent Color
-    if (savedAccent) {
-      setAccent(savedAccent);
-      // Update active dot in UI
-      document.querySelectorAll('.color-dot').forEach(dot => {
-        if (dot.style.background.includes(savedAccent) || 
-            rgbToHex(dot.style.background) === savedAccent.toLowerCase()) {
-          dot.classList.add('active');
-        } else {
-          dot.classList.remove('active');
-        }
+    function showCards(panel) {
+      var cards = panel.querySelectorAll('.card');
+      cards.forEach(function(c, i) {
+        setTimeout(function() { c.classList.add('show'); }, i * 80);
       });
     }
 
-    // Reduced Animations
-    if (savedReduce === 'true') {
-      document.getElementById('reduce-animations-toggle').checked = true;
-      document.body.classList.add('reduce-animations');
+    function toggleTheme() {
+      var light = document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', light ? 'light' : 'dark');
+      document.getElementById('theme').innerHTML = light ? '&#x25CF;' : '&#x25CB;';
     }
 
-    // Helper for color matching
-    function rgbToHex(rgb) {
-      if (!rgb) return "";
-      const vals = rgb.match(/\d+/g);
-      if (!vals) return rgb;
-      return "#" + vals.map(x => {
-        const hex = parseInt(x).toString(16);
-        return hex.length === 1 ? "0" + hex : hex;
-      }).join("");
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('theme').innerHTML = '&#x25CF;';
     }
 
-    // Blog Loading logic
-    async function loadBlog() {
-      const blogGrid = document.getElementById('blog-grid');
-      try {
-        const response = await fetch('data/blog.json');
-        const blogPosts = await response.json();
-        
-        blogGrid.innerHTML = '';
-        blogPosts.forEach(post => {
-          const postElement = document.createElement('a');
-          postElement.href = 'javascript:void(0)';
-          postElement.className = 'project-card blog-post';
-          
-          let imagesHtml = '';
-          if (post.images && post.images.length > 0) {
-            imagesHtml = `<div class="project-gallery">
-              ${post.images.map(img => `<img src="${img}" class="gallery-img" alt="Blog Image">`).join('')}
-            </div>`;
-          }
+    showCards(document.getElementById('p-projects'));
 
-          postElement.innerHTML = `
-            <div class="project-header">
-              <div class="project-emoji">${post.emoji || '📝'}</div>
-              <div class="project-info">
-                <div class="project-name">${post.title}</div>
-                <p class="project-desc">${post.date}</p>
-              </div>
-              <div class="chevron">›</div>
-            </div>
-            <div class="project-details">
-              <p class="project-long-desc">
-                <strong>${post.excerpt}</strong><br><br>
-                ${post.content}
-              </p>
-              ${imagesHtml}
-            </div>
-          `;
-          
-          setupCardInteraction(postElement);
-          blogGrid.appendChild(postElement);
-        });
-      } catch (error) {
-        console.error('Error loading blog:', error);
-        blogGrid.innerHTML = '<div style="padding: 2rem; text-align: center; color: var(--accent);">Failed to load blog posts.</div>';
-      }
-    }
-
-    function setupCardInteraction(card) {
-      card.addEventListener('click', (e) => {
-        const isExpanded = card.classList.contains('expanded');
-        
-        // If the card is not expanded, prevent link and expand
-        if (!isExpanded) {
-          e.preventDefault();
-          
-          // Close other expanded cards
-          document.querySelectorAll('.project-card.expanded').forEach(other => {
-            if (other !== card) other.classList.remove('expanded');
-          });
-          
-          card.classList.add('expanded');
-          
-          setTimeout(() => {
-            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }, 300);
-        } else {
-          // If already expanded and it's a blog post, close it
-          if (card.classList.contains('blog-post')) {
-            e.preventDefault();
-            card.classList.remove('expanded');
-          }
-          // If it's a project link, let the link follow (standard <a> behavior)
+    var req = new XMLHttpRequest();
+    req.open('GET', 'data/blog.json', true);
+    req.onload = function() {
+      if (req.status === 200) {
+        var posts = JSON.parse(req.responseText);
+        var list = document.getElementById('blog-list');
+        if (posts.length === 0) {
+          list.innerHTML = '<div class="card"><div style="padding:24px;text-align:center;font-size:13px;color:var(--dim);font-family:Space Mono,monospace">No posts yet.</div></div>';
+          return;
         }
-      });
-    }
-
-    // Load blog data when the page loads
-    loadBlog();
-
-    // Initialize interaction for static project cards
-    document.querySelectorAll('.project-card').forEach(card => {
-      if (!card.classList.contains('blog-post')) {
-        setupCardInteraction(card);
-
-        // Re-add hover listeners for projects only
-        card.addEventListener('mouseenter', () => {
-          if (window.matchMedia('(hover: hover)').matches) {
-            card.classList.add('expanded');
-            
-            // Auto-scroll logic for desktop
-            setTimeout(() => {
-              if (card.matches(':hover')) {
-                const rect = card.getBoundingClientRect();
-                if (rect.bottom > window.innerHeight || rect.top < 80) {
-                  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-              }
-            }, 400);
-          }
-        });
-
-        card.addEventListener('mouseleave', () => {
-          if (window.matchMedia('(hover: hover)').matches) {
-            card.classList.remove('expanded');
-          }
-        });
+        var html = '';
+        for (var i = 0; i < posts.length; i++) {
+          var p = posts[i];
+          html += '<div class="card"><a href="javascript:void(0)">' +
+            '<span class="c-icon">' + (p.emoji || '&#x1F4DD;') + '</span>' +
+            '<span class="c-body"><span class="c-title">' + p.title + '</span>' +
+            '<span class="c-desc">' + p.date + '</span></span>' +
+            '<span class="c-arrow">&rarr;</span></a></div>';
+        }
+        list.innerHTML = html;
+        var blogPanel = document.getElementById('p-blog');
+        if (blogPanel.classList.contains('active')) showCards(blogPanel);
       }
-    });
+    };
+    req.onerror = function() {
+      document.getElementById('blog-list').innerHTML = '<div class="card"><div style="padding:24px;text-align:center;font-size:13px;color:var(--dim);font-family:Space Mono,monospace">Failed to load.</div></div>';
+    };
+    req.send();
   </script>
 </body>
-
 </html>
