@@ -289,6 +289,13 @@
       opacity: 1;
       transform: translateY(0);
     }
+    .card.show.blog-card {
+      transition: box-shadow .25s ease, transform .25s ease;
+    }
+    .card.show.blog-card:hover {
+      transform: translateY(0) scale(1.02);
+      box-shadow: 0 0 30px color-mix(in srgb, var(--fg) 8%, transparent);
+    }
     .card + .card { margin-top: 8px; }
     .card a {
       text-decoration: none;
@@ -336,7 +343,8 @@
     }
     .card a:hover .c-arrow { opacity: 1; transform: translateX(4px); }
 
-    .blog-body { cursor: pointer; }
+    .blog-header { cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 18px 20px; }
+    .blog-header:hover { background: var(--border); }
     .blog-excerpt { font-size: 13px; color: var(--dim); margin-top: 2px; }
     .blog-expand {
       max-height: 0;
@@ -634,11 +642,9 @@
       });
     }
 
-    function toggleBlog(el) {
-      el.preventDefault();
-      var card = el.closest('.blog-card');
+    function toggleBlog(card) {
       var expand = card.querySelector('.blog-expand');
-      var arrow = el.querySelector('.c-arrow');
+      var arrow = card.querySelector('.c-arrow');
       var wasOpen = expand.classList.contains('open');
       document.querySelectorAll('.blog-expand.open').forEach(function(e) {
         if (e !== expand) {
@@ -692,12 +698,12 @@
               imgs += '<img src="' + p.images[j] + '" alt="" loading="lazy">';
             }
           }
-          html += '<div class="card blog-card">' +
-            '<a class="blog-body" onclick="toggleBlog(this)">' +
+          html += '<div class="card blog-card" onclick="toggleBlog(this)">' +
+            '<div class="blog-header">' +
             '<span class="c-icon">' + (p.emoji || '&#x1F4DD;') + '</span>' +
             '<span class="c-body"><span class="c-title">' + p.title + '</span>' +
             '<span class="blog-excerpt">' + (p.excerpt || p.date) + '</span></span>' +
-            '<span class="c-arrow">&rarr;</span></a>' +
+            '<span class="c-arrow">&rarr;</span></div>' +
             '<div class="blog-expand"><div class="blog-expand-inner">' + p.content + imgs + '</div></div></div>';
         }
         list.innerHTML = html;
