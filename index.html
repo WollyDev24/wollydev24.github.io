@@ -89,20 +89,13 @@
     #theme:active { transform: scale(.85) rotate(180deg); }
 
     /* entrance animations */
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes flyIn {
+      0% { opacity: 0; transform: translateY(24px) scale(0.96); }
+      40% { opacity: 1; transform: translateY(-2px) scale(1.025); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
     @keyframes dotPulse {
       0%, 100% { opacity: 1; }
-      50% { opacity: .3; }
-    }
-    @keyframes glyphPulse {
-      0%, 100% { opacity: .15; }
       50% { opacity: .3; }
     }
     @keyframes gridDrift {
@@ -116,17 +109,13 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
-    @keyframes skillPop {
-      0% { opacity: 0; transform: scale(.8) translateY(6px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
 
     header {
       padding: 80px 0 48px;
       display: flex;
       align-items: center;
       gap: 20px;
-      animation: fadeDown .6s ease both;
+      animation: flyIn .7s cubic-bezier(.22,1,.36,1) both;
     }
 
     .dot-logo {
@@ -190,66 +179,15 @@
       background: var(--dim);
     }
 
-    /* nav */
-    .tabs {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 32px;
-      padding: 4px;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      animation: fadeUp .6s ease both;
-      animation-delay: .1s;
+    /* sections */
+    .section {
+      margin-bottom: 48px;
+      animation: flyIn .7s cubic-bezier(.22,1,.36,1) both;
     }
-    .tab {
-      flex: 1;
-      background: none;
-      border: none;
-      color: var(--dim);
-      font-family: Space Mono, monospace;
-      font-size: 12px;
-      font-weight: 400;
-      cursor: pointer;
-      padding: 10px 16px;
-      border-radius: 100px;
-      transition: background .3s ease, color .3s ease, transform .2s ease;
-      position: relative;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-    }
-    .tab:active { transform: scale(.95); }
-    .tab.active {
-      background: var(--accent);
-      color: var(--bg);
-    }
-
-    /* panels */
-    .p-wrap {
-      position: relative;
-      transition: height .4s cubic-bezier(.22,1,.36,1);
-    }
-    .p {
-      opacity: 0;
-      transform: translateY(12px);
-      pointer-events: none;
-      transition: opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1);
-    }
-    .p.active {
-      position: relative;
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    .p.h {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      opacity: 0;
-      transform: translateY(12px);
-      pointer-events: none;
-    }
+    .section:nth-of-type(1) { animation-delay: .12s; }
+    .section:nth-of-type(2) { animation-delay: .24s; }
+    .section:nth-of-type(3) { animation-delay: .36s; }
+    .section:nth-of-type(4) { animation-delay: .48s; }
 
     /* dot badge */
     .dot-badge {
@@ -262,11 +200,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 16px;
-      animation: fadeUp .5s ease both;
     }
-    #p-projects .dot-badge { animation-delay: .1s; }
-    #p-blog .dot-badge { animation-delay: .1s; }
-    #p-about .dot-badge { animation-delay: .1s; }
     .dot-badge::before {
       content: "";
       width: 6px;
@@ -283,11 +217,9 @@
       border-radius: 16px;
       overflow: hidden;
       opacity: 0;
-      transform: translateY(12px);
     }
     .card.show {
-      opacity: 1;
-      transform: translateY(0);
+      animation: flyIn .6s cubic-bezier(.22,1,.36,1) both;
     }
     .card.show.blog-card {
       transition: box-shadow .25s ease, transform .25s ease;
@@ -382,11 +314,11 @@
       line-height: 1.7;
     }
 
+    /* skill tags */
     .skill-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 6px;
-      margin-top: 20px;
     }
     .skill {
       background: var(--bg);
@@ -400,12 +332,10 @@
       text-transform: uppercase;
       letter-spacing: .5px;
       opacity: 0;
-      transform: scale(.8) translateY(6px);
       transition: border-color .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
     }
     .skill.show {
-      opacity: 1;
-      transform: scale(1) translateY(0);
+      animation: flyIn .5s cubic-bezier(.22,1,.36,1) both;
     }
     .skill:hover {
       border-color: var(--fg);
@@ -420,37 +350,10 @@
       margin-top: 64px;
       padding: 32px 0 48px;
       text-align: center;
-      animation: fadeUp .6s ease both;
-      animation-delay: .4s;
+      animation: flyIn .7s cubic-bezier(.22,1,.36,1) both;
+      animation-delay: .55s;
     }
-    .dot-divider {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-    .dot-divider span {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--dim);
-      opacity: .4;
-      transition: opacity .3s, transform .3s ease;
-      animation: dotPulse 3s ease-in-out infinite;
-    }
-    .dot-divider span:nth-child(2) { animation-delay: .2s; }
-    .dot-divider span:nth-child(3) { animation-delay: .4s; }
-    .dot-divider span:nth-child(4) { animation-delay: .6s; }
-    .dot-divider span:nth-child(5) { animation-delay: .8s; }
-    .dot-divider span:nth-child(6) { animation-delay: 1s; }
-    .dot-divider span:nth-child(7) { animation-delay: 1.2s; }
-    .dot-divider span:nth-child(8) { animation-delay: 1.4s; }
-    .dot-divider span:nth-child(9) { animation-delay: 1.6s; }
-    .dot-divider span:nth-child(10) { animation-delay: 1.8s; }
-    .dot-divider:hover span {
-      transform: scale(1.5);
-      opacity: .8;
-    }
+
     .links {
       display: flex;
       justify-content: center;
@@ -490,32 +393,14 @@
     }
     .cr span { opacity: .4; }
 
-    .glyph-row {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 24px;
-      animation: glyphPulse 3s ease-in-out infinite;
-    }
-    .glyph-row span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--fg);
-      transition: background .3s;
-    }
-    .glyph-row span:nth-child(3n+1) { opacity: 1; }
-    .glyph-row span:nth-child(3n+2) { opacity: .5; }
-    .glyph-row span:nth-child(3n+3) { opacity: .25; }
-
     @media (max-width: 500px) {
       header { padding: 60px 0 32px; gap: 16px; }
       .dot-logo { width: 52px; height: 52px; padding: 6px; gap: 3px; }
       h1 { font-size: 18px; }
-      .tabs { gap: 2px; padding: 3px; }
-      .tab { font-size: 11px; padding: 8px 12px; }
+      .section { margin-bottom: 36px; }
       .card a { padding: 14px 16px; }
       .about-card { padding: 20px; }
+      .blog-header { padding: 14px 16px; }
     }
   </style>
 </head>
@@ -538,52 +423,43 @@
       </div>
     </header>
 
-    <nav class="tabs">
-      <button class="tab active" onclick="switchTab('projects',this)">Projects</button>
-      <button class="tab" onclick="switchTab('blog',this)">Blog</button>
-      <button class="tab" onclick="switchTab('about',this)">About</button>
-    </nav>
-
-    <div class="p-wrap" id="p-wrap">
-    <div id="p-projects" class="p active">
+    <section class="section">
       <div class="dot-badge">Featured work</div>
       <div class="card"><a href="https://github.com/wollydev24/YouShade"><span class="c-icon">&#x1F319;</span><span class="c-body"><span class="c-title">YouShade Expressive</span><span class="c-desc">KWGT Widgets inspired by Material You</span></span><span class="c-arrow">&rarr;</span></a></div>
       <div class="card"><a href="https://github.com/wollydev24/DSB_Material"><span class="c-icon">&#x1F393;</span><span class="c-body"><span class="c-title">DSBmaterial</span><span class="c-desc">Material You alternative for DSBmobile</span></span><span class="c-arrow">&rarr;</span></a></div>
       <div class="card"><a href="https://github.com/wollydev24/DSBwatch"><span class="c-icon">&#x231A;</span><span class="c-body"><span class="c-title">DSBwatch</span><span class="c-desc">DSBmobile on your watch &mdash; modern UI</span></span><span class="c-arrow">&rarr;</span></a></div>
       <div class="card"><a href="https://wollydev24.github.io/sharky"><span class="c-icon">&#x1F988;</span><span class="c-body"><span class="c-title">Sharky</span><span class="c-desc">Open source Discord bot written in Python</span></span><span class="c-arrow">&rarr;</span></a></div>
-    </div>
+    </section>
 
-    <div id="p-blog" class="p h">
+    <section class="section">
+      <div class="dot-badge">Skills</div>
+      <div class="skill-grid">
+        <span class="skill">Kustom Design</span>
+        <span class="skill">KWGT</span>
+        <span class="skill">Material You</span>
+        <span class="skill">UI/UX Design</span>
+        <span class="skill">Web Development</span>
+        <span class="skill">Python</span>
+        <span class="skill">Discord Bots</span>
+        <span class="skill">Open Source</span>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="dot-badge">Latest posts</div>
       <div id="blog-list"></div>
-    </div>
+    </section>
 
-    <div id="p-about" class="p h">
+    <section class="section">
       <div class="dot-badge">Info</div>
       <div class="card about-card">
         <h2>Hello there &#x1F44B;</h2>
         <p>I'm a Kustom Creator and UI/UX Designer from Germany. I design modern interfaces, write Python, and build websites.</p>
         <p>Currently learning Android development. Open-source enthusiast.</p>
-        <div class="skill-grid">
-          <span class="skill">Kustom Design</span>
-          <span class="skill">Python</span>
-          <span class="skill">Android</span>
-          <span class="skill">UI/UX Design</span>
-        </div>
       </div>
-    </div>
-    </div>
+    </section>
 
     <footer>
-      <div class="dot-divider">
-        <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
-      <div class="glyph-row">
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-      </div>
       <div class="links">
         <a href="https://github.com/wollydev24">GitHub</a>
         <a href="https://wolly.is-a.dev/404">Telegram</a>
@@ -598,46 +474,12 @@
       document.documentElement.style.setProperty('--mx', e.clientX + 'px');
       document.documentElement.style.setProperty('--my', e.clientY + 'px');
     });
-    function switchTab(id, btn) {
-      var wrap = document.getElementById('p-wrap');
-      var panels = document.querySelectorAll('.p');
-      var target = document.getElementById('p-' + id);
-      var current = document.querySelector('.p.active');
 
-      if (current === target) return;
-
-      var startH = current.offsetHeight;
-      wrap.style.height = startH + 'px';
-
-      panels.forEach(function(p) {
-        if (p !== target) {
-          p.classList.remove('active');
-          p.classList.add('h');
-        }
-      });
-
-      target.classList.remove('h');
-      target.classList.add('active');
-
-      var endH = target.offsetHeight;
-      wrap.style.height = endH + 'px';
-
-      setTimeout(function() {
-        wrap.style.height = '';
-        showCards(target);
-      }, 450);
-
-      document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-    }
-
-    function showCards(panel) {
-      var cards = panel.querySelectorAll('.card');
-      cards.forEach(function(c, i) {
+    function revealAll() {
+      document.querySelectorAll('.card').forEach(function(c, i) {
         setTimeout(function() { c.classList.add('show'); }, i * 80);
       });
-      var skills = panel.querySelectorAll('.skill');
-      skills.forEach(function(s, i) {
+      document.querySelectorAll('.skill').forEach(function(s, i) {
         setTimeout(function() { s.classList.add('show'); }, i * 100 + 120);
       });
     }
@@ -658,11 +500,6 @@
       } else {
         expand.classList.add('open');
         arrow.innerHTML = '&darr;';
-        var wrap = document.getElementById('p-wrap');
-        wrap.style.height = '';
-        requestAnimationFrame(function() {
-          wrap.style.height = wrap.scrollHeight + 'px';
-        });
       }
     }
 
@@ -677,7 +514,7 @@
       document.getElementById('theme').innerHTML = '&#x25CF;';
     }
 
-    showCards(document.getElementById('p-projects'));
+    revealAll();
 
     var req = new XMLHttpRequest();
     req.open('GET', 'data/blog.json', true);
@@ -686,7 +523,7 @@
         var posts = JSON.parse(req.responseText);
         var list = document.getElementById('blog-list');
         if (posts.length === 0) {
-          list.innerHTML = '<div class="card"><div style="padding:24px;text-align:center;font-size:13px;color:var(--dim);font-family:Space Mono,monospace">No posts yet.</div></div>';
+          list.innerHTML = '<div class="card show"><div style="padding:24px;text-align:center;font-size:13px;color:var(--dim);font-family:Space Mono,monospace">No posts yet.</div></div>';
           return;
         }
         var html = '';
@@ -707,12 +544,13 @@
             '<div class="blog-expand"><div class="blog-expand-inner">' + p.content + imgs + '</div></div></div>';
         }
         list.innerHTML = html;
-        var blogPanel = document.getElementById('p-blog');
-        if (blogPanel.classList.contains('active')) showCards(blogPanel);
+        list.querySelectorAll('.card').forEach(function(c, i) {
+          setTimeout(function() { c.classList.add('show'); }, i * 80);
+        });
       }
     };
     req.onerror = function() {
-      document.getElementById('blog-list').innerHTML = '<div class="card"><div style="padding:24px;text-align:center;font-size:13px;color:var(--dim);font-family:Space Mono,monospace">Failed to load.</div></div>';
+      document.getElementById('blog-list').innerHTML = '<div class="card show"><div style="padding:24px;text-align:center;font-size:13px;color:var(--dim);font-family:Space Mono,monospace">Failed to load.</div></div>';
     };
     req.send();
   </script>

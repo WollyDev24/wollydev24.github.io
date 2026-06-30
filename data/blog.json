@@ -5,8 +5,14 @@
     "emoji": "👋",
     "excerpt": "*boop* welcome",
     "content": "This is the first post on my new blog.",
-    "images": [
-      "pictures/placeholder.png"
-    ]
+    "images": ["pictures/placeholder.png"]
+  },
+  {
+    "title": "New appp in work..",
+    "date": "June 30, 2026",
+    "emoji": "🖥️",
+    "excerpt": "no public details as of now..",
+    "content": "",
+    "images": [""]
   }
 ]
