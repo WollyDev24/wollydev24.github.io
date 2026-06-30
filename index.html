@@ -336,6 +336,27 @@
     }
     .card a:hover .c-arrow { opacity: 1; transform: translateX(4px); }
 
+    .blog-body { cursor: pointer; }
+    .blog-excerpt { font-size: 13px; color: var(--dim); margin-top: 2px; }
+    .blog-expand {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .4s cubic-bezier(.22,1,.36,1);
+    }
+    .blog-expand.open { max-height: 600px; }
+    .blog-expand-inner {
+      padding: 0 20px 18px;
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.7;
+    }
+    .blog-expand-inner img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 12px;
+      border: 1px solid var(--border);
+    }
+
     /* about */
     .about-card { padding: 28px; }
     .about-card h2 {
@@ -613,6 +634,32 @@
       });
     }
 
+    function toggleBlog(el) {
+      el.preventDefault();
+      var card = el.closest('.blog-card');
+      var expand = card.querySelector('.blog-expand');
+      var arrow = el.querySelector('.c-arrow');
+      var wasOpen = expand.classList.contains('open');
+      document.querySelectorAll('.blog-expand.open').forEach(function(e) {
+        if (e !== expand) {
+          e.classList.remove('open');
+          e.closest('.blog-card').querySelector('.c-arrow').innerHTML = '&rarr;';
+        }
+      });
+      if (wasOpen) {
+        expand.classList.remove('open');
+        arrow.innerHTML = '&rarr;';
+      } else {
+        expand.classList.add('open');
+        arrow.innerHTML = '&darr;';
+        var wrap = document.getElementById('p-wrap');
+        wrap.style.height = '';
+        requestAnimationFrame(function() {
+          wrap.style.height = wrap.scrollHeight + 'px';
+        });
+      }
+    }
+
     function toggleTheme() {
       var light = document.body.classList.toggle('light-mode');
       localStorage.setItem('theme', light ? 'light' : 'dark');
@@ -639,11 +686,19 @@
         var html = '';
         for (var i = 0; i < posts.length; i++) {
           var p = posts[i];
-          html += '<div class="card"><a href="javascript:void(0)">' +
+          var imgs = '';
+          if (p.images) {
+            for (var j = 0; j < p.images.length; j++) {
+              imgs += '<img src="' + p.images[j] + '" alt="" loading="lazy">';
+            }
+          }
+          html += '<div class="card blog-card">' +
+            '<a class="blog-body" onclick="toggleBlog(this)">' +
             '<span class="c-icon">' + (p.emoji || '&#x1F4DD;') + '</span>' +
             '<span class="c-body"><span class="c-title">' + p.title + '</span>' +
-            '<span class="c-desc">' + p.date + '</span></span>' +
-            '<span class="c-arrow">&rarr;</span></a></div>';
+            '<span class="blog-excerpt">' + (p.excerpt || p.date) + '</span></span>' +
+            '<span class="c-arrow">&rarr;</span></a>' +
+            '<div class="blog-expand"><div class="blog-expand-inner">' + p.content + imgs + '</div></div></div>';
         }
         list.innerHTML = html;
         var blogPanel = document.getElementById('p-blog');
