@@ -45,6 +45,19 @@
       z-index: 0;
       pointer-events: none;
       transition: background-image .4s ease;
+      animation: gridDrift 20s linear infinite;
+    }
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: radial-gradient(600px circle at var(--mx, -999px) var(--my, -999px), rgba(255,255,255,.06), transparent 40%);
+      transition: background .1s;
+    }
+    body.light-mode::after {
+      background: radial-gradient(600px circle at var(--mx, -999px) var(--my, -999px), rgba(0,0,0,.04), transparent 40%);
     }
 
     .container {
@@ -72,8 +85,8 @@
       font-size: 14px;
       transition: background .25s, color .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
     }
-    #theme:hover { color: var(--fg); transform: scale(1.1); }
-    #theme:active { transform: scale(.9); }
+    #theme:hover { color: var(--fg); transform: scale(1.1) rotate(90deg); }
+    #theme:active { transform: scale(.85) rotate(180deg); }
 
     /* entrance animations */
     @keyframes fadeDown {
@@ -91,6 +104,21 @@
     @keyframes glyphPulse {
       0%, 100% { opacity: .15; }
       50% { opacity: .3; }
+    }
+    @keyframes gridDrift {
+      0% { transform: translate(0,0); }
+      25% { transform: translate(6px,-4px); }
+      50% { transform: translate(-4px,8px); }
+      75% { transform: translate(8px,2px); }
+      100% { transform: translate(0,0); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    @keyframes skillPop {
+      0% { opacity: 0; transform: scale(.8) translateY(6px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     header {
@@ -140,6 +168,11 @@
       font-size: 12px;
       color: var(--dim);
       margin-top: 2px;
+    }
+    .tag::after {
+      content: "_";
+      animation: blink 1s step-end infinite;
+      margin-left: 2px;
     }
     .loc {
       font-size: 12px;
@@ -192,6 +225,10 @@
     }
 
     /* panels */
+    .p-wrap {
+      position: relative;
+      transition: height .4s cubic-bezier(.22,1,.36,1);
+    }
     .p {
       opacity: 0;
       transform: translateY(12px);
@@ -199,12 +236,16 @@
       transition: opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1);
     }
     .p.active {
+      position: relative;
       opacity: 1;
       transform: translateY(0);
       pointer-events: auto;
     }
     .p.h {
-      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
       opacity: 0;
       transform: translateY(12px);
       pointer-events: none;
@@ -221,7 +262,11 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 16px;
+      animation: fadeUp .5s ease both;
     }
+    #p-projects .dot-badge { animation-delay: .1s; }
+    #p-blog .dot-badge { animation-delay: .1s; }
+    #p-about .dot-badge { animation-delay: .1s; }
     .dot-badge::before {
       content: "";
       width: 6px;
@@ -273,7 +318,7 @@
       transform: scale(1.05);
       border-color: var(--fg);
     }
-    .c-body { flex: 1; min-width: 0; }
+    .c-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
     .c-title {
       font-family: Space Mono, monospace;
       font-size: 13px;
@@ -281,7 +326,7 @@
       text-transform: uppercase;
       letter-spacing: .3px;
     }
-    .c-desc { font-size: 13px; color: var(--dim); margin-top: 2px; }
+    .c-desc { font-size: 13px; color: var(--dim); }
     .c-arrow {
       color: var(--dim);
       font-family: Space Mono, monospace;
@@ -325,12 +370,19 @@
       color: var(--dim);
       text-transform: uppercase;
       letter-spacing: .5px;
-      transition: border-color .25s ease, color .25s ease, transform .2s ease;
+      opacity: 0;
+      transform: scale(.8) translateY(6px);
+      transition: border-color .25s ease, color .25s ease, transform .2s ease, box-shadow .25s ease;
+    }
+    .skill.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
     .skill:hover {
       border-color: var(--fg);
       color: var(--fg);
-      transform: translateY(-2px);
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 0 20px color-mix(in srgb, var(--fg) 10%, transparent);
     }
     .skill:active { transform: scale(.95); }
 
@@ -354,7 +406,21 @@
       border-radius: 50%;
       background: var(--dim);
       opacity: .4;
-      transition: opacity .3s;
+      transition: opacity .3s, transform .3s ease;
+      animation: dotPulse 3s ease-in-out infinite;
+    }
+    .dot-divider span:nth-child(2) { animation-delay: .2s; }
+    .dot-divider span:nth-child(3) { animation-delay: .4s; }
+    .dot-divider span:nth-child(4) { animation-delay: .6s; }
+    .dot-divider span:nth-child(5) { animation-delay: .8s; }
+    .dot-divider span:nth-child(6) { animation-delay: 1s; }
+    .dot-divider span:nth-child(7) { animation-delay: 1.2s; }
+    .dot-divider span:nth-child(8) { animation-delay: 1.4s; }
+    .dot-divider span:nth-child(9) { animation-delay: 1.6s; }
+    .dot-divider span:nth-child(10) { animation-delay: 1.8s; }
+    .dot-divider:hover span {
+      transform: scale(1.5);
+      opacity: .8;
     }
     .links {
       display: flex;
@@ -449,6 +515,7 @@
       <button class="tab" onclick="switchTab('about',this)">About</button>
     </nav>
 
+    <div class="p-wrap" id="p-wrap">
     <div id="p-projects" class="p active">
       <div class="dot-badge">Featured work</div>
       <div class="card"><a href="https://github.com/wollydev24/YouShade"><span class="c-icon">&#x1F319;</span><span class="c-body"><span class="c-title">YouShade Expressive</span><span class="c-desc">KWGT Widgets inspired by Material You</span></span><span class="c-arrow">&rarr;</span></a></div>
@@ -476,6 +543,7 @@
         </div>
       </div>
     </div>
+    </div>
 
     <footer>
       <div class="dot-divider">
@@ -497,21 +565,38 @@
   </div>
 
   <script>
+    document.addEventListener('mousemove', function(e) {
+      document.documentElement.style.setProperty('--mx', e.clientX + 'px');
+      document.documentElement.style.setProperty('--my', e.clientY + 'px');
+    });
     function switchTab(id, btn) {
+      var wrap = document.getElementById('p-wrap');
       var panels = document.querySelectorAll('.p');
       var target = document.getElementById('p-' + id);
+      var current = document.querySelector('.p.active');
+
+      if (current === target) return;
+
+      var startH = current.offsetHeight;
+      wrap.style.height = startH + 'px';
 
       panels.forEach(function(p) {
         if (p !== target) {
           p.classList.remove('active');
-          setTimeout(function() { p.classList.add('h'); }, 400);
+          p.classList.add('h');
         }
       });
 
       target.classList.remove('h');
-      void target.offsetWidth;
       target.classList.add('active');
-      setTimeout(function() { showCards(target); }, 50);
+
+      var endH = target.offsetHeight;
+      wrap.style.height = endH + 'px';
+
+      setTimeout(function() {
+        wrap.style.height = '';
+        showCards(target);
+      }, 450);
 
       document.querySelectorAll('.tab').forEach(function(b) { b.classList.remove('active'); });
       btn.classList.add('active');
@@ -521,6 +606,10 @@
       var cards = panel.querySelectorAll('.card');
       cards.forEach(function(c, i) {
         setTimeout(function() { c.classList.add('show'); }, i * 80);
+      });
+      var skills = panel.querySelectorAll('.skill');
+      skills.forEach(function(s, i) {
+        setTimeout(function() { s.classList.add('show'); }, i * 100 + 120);
       });
     }
 
