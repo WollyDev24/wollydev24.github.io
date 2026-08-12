@@ -1,718 +1,238 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Startpage - Dashboard</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg: rgba(30,30,30,0.82);
-            --fg: #fff;
-            --dim: rgba(255,255,255,0.5);
-            --border: rgba(255,255,255,0.1);
-            --glass: rgba(30,30,30,0.72);
-            --glass-border: rgba(255,255,255,0.08);
-            --menubar-h: 28px;
-            --traffic-red: #ff5f57;
-            --traffic-yellow: #febc2e;
-            --traffic-green: #28c840;
-            --sidebar-active: rgba(255,255,255,0.08);
-        }
-        .light-mode {
-            --bg: rgba(245,245,245,0.82);
-            --fg: #1d1d1f;
-            --dim: rgba(0,0,0,0.45);
-            --border: rgba(0,0,0,0.1);
-            --glass: rgba(245,245,245,0.72);
-            --glass-border: rgba(0,0,0,0.08);
-            --sidebar-active: rgba(0,0,0,0.06);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
-            color: var(--fg);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            min-height: 100vh;
-            background: var(--bg);
-            transition: color .3s;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* ===== CONTENT WRAPPER ===== */
-        .content-wrapper {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 30px;
-        }
-
-        /* ===== LEFT SIDEBAR ===== */
-
-
-        .profile-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .user-info {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .user-name {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .user-status {
-            font-size: 14px;
-            opacity: 0.7;
-        }
-
-        .quick-links {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: 600;
-            opacity: 0.9;
-            margin-bottom: 8px;
-        }
-
-        .shortcut-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .shortcut-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 12px;
-            border-radius: 12px;
-            background: var(--sidebar-active);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .shortcut-item:hover {
-            background: rgba(255,255,255,0.12);
-            transform: translateY(-2px);
-        }
-
-        .shortcut-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            background: rgba(255,255,255,0.05);
-        }
-
-        .shortcut-label {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
-        /* ===== MAIN CONTENT ===== */
-        .main-content {
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .search-container {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            position: relative;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            background: var(--sidebar-active);
-            color: var(--fg);
-            font-size: 14px;
-            transition: all 0.2s ease;
-        }
-
-        .search-bar:focus {
-            outline: none;
-            border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 0 0 3px rgba(255,255,255,0.1);
-        }
-
-        .search-bar::placeholder {
-            opacity: 0.6;
-        }
-
-        /* ===== INFO PANELS ===== */
-        .info-panels {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-        }
-
-        .info-panel {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .panel-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
-        .panel-value {
-            font-size: 24px;
-            font-weight: 600;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .panel-subtitle {
-            font-size: 12px;
-            opacity: 0.7;
-        }
-
-        /* ===== NEWS SECTION ===== */
-        .news-section {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 24px;
-        }
-
-        .news-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .news-title {
-            font-size: 18px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .news-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #FF0000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-        }
-
-        .news-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .news-item {
-            display: flex;
-            gap: 16px;
-            padding: 16px;
-            border-radius: 12px;
-            background: var(--sidebar-active);
-            transition: all 0.2s ease;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .news-item:hover {
-            background: rgba(255,255,255,0.12);
-        }
-
-        .news-number {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .news-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .news-source {
-            font-size: 12px;
-            opacity: 0.7;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .news-title-text {
-            font-size: 14px;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        .news-time {
-            font-size: 11px;
-            opacity: 0.6;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* ===== LOADING AND ERROR STATES ===== */
-        .loading, .error {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            opacity: 0.7;
-        }
-
-        .loading.active, .error.active {
-            display: block;
-        }
-
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top: 3px solid #fff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 12px;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ===== RESPONSIVE DESIGN ===== */
-        @media (max-width: 1024px) {
-            .content-wrapper {
-                grid-template-columns: 240px 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .content-wrapper {
-                grid-template-columns: 1fr;
-                grid-template-rows: auto auto 1fr;
-            }
-
-            .left-sidebar {
-                position: static;
-                order: 1;
-            }
-
-            .main-content {
-                order: 2;
-            }
-
-            .info-panels {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .shortcut-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .news-item {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-        }
-
-        /* ===== UTILITIES ===== */
-        .hidden {
-            display: none !important;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Startpage – Dashboard</title>
+  <meta name="description" content="WollyDev24 startpage dashboard." />
+  <link rel="stylesheet" href="material.css" />
 </head>
 <body>
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-        <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" class="search-bar" id="search-bar" placeholder="Search or type a command..." autocomplete="off">
-        </div>
 
-        <!-- Quick Links -->
-        <div class="quick-links">
-            <div class="section-title">Quick Access</div>
-            <div class="shortcut-grid">
-                <a href="https://github.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">📁</div>
-                    <div class="shortcut-label">GitHub</div>
-                </a>
-                <a href="https://youtube.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">▶️</div>
-                    <div class="shortcut-label">YouTube</div>
-                </a>
-                <a href="https://reddit.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">💬</div>
-                    <div class="shortcut-label">Reddit</div>
-                </a>
-                <a href="https://gmail.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">📧</div>
-                    <div class="shortcut-label">Email</div>
-                </a>
-                <a href="https://calendar.google.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">📅</div>
-                    <div class="shortcut-label">Calendar</div>
-                </a>
-                <a href="https://drive.google.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">☁️</div>
-                    <div class="shortcut-label">Drive</div>
-                </a>
-                <a href="https://maps.google.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">🗺️</div>
-                    <div class="shortcut-label">Maps</div>
-                </a>
-                <a href="https://weather.com" target="_blank" class="shortcut-item">
-                    <div class="shortcut-icon">🌤️</div>
-                    <div class="shortcut-label">Weather</div>
-                </a>
-            </div>
-        </div>
+  <nav class="nav">
+    <a class="nav-brand" href="index.html">
+      <span class="icon-box" style="width:32px;height:32px;border-radius:10px;"><span class="msr md filled" aria-hidden="true">&#xE65F;</span></span>
+      <span class="brand-txt">WollyDev24</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Main</a>
+      <a class="nav-link" href="blog.html">Blog</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle appearance"><span class="msr md" aria-hidden="true"></span></button>
+    </div>
+  </nav>
 
-        <!-- Main Content -->
-        <div class="main-content">
+  <main class="wrap">
+    <section class="hero center" style="padding:56px 24px 40px;">
+      <div class="icon-box big" style="margin:0 auto;">
+        <span class="msr filled" aria-hidden="true">&#xEF7A;</span>
+      </div>
+      <h2>Startpage</h2>
+      <p>Search, quick links, live status and the latest tech news.</p>
+    </section>
 
-            <!-- Info Panels -->
-            <div class="info-panels">
-                <div class="info-panel">
-                    <div class="panel-header">
-                        <span>⏰</span>
-                        <span>Current Time</span>
-                    </div>
-                    <div class="panel-value" id="current-time">12:00:00</div>
-                    <div class="panel-subtitle" id="current-date">Monday, January 1</div>
-                </div>
+    <input type="search" id="search-bar" class="search-bar" placeholder="Search Google or type a command..." autocomplete="off" style="max-width:720px;margin:0 auto;display:block;" />
 
-                <div class="info-panel">
-                    <div class="panel-header">
-                        <span>🌍</span>
-                        <span>Location</span>
-                    </div>
-                    <div class="panel-value" id="location">Loading...</div>
-                    <div class="panel-subtitle" id="temperature">--°C</div>
-                </div>
-
-                <div class="info-panel">
-                    <div class="panel-header">
-                        <span>📊</span>
-                        <span>System Status</span>
-                    </div>
-                    <div class="panel-value" id="status">Online</div>
-                    <div class="panel-subtitle" id="uptime">All systems operational</div>
-                </div>
-            </div>
-
-            <!-- News Section -->
-            <div class="news-section">
-                <div class="news-header">
-                    <div class="news-title">
-                        <div class="news-icon">📺</div>
-                        Latest Tech News
-                    </div>
-                    <div class="loading active" id="news-loading">
-                        <div class="spinner"></div>
-                        <div>Loading news...</div>
-                    </div>
-                    <div class="error active" id="news-error">Failed to load news. Please try again.</div>
-                </div>
-                <div class="news-list" id="news-list">
-                    <!-- News items will be populated here -->
-                </div>
-            </div>
-        </div>
+    <section class="section-head" style="margin-top:48px;">
+      <span class="kicker">Quick access</span>
+      <h2>Shortcuts</h2>
+    </section>
+    <div class="card-grid">
+      <a class="card clickable reveal" href="https://github.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row"><span class="msr md" aria-hidden="true">&#xE2C7;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">GitHub</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://youtube.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row alt1"><span class="msr md" aria-hidden="true">&#xE037;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">YouTube</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://reddit.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row alt2"><span class="msr md" aria-hidden="true">&#xE0C9;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">Reddit</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://gmail.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row"><span class="msr md" aria-hidden="true">&#xE159;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">Email</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://calendar.google.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row alt1"><span class="msr md" aria-hidden="true">&#xEBCC;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">Calendar</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://drive.google.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row alt2"><span class="msr md" aria-hidden="true">&#xF15C;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">Drive</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://maps.google.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row"><span class="msr md" aria-hidden="true">&#xE55B;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">Maps</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
+      <a class="card clickable reveal" href="https://weather.com" target="_blank" rel="noopener">
+        <span class="icon-box card-icon-row alt1"><span class="msr md" aria-hidden="true">&#xE430;</span></span>
+        <span class="card-body" style="flex:1;"><span class="card-title">Weather</span></span>
+        <span class="msr sm card-arrow" aria-hidden="true">&#xE5C8;</span>
+      </a>
     </div>
 
-    <script>
-        // ===== TIME AND DATE FUNCTIONS =====
-        function updateTime() {
-            const now = new Date();
-            const timeElement = document.getElementById('current-time');
-            const dateElement = document.getElementById('current-date');
-            const menubarClock = document.getElementById('menubar-clock');
+    <section class="section-head" style="margin-top:56px;">
+      <span class="kicker">Live</span>
+      <h2>Status</h2>
+    </section>
+    <div class="panel-grid">
+      <div class="panel reveal">
+        <div class="panel-header"><span class="msr md" aria-hidden="true">&#xEFD6;</span><span>Current time</span></div>
+        <div class="panel-value" id="current-time">--:--:--</div>
+        <div class="panel-subtitle" id="current-date">&nbsp;</div>
+      </div>
+      <div class="panel reveal">
+        <div class="panel-header"><span class="msr md" aria-hidden="true">&#xF1DB;</span><span>Location</span></div>
+        <div class="panel-value" id="location">Loading&hellip;</div>
+        <div class="panel-subtitle" id="temperature">--&deg;C</div>
+      </div>
+      <div class="panel reveal">
+        <div class="panel-header"><span class="msr md" aria-hidden="true">&#xF0BE;</span><span>System status</span></div>
+        <div class="panel-value" id="status">Online</div>
+        <div class="panel-subtitle" id="uptime">All systems operational</div>
+      </div>
+    </div>
 
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
+    <section class="section-head" style="margin-top:56px;">
+      <span class="kicker">News</span>
+      <h2>Latest tech news</h2>
+    </section>
+    <div class="panel">
+      <div class="center-row" id="news-status"><span class="chip">Loading news&hellip;</span></div>
+      <div class="list" id="news-list" style="margin-top:14px;"></div>
+    </div>
+  </main>
 
-            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-            menubarClock.textContent = `${hours}:${minutes}:${seconds}`;
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+      <a href="https://t.me/wollydev24" target="_blank">Telegram</a>
+    </div>
+    <span>&copy; 2026 WollyDev24</span>
+  </footer>
 
-            const options = {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            };
-            dateElement.textContent = now.toLocaleDateString('en-US', options);
-        }
+  <script>
+    function updateTime() {
+      var now = new Date();
+      var h = now.getHours().toString().padStart(2, '0');
+      var m = now.getMinutes().toString().padStart(2, '0');
+      var s = now.getSeconds().toString().padStart(2, '0');
+      document.getElementById('current-time').textContent = h + ':' + m + ':' + s;
+      document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+    }
 
-        // ===== WEATHER LOCATION FUNCTIONS =====
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    position => {
-                        const lat = position.coords.latitude;
-                        const lon = position.coords.longitude;
-                        fetchWeatherByCoords(lat, lon);
-                    },
-                    error => {
-                        console.error('Geolocation error:', error);
-                        document.getElementById('location').textContent = 'Location unavailable';
-                        document.getElementById('temperature').textContent = '--°C';
-                    }
-                );
-            } else {
-                document.getElementById('location').textContent = 'Geolocation not supported';
-                document.getElementById('temperature').textContent = '--°C';
-            }
-        }
-
-        function fetchWeatherByCoords(lat, lon) {
-            const apiKey = 'demo';
-            const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Weather data not available');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const locationElement = document.getElementById('location');
-                    const temperatureElement = document.getElementById('temperature');
-
-                    locationElement.textContent = data.name;
-                    temperatureElement.textContent = `${Math.round(data.main.temp)}°C`;
-                })
-                .catch(error => {
-                    console.error('Weather fetch error:', error);
-                    document.getElementById('location').textContent = 'Weather unavailable';
-                    document.getElementById('temperature').textContent = '--°C';
-                });
-        }
-
-        // ===== NEWS FUNCTIONS =====
-        async function fetchNews() {
-            const loadingElement = document.getElementById('news-loading');
-            const errorElement = document.getElementById('news-error');
-            const newsListElement = document.getElementById('news-list');
-
-            try {
-                loadingElement.classList.add('active');
-                errorElement.classList.add('active');
-                errorElement.textContent = 'Loading news from Google News...';
-                newsListElement.innerHTML = '';
-
-                const url = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.google.com%2Fnews%2Frss%2Fheadlines%2Fsection%2Ftopic%2FTECHNOLOGY%3Fhl%3Den%26gl%3DUS%26ceid%3DUS%3Aen';
-
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (!data.items || data.items.length === 0) {
-                    throw new Error('No news items found');
-                }
-
-                loadingElement.classList.remove('active');
-                errorElement.classList.remove('active');
-
-                const newsItems = data.items.slice(0, 3);
-
-                newsItems.forEach((item, index) => {
-                    const newsItem = document.createElement('a');
-                    newsItem.className = 'news-item';
-                    newsItem.href = item.link;
-                    newsItem.target = '_blank';
-
-                    const pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
-                    const timeAgo = getTimeAgo(pubDate);
-
-                    newsItem.innerHTML = `
-                        <div class="news-number">${index + 1}</div>
-                        <div class="news-content">
-                            <div class="news-source">${getSourceName(item.link)} • ${timeAgo}</div>
-                            <div class="news-title-text">${item.title}</div>
-                            <div class="news-time">Published: ${pubDate.toLocaleDateString()} ${pubDate.toLocaleTimeString()}</div>
-                        </div>
-                    `;
-
-                    newsListElement.appendChild(newsItem);
-                });
-
-            } catch (error) {
-                console.error('News fetch error:', error);
-                loadingElement.classList.remove('active');
-                errorElement.classList.remove('active');
-                errorElement.textContent = 'Failed to load news. Please try again later.';
-            }
-        }
-
-        function getTimeAgo(date) {
-            const seconds = Math.floor((new Date() - date) / 1000);
-
-            if (seconds < 60) return 'Just now';
-            if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
-            if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
-            return `${Math.floor(seconds / 86400)}d ago`;
-        }
-
-        function getSourceName(url) {
-            if (url.includes('verge.com')) return 'The Verge';
-            if (url.includes('techpowerup.com')) return 'TechPowerUp';
-            if (url.includes('digitalfoundry.net')) return 'Digital Foundry';
-            if (url.includes('vgchartz.com')) return 'VGChartz';
-            if (url.includes('9to5mac.com')) return '9to5Mac';
-            if (url.includes('macrumors.com')) return 'MacRumors';
-            if (url.includes('phonearena.com')) return 'PhoneArena';
-            if (url.includes('appleinsider.com')) return 'AppleInsider';
-            if (url.includes('pcworld.com')) return 'PCWorld';
-            if (url.includes('broadbandtv.news')) return 'Broadband TV News';
-            if (url.includes('samsung.com')) return 'Samsung';
-            if (url.includes('musiceonews.com')) return '매일경제';
-            if (url.includes('tven europe.com')) return 'TVBEurope';
-            if (url.includes('engadget.com')) return 'Engadget';
-            if (url.includes('petaPixel.com')) return 'PetaPixel';
-            if (url.includes('theverge.com')) return 'The Verge';
-            if (url.includes('gizmodo.com')) return 'Gizmodo';
-            if (url.includes('notebookcheck.com')) return 'Notebookcheck';
-            if (url.includes('hypebeast.com')) return 'Hypebeast';
-            if (url.includes('9to5google.com')) return '9to5Google';
-            if (url.includes('bgr.com')) return 'bgr.com';
-            if (url.includes('androidheadlines.com')) return 'Android Headlines';
-            if (url.includes('modernetdigital.cat')) return 'modernetdigital.cat';
-            if (url.includes('cnet.com')) return 'CNET';
-            if (url.includes('mashable.com')) return 'Mashable';
-            if (url.includes('forbes.com')) return 'Forbes';
-            if (url.includes('reuters.com')) return 'Reuters';
-            if (url.includes('apple.com')) return 'Apple Insider';
-            if (url.includes('bloomberg.com')) return 'Bloomberg';
-            if (url.includes('wmur.com')) return 'WMUR';
-            if (url.includes('abcnews.go.com')) return 'ABC News';
-            if (url.includes('microsoft.com')) return 'Microsoft';
-            if (url.includes('theregister.com')) return 'The Register';
-            if (url.includes('recordedfuture.com')) return 'The Record';
-            if (url.includes('times.com')) return 'The Times';
-            if (url.includes('techlicious.com')) return 'Techlicious';
-            if (url.includes('forbes.com')) return 'Forbes';
-            return 'Tech News';
-        }
-
-        // ===== SEARCH FUNCTION =====
-        function handleSearch(event) {
-            if (event.key === 'Enter') {
-                const query = event.target.value.trim();
-                if (query) {
-                    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-                    window.open(searchUrl, '_blank');
-                }
-            }
-        }
-
-        // ===== THEME TOGGLE =====
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-        }
-
-        // ===== INITIALIZATION =====
-        document.addEventListener('DOMContentLoaded', function() {
-            updateTime();
-            setInterval(updateTime, 1000);
-
-            getLocation();
-            fetchNews();
-
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-            }
-
-            document.getElementById('search-bar').addEventListener('keypress', handleSearch);
-
-            setTimeout(() => {
-                document.getElementById('news-loading').classList.remove('active');
-            }, 3000);
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
+        }, function() {
+          document.getElementById('location').textContent = 'Location unavailable';
+          document.getElementById('temperature').textContent = '--\u00B0C';
         });
-    </script>
+      } else {
+        document.getElementById('location').textContent = 'Geolocation not supported';
+        document.getElementById('temperature').textContent = '--\u00B0C';
+      }
+    }
+
+    function fetchWeatherByCoords(lat, lon) {
+      var url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=demo&units=metric';
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          document.getElementById('location').textContent = data.name || 'Unknown';
+          document.getElementById('temperature').textContent = Math.round(data.main.temp) + '\u00B0C';
+        })
+        .catch(function() {
+          document.getElementById('location').textContent = 'Weather unavailable';
+          document.getElementById('temperature').textContent = '--\u00B0C';
+        });
+    }
+
+    function getTimeAgo(date) {
+      var seconds = Math.floor((new Date() - date) / 1000);
+      if (seconds < 60) return 'Just now';
+      if (seconds < 3600) return Math.floor(seconds / 60) + 'm ago';
+      if (seconds < 86400) return Math.floor(seconds / 3600) + 'h ago';
+      return Math.floor(seconds / 86400) + 'd ago';
+    }
+
+    function getSourceName(url) {
+      var u = (url || '').toLowerCase();
+      var names = [
+        ['theverge.com', 'The Verge'], ['engadget.com', 'Engadget'], ['gizmodo.com', 'Gizmodo'],
+        ['9to5google.com', '9to5Google'], ['9to5mac.com', '9to5Mac'], ['macrumors.com', 'MacRumors'],
+        ['techpowerup.com', 'TechPowerUp'], ['notebookcheck.com', 'Notebookcheck'],
+        ['phonearena.com', 'PhoneArena'], ['cnet.com', 'CNET'], ['mashable.com', 'Mashable'],
+        ['forbes.com', 'Forbes'], ['reuters.com', 'Reuters'], ['bloomberg.com', 'Bloomberg'],
+        ['microsoft.com', 'Microsoft'], ['samsung.com', 'Samsung'], ['apple.com', 'Apple']
+      ];
+      for (var i = 0; i < names.length; i++) {
+        if (u.indexOf(names[i][0]) !== -1) return names[i][1];
+      }
+      return 'Tech News';
+    }
+
+    function setNewsStatus(msg) {
+      var el = document.getElementById('news-status');
+      if (msg) {
+        el.style.display = '';
+        el.innerHTML = '<span class="chip">' + msg + '</span>';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
+    function fetchNews() {
+      setNewsStatus('Loading news&hellip;');
+      var url = 'https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2Fnews.google.com%2Fnews%2Frss%2Fheadlines%2Fsection%2Ftopic%2FTECHNOLOGY%3Fhl%3Den%26gl%3DUS%26ceid%3DUS%3Aen';
+      fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (!data.items || data.items.length === 0) throw new Error('No news');
+          setNewsStatus(null);
+          var html = '';
+          data.items.slice(0, 3).forEach(function(item, index) {
+            var pubDate = item.pubDate ? new Date(item.pubDate) : new Date();
+            html += '<a class="list-row clickable" href="' + item.link + '" target="_blank" rel="noopener">' +
+              '<span class="list-icon icon-box alt2"><span class="list-title">' + (index + 1) + '</span></span>' +
+              '<span class="list-body"><span class="list-title">' + item.title + '</span>' +
+              '<span class="list-desc">' + getSourceName(item.link) + ' &middot; ' + getTimeAgo(pubDate) + '</span></span></a>';
+          });
+          document.getElementById('news-list').innerHTML = html;
+        })
+        .catch(function() {
+          setNewsStatus('Failed to load news.');
+        });
+    }
+
+    function handleSearch(event) {
+      if (event.key === 'Enter') {
+        var query = event.target.value.trim();
+        if (query) {
+          window.open('https://www.google.com/search?q=' + encodeURIComponent(query), '_blank');
+        }
+      }
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+    getLocation();
+    fetchNews();
+    document.getElementById('search-bar').addEventListener('keypress', handleSearch);
+  </script>
+
+  <script src="material.js"></script>
 </body>
 </html>

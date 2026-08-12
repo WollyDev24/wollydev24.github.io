@@ -2,432 +2,103 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Blog - WollyDev24</title>
   <meta name="description" content="Blog posts by WollyDev24." />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: rgba(30,30,30,0.82);
-      --fg: #fff;
-      --dim: rgba(255,255,255,0.5);
-      --border: rgba(255,255,255,0.1);
-      --glass: rgba(30,30,30,0.72);
-      --glass-border: rgba(255,255,255,0.08);
-      --menubar-h: 28px;
-      --traffic-red: #ff5f57;
-      --traffic-yellow: #febc2e;
-      --traffic-green: #28c840;
-      --sidebar-active: rgba(255,255,255,0.08);
-    }
-    .light-mode {
-      --bg: rgba(245,245,245,0.82);
-      --fg: #1d1d1f;
-      --dim: rgba(0,0,0,0.45);
-      --border: rgba(0,0,0,0.1);
-      --glass: rgba(245,245,245,0.72);
-      --glass-border: rgba(0,0,0,0.08);
-      --sidebar-active: rgba(0,0,0,0.06);
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', sans-serif;
-      color: var(--fg);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-      overflow: hidden;
-      transition: color .3s;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url('mac_background.png') center/cover no-repeat fixed;
-      z-index: -2;
-    }
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.35) 100%);
-      z-index: -1;
-      pointer-events: none;
-    }
-    .light-mode::after {
-      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.12) 100%);
-    }
-
-    /* ===== MENU BAR ===== */
-    .menubar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--menubar-h);
-      background: var(--glass);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 14px;
-      z-index: 1000;
-      font-size: 13px;
-      color: var(--fg);
-      user-select: none;
-      transition: all .3s cubic-bezier(.22,1,.36,1);
-    }
-    .menubar.maximized {
-      border-radius: 0;
-    }
-    .menubar-left { display: flex; align-items: center; gap: 16px; }
-    .menubar-right { display: flex; align-items: center; gap: 14px; }
-    .apple-logo { font-size: 15px; cursor: pointer; opacity: 0.9; transition: opacity .2s; }
-    .apple-logo:hover { opacity: 0.5; }
-    .menubar-app { font-weight: 600; font-size: 13px; }
-    .menubar-item {
-      font-size: 12px; opacity: 0.85; cursor: pointer;
-      transition: opacity .2s; text-decoration: none; color: inherit;
-    }
-    .menubar-item:hover { opacity: 0.5; }
-    .menubar-clock { font-size: 12.5px; font-variant-numeric: tabular-nums; min-width: 140px; text-align: right; }
-    .menubar-icon { font-size: 13px; opacity: 0.8; cursor: pointer; transition: opacity .2s; }
-    .menubar-icon:hover { opacity: 0.5; }
-
-    /* ===== FLOATING WINDOW ===== */
-    .window {
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 560px;
-      max-width: calc(100vw - 32px);
-      max-height: calc(100vh - 80px);
-      background: var(--bg);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px 12px 4px 4px;
-      overflow: hidden;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.12);
-      z-index: 500;
-      animation: windowIn .5s cubic-bezier(.22,1,.36,1) both;
-      display: flex;
-      flex-direction: column;
-    }
-    .window.dragging { transition: none !important; }
-
-    @keyframes windowIn {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.92); }
-      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-    }
-
-    .titlebar {
-      display: flex; align-items: center; gap: 8px;
-      padding: 0 14px; height: 36px;
-      background: rgba(255,255,255,0.04);
-      border-bottom: 1px solid var(--glass-border);
-      user-select: none; cursor: grab; flex-shrink: 0;
-    }
-    .titlebar:active { cursor: grabbing; }
-    .light-mode .titlebar { background: rgba(0,0,0,0.03); }
-
-    .traffic-lights { display: flex; gap: 6px; flex-shrink: 0; position: relative; }
-    .traffic {
-      width: 12px; height: 12px; border-radius: 50%; border: none;
-      cursor: pointer; transition: filter .15s; position: relative;
-    }
-    .traffic::after {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      font-size: 8px; font-weight: 700; line-height: 1; opacity: 0;
-      transition: opacity .15s; pointer-events: none; color: rgba(0,0,0,0.6);
-    }
-    .traffic-lights:hover .traffic::after { opacity: 1; }
-    .traffic.red::after { content: "\00d7"; font-size: 9px; }
-    .traffic.yellow::after { content: "\2212"; font-size: 10px; }
-    .traffic.green::after { content: "+"; font-size: 11px; }
-    .traffic:hover { filter: brightness(0.85); }
-    .traffic.red { background: var(--traffic-red); }
-    .traffic.yellow { background: var(--traffic-yellow); }
-    .traffic.green { background: var(--traffic-green); }
-
-    .titlebar-label {
-      flex: 1; text-align: center; font-size: 13px; font-weight: 500;
-      opacity: 0.85; margin-right: 44px;
-    }
-
-    .window-body {
-      padding: 10px 8px;
-      overflow-y: auto;
-      flex: 1;
-      min-height: 0;
-    }
-
-    /* ===== BLOG ===== */
-    .blog-card {
-      border-radius: 8px; margin-bottom: 2px; cursor: pointer;
-      transition: background .15s;
-    }
-    .blog-card:hover { background: var(--sidebar-active); }
-    .blog-header { display: flex; align-items: center; gap: 12px; padding: 10px 14px; }
-    .blog-icon {
-      font-size: 18px; width: 36px; height: 36px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.05); border-radius: 8px;
-      flex-shrink: 0; border: 1px solid var(--glass-border);
-    }
-    .light-mode .blog-icon { background: rgba(0,0,0,0.04); }
-    .blog-body { flex: 1; min-width: 0; }
-    .blog-title { font-size: 13px; font-weight: 600; }
-    .blog-excerpt { font-size: 12px; color: var(--dim); }
-    .blog-arrow { color: var(--dim); font-size: 14px; transition: transform .2s; }
-    .blog-card:hover .blog-arrow { transform: translateX(3px); }
-    .blog-expand {
-      max-height: 0; overflow: hidden;
-      transition: max-height .4s cubic-bezier(.22,1,.36,1);
-    }
-    .blog-expand.open { max-height: 600px; }
-    .blog-expand-inner {
-      padding: 0 14px 14px; font-size: 13px;
-      color: var(--dim); line-height: 1.7;
-    }
-    .blog-expand-inner img {
-      max-width: 100%; border-radius: 8px; margin-top: 10px;
-      border: 1px solid var(--glass-border);
-    }
-    .blog-empty { padding: 28px; text-align: center; font-size: 13px; color: var(--dim); }
-
-    /* ===== FOOTER ===== */
-    .footer-bar {
-      position: fixed; bottom: 8px; left: 50%; transform: translateX(-50%);
-      text-align: center; font-size: 11px; color: var(--dim);
-      display: flex; gap: 16px; align-items: center;
-      background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--glass-border); border-radius: 8px;
-      padding: 5px 16px; white-space: nowrap;
-    }
-    .footer-links { display: flex; gap: 14px; }
-    .footer-links a {
-      color: var(--dim); text-decoration: none; font-size: 11px;
-      font-weight: 500; transition: color .15s;
-    }
-    .footer-links a:hover { color: #0a84ff; }
-    .light-mode .footer-links a:hover { color: #0066cc; }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 500px) {
-      .window { width: calc(100vw - 16px); }
-      .window-body { padding: 14px; }
-      .titlebar-label { font-size: 12px; }
-    }
-  </style>
+  <link rel="stylesheet" href="material.css" />
 </head>
 <body>
 
-  <!-- Menu Bar -->
-  <div class="menubar">
-    <div class="menubar-left">
-      <span class="apple-logo"><svg width="14" height="11" viewBox="0 0 14 11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="1" y1="1" x2="13" y2="1"/><line x1="1" y1="5.5" x2="13" y2="5.5"/><line x1="1" y1="10" x2="13" y2="10"/></svg></span>
-      <span class="menubar-app">WollyDev24</span>
-      <a class="menubar-item" href="index.html">Main</a>
-      <a class="menubar-item" href="blog.html">Blog</a>
+  <nav class="nav">
+    <a class="nav-brand" href="index.html">
+      <span class="icon-box" style="width:32px;height:32px;border-radius:10px;"><span class="msr md filled" aria-hidden="true">&#xE65F;</span></span>
+      <span class="brand-txt">WollyDev24</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Main</a>
+      <a class="nav-link" href="blog.html" aria-current="page">Blog</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle appearance"><span class="msr md" aria-hidden="true"></span></button>
     </div>
-    <div class="menubar-right">
-      <span class="menubar-icon" id="theme-toggle" onclick="toggleTheme()" title="Toggle appearance">&#9789;</span>
-      <span class="menubar-clock" id="clock"></span>
-    </div>
-  </div>
+  </nav>
 
-  <!-- Floating Window -->
-  <div class="window" id="app-window">
-    <div class="titlebar" id="titlebar">
-      <div class="traffic-lights">
-        <button class="traffic red" onclick="closeWindow()"></button>
-        <button class="traffic yellow" onclick="minimizeWindow()"></button>
-        <button class="traffic green" onclick="maximizeWindow()"></button>
-      </div>
-      <div class="titlebar-label">Blog</div>
-    </div>
-    <div class="window-body">
-      <div id="blog-list">
-        <div class="blog-empty">Loading posts&#8230;</div>
-      </div>
-    </div>
-  </div>
+  <main class="wrap">
+    <section class="section-head">
+      <span class="kicker">Blog</span>
+      <h2>Latest posts</h2>
+      <p>Notes, updates and releases.</p>
+    </section>
 
-  <!-- Footer bar -->
-  <div class="footer-bar">
+    <div class="list" id="blog-list">
+      <div class="center-row"><span class="chip">Loading posts&hellip;</span></div>
+    </div>
+  </main>
+
+  <footer class="footer">
     <div class="footer-links">
       <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
-      <a href="https://wolly.is-a.dev/404" target="_blank">Telegram</a>
-      <a href="https://wolly.is-a.dev/404" target="_blank">Links</a>
+      <a href="https://t.me/wollydev24" target="_blank">Telegram</a>
+      <a href="https://wolly.is-a.dev" target="_blank">Links</a>
     </div>
-    <span>&#169; 2026 WollyDev24</span>
-  </div>
+    <span>&copy; 2026 WollyDev24</span>
+  </footer>
 
   <script>
-    // Clock
-    function updateClock() {
-      var now = new Date();
-      var opts = { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-      document.getElementById('clock').textContent = now.toLocaleString('en-US', opts);
-    }
-    updateClock();
-    setInterval(updateClock, 10000);
-
-    // Theme
-    function toggleTheme() {
-      var light = document.body.classList.toggle('light-mode');
-      localStorage.setItem('theme', light ? 'light' : 'dark');
-      document.getElementById('theme-toggle').innerHTML = light ? '&#9788;' : '&#9789;';
-    }
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light-mode');
-      document.getElementById('theme-toggle').innerHTML = '&#9788;';
-    }
-
-    // Draggable window
-    (function() {
-      var win = document.getElementById('app-window');
-      var bar = document.getElementById('titlebar');
-      var dragging = false, startX, startY, origX, origY;
-
-      bar.addEventListener('mousedown', function(e) {
-        if (e.target.classList.contains('traffic')) return;
-        dragging = true;
-        win.classList.add('dragging');
-        var rect = win.getBoundingClientRect();
-        startX = e.clientX;
-        startY = e.clientY;
-        origX = rect.left + rect.width / 2;
-        origY = rect.top + rect.height / 2;
-        win.style.transform = 'translate(0, 0)';
-        win.style.left = origX + 'px';
-        win.style.top = origY + 'px';
-        e.preventDefault();
-      });
-
-      document.addEventListener('mousemove', function(e) {
-        if (!dragging) return;
-        var dx = e.clientX - startX;
-        var dy = e.clientY - startY;
-        win.style.left = (origX + dx) + 'px';
-        win.style.top = (origY + dy) + 'px';
-      });
-
-      document.addEventListener('mouseup', function() {
-        if (dragging) {
-          dragging = false;
-          win.classList.remove('dragging');
-        }
-      });
-    })();
-
-    // Traffic light actions
-    function closeWindow() {
-      var win = document.getElementById('app-window');
-      win.style.transition = 'opacity .25s, transform .25s';
-      win.style.opacity = '0';
-      win.style.transform = 'translate(-50%, -50%) scale(0.9)';
-      setTimeout(function() { win.style.display = 'none'; }, 250);
-    }
-    function minimizeWindow() {
-      var win = document.getElementById('app-window');
-      win.style.transition = 'opacity .2s, transform .3s';
-      win.style.opacity = '0';
-      win.style.transform = 'translate(-50%, 100vh) scale(0.5)';
-      setTimeout(function() {
-        win.style.transition = 'opacity .3s, transform .4s cubic-bezier(.22,1,.36,1)';
-        win.style.opacity = '1';
-        win.style.transform = 'translate(-50%, -50%) scale(1)';
-      }, 600);
-    }
-    function maximizeWindow() {
-      var win = document.getElementById('app-window');
-      var bar = document.querySelector('.menubar');
-      if (win.dataset.maximized === 'true') {
-        win.style.transition = 'all .3s cubic-bezier(.22,1,.36,1)';
-        win.style.left = '50%';
-        win.style.top = '50%';
-        win.style.width = '560px';
-        win.style.maxWidth = 'calc(100vw - 32px)';
-        win.style.height = '';
-        win.style.maxHeight = 'calc(100vh - 80px)';
-        win.style.borderRadius = '12px 12px 4px 4px';
-        win.dataset.maximized = 'false';
-        bar.classList.remove('maximized');
-      } else {
-        win.style.transition = 'all .3s cubic-bezier(.22,1,.36,1)';
-        win.style.left = '50%';
-        win.style.top = '50%';
-        win.style.transform = 'translate(-50%, -50%)';
-        win.style.width = '100vw';
-        win.style.maxWidth = '100vw';
-        win.style.height = 'calc(100vh - 28px)';
-        win.style.maxHeight = 'calc(100vh - 28px)';
-        win.style.borderRadius = '0';
-        win.dataset.maximized = 'true';
-        bar.classList.add('maximized');
-      }
-    }
-
-    // Blog expand
-    function toggleBlog(card) {
-      var expand = card.querySelector('.blog-expand');
-      var arrow = card.querySelector('.blog-arrow');
+    function toggleBlog(row) {
+      var expand = row.nextElementSibling;
       var wasOpen = expand.classList.contains('open');
-      document.querySelectorAll('.blog-expand.open').forEach(function(e) {
-        if (e !== expand) {
-          e.classList.remove('open');
-          e.closest('.blog-card').querySelector('.blog-arrow').innerHTML = '&#8594;';
+      var opens = document.querySelectorAll('.list-row.open');
+      for (var i = 0; i < opens.length; i++) {
+        if (opens[i] !== row) {
+          opens[i].classList.remove('open');
+          opens[i].nextElementSibling.classList.remove('open');
         }
-      });
+      }
       if (wasOpen) {
+        row.classList.remove('open');
         expand.classList.remove('open');
-        arrow.innerHTML = '&#8594;';
       } else {
+        row.classList.add('open');
         expand.classList.add('open');
-        arrow.innerHTML = '&#8595;';
       }
     }
 
-    // Load blog posts
     var req = new XMLHttpRequest();
     req.open('GET', 'data/blog.json', true);
     req.onload = function() {
-      if (req.status === 200) {
-        var posts = JSON.parse(req.responseText);
-        var list = document.getElementById('blog-list');
-        if (posts.length === 0) {
-          list.innerHTML = '<div class="blog-empty">No posts yet.</div>';
-          return;
-        }
-        var html = '';
-        for (var i = 0; i < posts.length; i++) {
-          var p = posts[i];
-          var imgs = '';
-          if (p.images) {
-            for (var j = 0; j < p.images.length; j++) {
-              imgs += '<img src="' + p.images[j] + '" alt="" loading="lazy">';
-            }
-          }
-          html += '<div class="blog-card" onclick="toggleBlog(this)">' +
-            '<div class="blog-header">' +
-            '<span class="blog-icon">' + (p.emoji || '&#128221;') + '</span>' +
-            '<span class="blog-body"><span class="blog-title">' + p.title + '</span>' +
-            '<span class="blog-excerpt">' + (p.excerpt || p.date) + '</span></span>' +
-            '<span class="blog-arrow">&#8594;</span></div>' +
-            '<div class="blog-expand"><div class="blog-expand-inner">' + p.content + imgs + '</div></div></div>';
-        }
-        list.innerHTML = html;
+      var list = document.getElementById('blog-list');
+      if (req.status !== 200) {
+        list.innerHTML = '<div class="center-row"><span class="chip">Failed to load posts.</span></div>';
+        return;
       }
+      var posts = JSON.parse(req.responseText);
+      if (posts.length === 0) {
+        list.innerHTML = '<div class="center-row"><span class="chip">No posts yet.</span></div>';
+        return;
+      }
+      var html = '';
+      for (var i = 0; i < posts.length; i++) {
+        var p = posts[i];
+        var imgs = '';
+        if (p.images) {
+          for (var j = 0; j < p.images.length; j++) {
+            imgs += '<img src="' + p.images[j] + '" alt="" loading="lazy">';
+          }
+        }
+        html += '<div class="list-row" onclick="toggleBlog(this)">' +
+          '<span class="list-icon icon-box"><span class="msr lg filled" aria-hidden="true">&#xE873;</span></span>' +
+          '<span class="list-body"><span class="list-title">' + p.title + '</span>' +
+          '<span class="list-desc">' + (p.excerpt || p.date) + '</span></span>' +
+          '<span class="list-arrow msr md expand-arrow" aria-hidden="true">&#xE5CF;</span></div>' +
+          '<div class="expand"><div class="expand-inner">' + p.content + imgs + '</div></div>';
+      }
+      list.innerHTML = html;
     };
     req.onerror = function() {
-      document.getElementById('blog-list').innerHTML = '<div class="blog-empty">Failed to load posts.</div>';
+      document.getElementById('blog-list').innerHTML = '<div class="center-row"><span class="chip">Failed to load posts.</span></div>';
     };
     req.send();
   </script>
+
+  <script src="material.js"></script>
 </body>
 </html>

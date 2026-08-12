@@ -1,320 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>YouShadeBot – Discord Bot</title>
-  <link rel="icon" href="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f916.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root {
-      --bg: #000;
-      --fg: #fff;
-      --dim: #555;
-      --border: #1a1a1a;
-      --card: #0d0d0d;
-      --accent: #fff;
-    }
-    .light-mode {
-      --bg: #f5f5f5;
-      --fg: #111;
-      --dim: #888;
-      --border: #ddd;
-      --card: #fff;
-      --accent: #000;
-    }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: Inter, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-      transition: background .3s, color .3s;
-      line-height: 1.6;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-      background-size: 24px 24px;
-    }
-    header, section, footer { position: relative; z-index: 1; }
-
-    /* ── theme toggle ── */
-    #themeToggle {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      z-index: 99;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      color: var(--fg);
-      transition: .2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #themeToggle:hover { border-color: var(--fg); }
-
-    /* ── header ── */
-    header {
-      text-align: center;
-      padding: 4rem 1rem 2rem;
-      animation: fadeUp .6s ease;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .bot-logo {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-      animation: popIn .5s cubic-bezier(.68,-0.55,.27,1.55);
-    }
-    @keyframes popIn {
-      0%   { transform: scale(.5); }
-      80%  { transform: scale(1.08); }
-      100% { transform: scale(1); }
-    }
-    h1 {
-      font-family: 'Space Mono', monospace;
-      font-size: 2.4rem;
-      letter-spacing: -.02em;
-      margin-bottom: .25em;
-    }
-    h2 {
-      font-family: 'Space Mono', monospace;
-      font-size: 1.6rem;
-      letter-spacing: -.02em;
-      margin-bottom: .75rem;
-    }
-    header p {
-      color: var(--dim);
-      font-size: 1.05rem;
-      max-width: 480px;
-      margin: 0 auto 1.5rem;
-    }
-
-    /* ── pill buttons ── */
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: .75rem;
-      flex-wrap: wrap;
-      margin-top: 1.5rem;
-    }
-    .btn {
-      display: inline-block;
-      padding: .6rem 1.6rem;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: var(--card);
-      color: var(--fg);
-      font-family: 'Space Mono', monospace;
-      font-size: .85rem;
-      text-decoration: none;
-      transition: .2s;
-    }
-    .btn:hover {
-      background: var(--fg);
-      color: var(--bg);
-      border-color: var(--fg);
-    }
-
-    /* ── sections ── */
-    .section {
-      max-width: 720px;
-      margin: 2rem auto;
-      padding: 2rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      animation: fadeUp .6s ease;
-      animation-fill-mode: both;
-    }
-    .section:nth-of-type(1) { animation-delay: .15s; }
-    .section:nth-of-type(2) { animation-delay: .3s; }
-
-    /* dot divider */
-    .dot-divider {
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin: .5rem 0 1rem;
-    }
-    .dot-divider span {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--dim);
-    }
-
-    /* feature list */
-    .feature-list {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .feature-list li {
-      flex: 1 1 220px;
-      padding: 1.2rem 1.4rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      transition: .2s;
-    }
-    .feature-list li:hover {
-      border-color: var(--fg);
-    }
-    .feature-list li strong {
-      font-family: 'Space Mono', monospace;
-      font-size: .95rem;
-    }
-    .feature-list li br + * {
-      color: var(--dim);
-      font-size: .85rem;
-      margin-top: .3rem;
-      display: block;
-    }
-
-    /* dot badge */
-    .dot-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-family: 'Space Mono', monospace;
-      font-size: .75rem;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: .08em;
-    }
-    .dot-badge::before {
-      content: '';
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: var(--dim);
-    }
-
-    /* glyph row decoration */
-    .glyph-row {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      font-family: 'Space Mono', monospace;
-      font-size: .7rem;
-      color: var(--dim);
-      letter-spacing: 4px;
-      margin: 1rem 0;
-      opacity: .4;
-    }
-
-    /* ── footer ── */
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--dim);
-      font-size: .85rem;
-      font-family: 'Space Mono', monospace;
-    }
-
-    /* ── responsive ── */
-    @media (max-width: 500px) {
-      header { padding: 3.5rem .75rem 1.5rem; }
-      h1 { font-size: 1.6rem; }
-      .section { margin: 1rem .5rem; padding: 1.25rem; }
-      .buttons { flex-direction: column; align-items: center; }
-      .feature-list { flex-direction: column; }
-      .feature-list li { flex: 1 1 auto; }
-    }
-
-    /* animation class for manual control (kept for compat) */
-    .anim-play { animation-play-state: running; }
-  </style>
+  <meta name="description" content="YouShadeBot – the modern open source Discord bot for your server." />
+  <link rel="stylesheet" href="material.css" />
 </head>
 <body>
-  <button id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">○</button>
-  <header>
-    <div class="bot-logo" title="YouShadeBot">🤖</div>
-    <h1>YouShadeBot</h1>
-    <p>The modern Open Source Discord bot for your server. Simple</p>
-    <div class="buttons">
-      <a class="btn" href="https://github.com/wollydev24/YouShadeBot" target="_blank" rel="noopener">GitHub Repo</a>
-      <a class="btn" href="https://discord.gg/support-server-link" target="_blank" rel="noopener">Support Server</a>
-      <a class="btn" href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot" target="_blank" rel="noopener">Invite Bot</a>
+
+  <nav class="nav">
+    <a class="nav-brand" href="index.html">
+      <span class="icon-box" style="width:32px;height:32px;border-radius:10px;"><span class="msr md filled" aria-hidden="true">&#xE65F;</span></span>
+      <span class="brand-txt">WollyDev24</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="index.html">Main</a>
+      <a class="nav-link" href="blog.html">Blog</a>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle appearance"><span class="msr md" aria-hidden="true"></span></button>
     </div>
-  </header>
+  </nav>
 
-  <section class="section" id="features">
-    <span class="dot-badge">Features</span>
-    <div class="dot-divider"><span></span><span></span><span></span><span></span><span></span></div>
-    <ul class="feature-list">
-      <li>
-        <strong>Greeting Message</strong><br>
-        Welcome new members with a customizable greeting message.
-      </li>
-      <li>
-        <strong>Change Bot Status</strong><br>
-        Easily update the bot's status to keep your community informed.
-      </li>
-    </ul>
-  </section>
+  <main class="wrap">
+    <section class="hero center reveal">
+      <div class="icon-box big" style="margin:0 auto;">
+        <span class="msr filled" aria-hidden="true">&#xF06C;</span>
+      </div>
+      <h2>YouShadeBot</h2>
+      <p>The modern open source Discord bot for your server. Simple, fast, transparent.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="https://github.com/wollydev24/YouShadeBot" target="_blank" rel="noopener"><span class="msr sm" aria-hidden="true">&#xE86F;</span> GitHub Repo</a>
+        <a class="btn" href="https://discord.gg/support-server-link" target="_blank" rel="noopener"><span class="msr sm" aria-hidden="true">&#xE0C9;</span> Support Server</a>
+        <a class="btn" href="https://discord.com/oauth2/authorize?client_id=YOUR_CLIENT_ID&scope=bot" target="_blank" rel="noopener"><span class="msr sm" aria-hidden="true">&#xEA0B;</span> Invite Bot</a>
+      </div>
+    </section>
 
-  <section class="section" id="planned-features">
-    <span class="dot-badge">Planned Features</span>
-    <div class="dot-divider"><span></span><span></span><span></span><span></span><span></span></div>
-    <ul class="feature-list">
-      <li>
-        <strong>Announcements</strong><br>
-        Send scheduled or instant announcements to your server.
-      </li>
-      <li>
-        <strong>Whisper Messages</strong><br>
-        Send private, ephemeral messages to users.
-      </li>
-      <li>
-        <strong>Notes</strong><br>
-        Let users save and retrieve personal notes.
-      </li>
-    </ul>
-    <div class="glyph-row">✦ ✦ ✦ ✦ ✦</div>
-  </section>
+    <section class="section-head reveal">
+      <span class="kicker">Features</span>
+      <h2>What it does</h2>
+    </section>
+    <div class="card-grid">
+      <div class="card reveal">
+        <span class="icon-box" style="margin:0 auto;"><span class="msr md filled" aria-hidden="true">&#xE0C9;</span></span>
+        <h4>Greeting Message</h4>
+        <p>Welcome new members with a customizable greeting message.</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon-box" style="margin:0 auto;"><span class="msr md filled" aria-hidden="true">&#xF097;</span></span>
+        <h4>Change Bot Status</h4>
+        <p>Easily update the bot&rsquo;s status to keep your community informed.</p>
+      </div>
+    </div>
 
-  <footer>
-    &copy; 2024 YouShadeBot &mdash; Made with ❤️ for Discord communities by wollydev24.
+    <section class="section-head reveal">
+      <span class="kicker">Roadmap</span>
+      <h2>Planned features</h2>
+    </section>
+    <div class="card-grid">
+      <div class="card reveal">
+        <span class="icon-box" style="margin:0 auto;"><span class="msr md filled" aria-hidden="true">&#xEF49;</span></span>
+        <h4>Announcements</h4>
+        <p>Send scheduled or instant announcements to your server.</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon-box" style="margin:0 auto;"><span class="msr md filled" aria-hidden="true">&#xE8F5;</span></span>
+        <h4>Whisper Messages</h4>
+        <p>Send private, ephemeral messages to users.</p>
+      </div>
+      <div class="card reveal">
+        <span class="icon-box" style="margin:0 auto;"><span class="msr md filled" aria-hidden="true">&#xE674;</span></span>
+        <h4>Notes</h4>
+        <p>Let users save and retrieve personal notes.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="https://github.com/wollydev24" target="_blank">GitHub</a>
+      <a href="https://t.me/wollydev24" target="_blank">Telegram</a>
+    </div>
+    <span>&copy; 2026 WollyDev24</span>
   </footer>
 
-  <script>
-    function toggleTheme() {
-      document.body.classList.toggle('light-mode');
-      const btn = document.getElementById('themeToggle');
-      btn.textContent = document.body.classList.contains('light-mode') ? '\u25CF' : '\u25CB';
-      localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-    }
-    if (localStorage.getItem('theme') === 'light') {
-      document.body.classList.add('light-mode');
-      document.getElementById('themeToggle').textContent = '\u25CF';
-    }
-  </script>
+  <script src="material.js"></script>
 </body>
 </html>
