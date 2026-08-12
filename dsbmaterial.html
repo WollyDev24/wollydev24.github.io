@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>DSBmaterial &mdash; Material You Expressive for DSBmobile</title>
   <meta name="description" content="DSBmaterial is an open-source Material You Expressive alternative to DSBmobile for German schools. Dynamic color, widgets, local webserver, archive & more." />
   <style>
@@ -94,7 +94,10 @@
       color-scheme: light;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+    a, button { -webkit-tap-highlight-color: transparent; }
+    a, button { touch-action: manipulation; }
 
     body {
       font-family: "Google Sans Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -385,11 +388,25 @@
     /* ===== RESPONSIVE ===== */
     @media (max-width: 760px) {
       .shots { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .nav { padding: 10px 14px; }
-      .nav-link { padding: 8px 10px; }
+      .nav { padding: 10px 14px; padding-top: calc(10px + env(safe-area-inset-top)); }
+      .nav-link { padding: 10px 12px; }
       section { padding: 48px 18px; }
       .why-card { padding: 26px 22px; }
       .hero { padding: 56px 18px 44px; }
+      .footer { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+      .hero::before,
+      .hero::after { width: 280px; height: 280px; filter: blur(60px); }
+    }
+
+    @media (max-width: 560px) {
+      .nav-link.hide-small { display: none; }
+      .hero-actions { width: 100%; }
+      .btn { flex: 1 1 100%; justify-content: center; }
+      .feature { padding: 24px 20px; }
+    }
+
+    @media (max-width: 380px) {
+      .nav-link.hide-tiny { display: none; }
     }
   </style>
 </head>
@@ -401,9 +418,9 @@
       DSBmaterial
     </a>
     <div class="nav-links">
-      <a class="nav-link" href="#features">Features</a>
-      <a class="nav-link" href="#preview">Preview</a>
-      <a class="nav-link" href="https://github.com/WollyDev24/DSB_Material" target="_blank" rel="noopener">GitHub</a>
+      <a class="nav-link hide-small" href="#features">Features</a>
+      <a class="nav-link hide-small" href="#preview">Preview</a>
+      <a class="nav-link hide-tiny" href="https://github.com/WollyDev24/DSB_Material" target="_blank" rel="noopener">GitHub</a>
       <button class="theme-toggle" id="theme-toggle" title="Toggle appearance" onclick="toggleTheme()"><span class="msr md" aria-hidden="true">&#xE51C;</span></button>
     </div>
   </nav>
