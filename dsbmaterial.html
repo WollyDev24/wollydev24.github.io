@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DSBmaterial &mdash; Material You Expressive for DSBmobile</title>
+  <meta name="description" content="DSBmaterial is an open-source Material You Expressive alternative to DSBmobile for German schools. Dynamic color, widgets, local webserver, archive & more." />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Material Symbols Rounded';
+      font-style: normal;
+      font-weight: 100 700;
+      src: url('fonts/material-symbols-rounded.woff2') format('woff2-variations'), url('fonts/material-symbols-rounded.woff2') format('woff2');
+    }
+
+    .msr {
+      font-family: 'Material Symbols Rounded', sans-serif;
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      user-select: none;
+    }
+    .msr.filled { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    .msr.sm { font-size: 18px; }
+    .msr.md { font-size: 24px; }
+    .msr.lg { font-size: 28px; }
+    .msr.xl { font-size: 36px; }
+
+    :root {
+      --primary: #A1D39A;
+      --on-primary: #0A390F;
+      --primary-container: #245024;
+      --on-primary-container: #BCF0B4;
+      --secondary: #BACCB3;
+      --secondary-container: #3B4B38;
+      --on-secondary-container: #D6E8CE;
+      --tertiary: #A0CFD4;
+      --tertiary-container: #1F4D52;
+      --on-tertiary-container: #BCEBF0;
+      --background: #10140F;
+      --surface: #10140F;
+      --surface-container-low: #191D17;
+      --surface-container: #1D211B;
+      --surface-container-high: #272B25;
+      --surface-container-highest: #323630;
+      --on-surface: #E0E4DB;
+      --surface-variant: #424940;
+      --on-surface-variant: #C2C9BD;
+      --outline: #8C9388;
+      --outline-variant: #424940;
+      --elevation-shadow: rgba(0, 0, 0, 0.45);
+      --hero-glow-1: rgba(161, 211, 154, 0.18);
+      --hero-glow-2: rgba(160, 207, 212, 0.14);
+      color-scheme: dark;
+    }
+
+    .light-mode {
+      --primary: #3C6939;
+      --on-primary: #FFFFFF;
+      --primary-container: #BCF0B4;
+      --on-primary-container: #245024;
+      --secondary: #52634F;
+      --secondary-container: #D6E8CE;
+      --on-secondary-container: #3B4B38;
+      --tertiary: #38656A;
+      --tertiary-container: #BCEBF0;
+      --on-tertiary-container: #1F4D52;
+      --background: #F7FBF1;
+      --surface: #F7FBF1;
+      --surface-container-low: #F1F5EB;
+      --surface-container: #ECEFE6;
+      --surface-container-high: #E6E9E0;
+      --surface-container-highest: #E0E4DB;
+      --on-surface: #191D17;
+      --surface-variant: #DEE5D8;
+      --on-surface-variant: #424940;
+      --outline: #72796F;
+      --outline-variant: #C2C9BD;
+      --elevation-shadow: rgba(20, 26, 18, 0.18);
+      --hero-glow-1: rgba(60, 105, 57, 0.16);
+      --hero-glow-2: rgba(56, 101, 106, 0.12);
+      color-scheme: light;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Google Sans Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--background);
+      color: var(--on-surface);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      transition: background .3s, color .3s;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ===== NAV BAR ===== */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 24px;
+      background: color-mix(in srgb, var(--surface-container) 82%, transparent);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--outline-variant);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 600; color: var(--on-surface);
+    }
+    .nav-brand img {
+      width: 32px; height: 32px; border-radius: 10px;
+      display: block;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-link {
+      color: var(--on-surface-variant);
+      font-size: 14px; font-weight: 500;
+      padding: 8px 14px; border-radius: 999px;
+      transition: background .2s, color .2s;
+    }
+    .nav-link:hover { background: var(--surface-container-high); color: var(--on-surface); text-decoration: none; }
+
+    .theme-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px; border-radius: 14px;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container);
+      color: var(--on-surface);
+      font-size: 17px; cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .theme-toggle:hover { background: var(--surface-container-high); transform: scale(1.05); }
+
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 72px 24px 56px;
+      overflow: hidden;
+    }
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      z-index: -1;
+      animation: blobFloat 14s ease-in-out infinite;
+    }
+    .hero::before {
+      width: 420px; height: 420px;
+      top: -120px; left: -100px;
+      background: var(--hero-glow-1);
+    }
+    .hero::after {
+      width: 380px; height: 380px;
+      top: 40px; right: -110px;
+      background: var(--hero-glow-2);
+      animation-delay: -7s;
+    }
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(20px, 24px) scale(1.08); }
+    }
+
+    .hero-icon {
+      width: 108px; height: 108px;
+      border-radius: 30px;
+      box-shadow: 0 14px 40px var(--elevation-shadow);
+      animation: heroIn .7s cubic-bezier(.22, 1, .36, 1) both;
+    }
+    @keyframes heroIn {
+      0% { opacity: 0; transform: scale(.6) rotate(-8deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    .hero h1 {
+      margin-top: 26px;
+      font-size: clamp(34px, 7vw, 58px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      animation: fadeUp .7s .08s cubic-bezier(.22, 1, .36, 1) both;
+    }
+    .hero h1 .accent {
+      color: var(--primary);
+    }
+    .hero .tagline {
+      margin-top: 14px;
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--on-surface-variant);
+      max-width: 620px;
+      animation: fadeUp .7s .16s cubic-bezier(.22, 1, .36, 1) both;
+    }
+    .hero .tagline strong { color: var(--on-surface); font-weight: 600; }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(22px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 34px;
+      animation: fadeUp .7s .24s cubic-bezier(.22, 1, .36, 1) both;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: transform .2s cubic-bezier(.22, 1, .36, 1), box-shadow .2s;
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-2px) scale(1.02); }
+    .btn.primary {
+      background: var(--primary);
+      color: var(--on-primary);
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--primary) 35%, transparent);
+    }
+    .btn.primary:hover { box-shadow: 0 12px 32px color-mix(in srgb, var(--primary) 45%, transparent); }
+    .btn.secondary {
+      background: var(--surface-container-high);
+      color: var(--on-surface);
+      border: 1px solid var(--outline-variant);
+    }
+
+    .hero-badges {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+      margin-top: 28px;
+      animation: fadeUp .7s .32s cubic-bezier(.22, 1, .36, 1) both;
+    }
+    .chip {
+      font-size: 12.5px; font-weight: 500;
+      color: var(--on-surface-variant);
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      padding: 6px 14px;
+      border-radius: 999px;
+    }
+
+    /* ===== SECTION ===== */
+    section { padding: 64px 24px; }
+    .wrap { max-width: 1080px; margin: 0 auto; }
+    .section-head { text-align: center; margin-bottom: 40px; }
+    .section-head .kicker {
+      display: inline-block;
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--primary);
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    .section-head h2 {
+      font-size: clamp(26px, 4.5vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+    .section-head p { margin-top: 10px; color: var(--on-surface-variant); max-width: 640px; margin-inline: auto; }
+
+    /* ===== WHY ===== */
+    .why-card {
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 28px;
+      padding: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .why-card .mark {
+      font-size: 40px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .why-card h3 { font-size: 20px; margin-bottom: 8px; }
+    .why-card p { color: var(--on-surface-variant); max-width: 560px; }
+
+    /* ===== FEATURES ===== */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+    .feature {
+      background: var(--surface-container);
+      border: 1px solid var(--outline-variant);
+      border-radius: 28px;
+      padding: 28px 24px;
+      transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s, background .3s;
+    }
+    .feature:hover {
+      transform: translateY(-6px) scale(1.02);
+      background: var(--surface-container-high);
+      box-shadow: 0 18px 44px var(--elevation-shadow);
+    }
+    .feature-icon {
+      width: 52px; height: 52px;
+      border-radius: 17px;
+      background: var(--primary-container);
+      color: var(--on-primary-container);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 18px;
+    }
+    .feature:nth-child(3n+2) .feature-icon { background: var(--tertiary-container); color: var(--on-tertiary-container); }
+    .feature:nth-child(3n+3) .feature-icon { background: var(--secondary-container); color: var(--on-secondary-container); }
+    .feature h3 { font-size: 17px; margin-bottom: 8px; letter-spacing: -0.01em; }
+    .feature p { font-size: 14px; color: var(--on-surface-variant); }
+
+    /* ===== SCREENSHOTS ===== */
+    .shots {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .shot {
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid var(--outline-variant);
+      background: var(--surface-container-low);
+      box-shadow: 0 10px 30px var(--elevation-shadow);
+      transition: transform .35s cubic-bezier(.22, 1, .36, 1), box-shadow .35s;
+    }
+    .shot:hover {
+      transform: translateY(-8px) scale(1.02) rotate(1deg);
+      box-shadow: 0 22px 50px var(--elevation-shadow);
+    }
+    .shot img { width: 100%; height: auto; display: block; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      border-top: 1px solid var(--outline-variant);
+      padding: 40px 24px 60px;
+      text-align: center;
+      color: var(--on-surface-variant);
+      font-size: 14px;
+    }
+    .footer .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 16px; }
+    .footer a { color: var(--on-surface-variant); font-weight: 500; }
+    .footer a:hover { color: var(--primary); }
+
+    /* ===== REVEAL ON SCROLL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px) scale(.98);
+      transition: opacity .7s cubic-bezier(.22, 1, .36, 1), transform .7s cubic-bezier(.22, 1, .36, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 760px) {
+      .shots { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .nav { padding: 10px 14px; }
+      .nav-link { padding: 8px 10px; }
+      section { padding: 48px 18px; }
+      .why-card { padding: 26px 22px; }
+      .hero { padding: 56px 18px 44px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="nav-brand" href="index.html">
+      <img src="pictures/DSBmaterial_icon.png" alt="DSBmaterial icon" />
+      DSBmaterial
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#preview">Preview</a>
+      <a class="nav-link" href="https://github.com/WollyDev24/DSB_Material" target="_blank" rel="noopener">GitHub</a>
+      <button class="theme-toggle" id="theme-toggle" title="Toggle appearance" onclick="toggleTheme()"><span class="msr md" aria-hidden="true">&#xE51C;</span></button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <img class="hero-icon" src="pictures/DSBmaterial_icon.png" alt="DSBmaterial icon" width="108" height="108" />
+    <h1>DSB<wbr /><span class="accent">material</span></h1>
+    <p class="tagline">A <strong>Material You Expressive</strong> alternative to <strong>DSBmobile</strong> &mdash; your school&rsquo;s substitution plan, reimagined. Native, fast, and beautiful on every Android.</p>
+
+    <div class="hero-actions">
+      <a class="btn primary" href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/WollyDev24/DSB_Material" target="_blank" rel="noopener"><span class="msr filled sm" aria-hidden="true">&#xF09A;</span> Get it on Obtainium</a>
+      <a class="btn secondary" href="https://github.com/WollyDev24/DSB_Material/releases/latest" target="_blank" rel="noopener"><span class="msr sm" aria-hidden="true">&#xF090;</span> GitHub Releases</a>
+    </div>
+
+    <div class="hero-badges">
+      <span class="chip">Material You</span>
+      <span class="chip">Dynamic Color</span>
+      <span class="chip">Open Source</span>
+      <span class="chip">Apache 2.0</span>
+      <span class="chip">No ads</span>
+      <span class="chip">German &amp; English</span>
+    </div>
+  </header>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="why-card reveal">
+        <div class="mark"><span class="msr xl filled" aria-hidden="true">&#xE8FD;</span></div>
+        <div>
+          <h3>Why another DSBmobile app?</h3>
+          <p>The official DSBmobile app hasn&rsquo;t received an update in over two years and isn&rsquo;t native at all. DSBmaterial is a from-scratch, open-source rebuild that loads your school&rsquo;s substitution plan with a modern Material 3 Expressive interface &mdash; including dynamic color from your wallpaper.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Features</span>
+        <h2>Everything you need, nothing you don&rsquo;t</h2>
+        <p>A focused set of features built around the Material You design language.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE40A;</span></div>
+          <h3>Material You Expressive</h3>
+          <p>Cutting-edge Material 3 Expressive components &mdash; rounded 28dp surfaces, smooth motion, and the Google Sans Flex type system.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE65F;</span></div>
+          <h3>Dynamic Color</h3>
+          <p>On Android 12+ the app builds its whole color scheme from your wallpaper, or pick one of 7 curated seed palettes.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE875;</span></div>
+          <h3>Local Webserver</h3>
+          <p>Host the current plan as a single self-contained page on your local network &mdash; open it in any browser on any device, no app needed.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE1BD;</span></div>
+          <h3>Home Screen Widget</h3>
+          <p>A glanceable widget keeps the plan visible right on your home screen, matching your theme.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE863;</span></div>
+          <h3>Auto Refresh</h3>
+          <p>Background syncing refreshes the plan automatically, so the latest substitutions are always there when you open the app.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xEBCC;</span></div>
+          <h3>Archive &amp; Calendar</h3>
+          <p>Scroll the archive of past days or browse the whole plan in a calendar view, and share any day as a beautiful card.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE8E2;</span></div>
+          <h3>German Localization</h3>
+          <p>Fully localized in German, with correct time and date formatting &mdash; right at home in a German school day.</p>
+        </div>
+        <div class="feature reveal">
+          <div class="feature-icon"><span class="msr lg filled" aria-hidden="true">&#xE898;</span></div>
+          <h3>Free &amp; Open Source</h3>
+          <p>No ads, no tracking, no account. Apache-2.0 licensed and built with contributions in mind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="preview">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="kicker">Preview</span>
+        <h2>Built to feel at home on your phone</h2>
+        <p>Expressive shapes, tonal surfaces and dynamic color &mdash; screenshots from the app.</p>
+      </div>
+
+      <div class="shots">
+        <div class="shot reveal"><img src="pictures/screenshot1.png" alt="DSBmaterial screenshot 1" loading="lazy" /></div>
+        <div class="shot reveal"><img src="pictures/screenshot2.png" alt="DSBmaterial screenshot 2" loading="lazy" /></div>
+        <div class="shot reveal"><img src="pictures/screenshot3.png" alt="DSBmaterial screenshot 3" loading="lazy" /></div>
+        <div class="shot reveal"><img src="pictures/screenshot4.png" alt="DSBmaterial screenshot 4" loading="lazy" /></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="row">
+      <a href="index.html">&#8592; WollyDev24</a>
+      <a href="https://github.com/WollyDev24/DSB_Material" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/WollyDev24/DSB_Material/blob/main/LICENSE" target="_blank" rel="noopener">License</a>
+    </div>
+    <span>&copy; 2026 WollyDev24 &middot; Made with <span class="msr filled sm" style="vertical-align:-2px;" aria-hidden="true">&#xE87E;</span> for Material You</span>
+  </footer>
+
+  <script>
+    // Theme
+    function toggleTheme() {
+      var light = document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', light ? 'light' : 'dark');
+      document.getElementById('theme-toggle').innerHTML = light
+        ? '<span class="msr md" aria-hidden="true">&#xE518;</span>'
+        : '<span class="msr md" aria-hidden="true">&#xE51C;</span>';
+    }
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('theme-toggle').innerHTML = '<span class="msr md" aria-hidden="true">&#xE518;</span>';
+    }
+
+    // Reveal on scroll
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(function(el) {
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
