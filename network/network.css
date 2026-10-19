@@ -100,7 +100,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* ===== LAYOUT ===== */
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.wrap { width: 100%; padding: 0 clamp(18px, 4vw, 48px); }
 
 /* ===== NAV ===== */
 .nav {
@@ -172,7 +172,7 @@ img { max-width: 100%; display: block; }
 }
 
 .hero-banner {
-  width: min(560px, 100%);
+  width: min(860px, 100%);
   margin: 0 auto 30px;
   border-radius: 24px;
   overflow: hidden;
