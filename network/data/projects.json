@@ -1,0 +1,36 @@
+{
+  "projects": [
+    {
+      "name": "YouShadeKWGT",
+      "description": "A modern KWGT widget pack with Material You styling.",
+      "icon": "🌙",
+      "status": "discontinued",
+      "tags": ["KWGT", "Kustom", "Android"],
+      "url": "https://github.com/wollydev24/YouShadeKWGT"
+    },
+    {
+      "name": "YouShade Expressive",
+      "description": "KWGT widgets inspired by Material You Expressive.",
+      "icon": "✨",
+      "status": "active",
+      "tags": ["KWGT", "Material You"],
+      "url": "https://github.com/wollydev24/YouShade"
+    },
+    {
+      "name": "Sharky",
+      "description": "Open source Discord bot written in Python — formerly YouShadeBot.",
+      "icon": "🦈",
+      "status": "active",
+      "tags": ["Discord", "Python", "Bot"],
+      "url": "https://wolly.is-a.dev/sharky"
+    },
+    {
+      "name": "Mystery Project",
+      "description": "A new app currently in early development. No public details yet...",
+      "icon": "🖥️",
+      "status": "development",
+      "tags": ["App", "WIP"],
+      "url": ""
+    }
+  ]
+}

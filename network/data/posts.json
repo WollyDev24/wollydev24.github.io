@@ -1,0 +1,26 @@
+[
+  {
+    "title": "YouShade Network is live",
+    "date": "October 19, 2026",
+    "emoji": "🌐",
+    "excerpt": "One central hub for all YouShade projects, collaborators and updates.",
+    "content": "Welcome to <strong>YouShade Network</strong>! This is the new central hub for everything YouShade — projects, the people behind them and progress updates, all in one place.",
+    "images": []
+  },
+  {
+    "title": "Mystery Project in early development",
+    "date": "June 30, 2026",
+    "emoji": "🖥️",
+    "excerpt": "A new app is being worked on — details soon.",
+    "content": "A brand new app is currently in early development. No public details yet, but updates will be posted here first.",
+    "images": []
+  },
+  {
+    "title": "YouShadeKWGT discontinued",
+    "date": "April 13, 2026",
+    "emoji": "🌙",
+    "excerpt": "The original widget pack is no longer maintained.",
+    "content": "YouShadeKWGT has been discontinued. Development continues with <strong>YouShade Expressive</strong>, the spiritual successor with Material You styling.",
+    "images": []
+  }
+]

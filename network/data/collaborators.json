@@ -1,0 +1,32 @@
+{
+  "collaborators": [
+    {
+      "name": "Placeholder Artist",
+      "role": "Widget Designer",
+      "initials": "PA",
+      "bio": "Designs widgets and artwork for the YouShade packs.",
+      "tags": ["Art", "Widgets"],
+      "links": {
+        "telegram": "https://t.me/YouShadeKWGT"
+      }
+    },
+    {
+      "name": "Placeholder Dev",
+      "role": "Bot Developer",
+      "initials": "PD",
+      "bio": "Helps build and maintain the YouShade Discord bots.",
+      "tags": ["Python", "Bots"],
+      "links": {
+        "github": "https://github.com/wollydev24"
+      }
+    },
+    {
+      "name": "Placeholder Tester",
+      "role": "Beta Tester",
+      "initials": "PT",
+      "bio": "Tests early builds and reports bugs before release.",
+      "tags": ["QA", "Feedback"],
+      "links": {}
+    }
+  ]
+}
