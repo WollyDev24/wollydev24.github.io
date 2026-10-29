@@ -501,32 +501,158 @@
     }
     .reveal.in { opacity: 1; transform: none; }
 
+    /* ── Mobile footer ──────────────────────────────────────────── */
+    .mobile-footer {
+      display: none;
+      text-align: center;
+      padding: 32px 0 16px;
+      border-top: 1px solid var(--glass-border);
+      margin-top: 48px;
+    }
+    .mobile-footer-links {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    /* ── Mobile bottom tab bar ──────────────────────────────────── */
+    .mob-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 300;
+      padding: 8px 16px;
+      padding-bottom: calc(8px + env(safe-area-inset-bottom));
+      background: rgba(11,8,16,0.85);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+      border-top: 1px solid var(--glass-border);
+      flex-direction: row; justify-content: space-around; align-items: stretch;
+    }
+    .mob-nav-item {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      flex: 1; padding: 8px 4px; border-radius: 14px;
+      color: var(--text-muted); text-decoration: none;
+      transition: color .2s, background .2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mob-nav-item:hover { text-decoration: none; }
+    .mob-nav-item:active { background: var(--glass-hover); }
+    .mob-nav-item.active { color: var(--violet); }
+    .mob-nav-icon { font-size: 22px; }
+    .mob-nav-label { font-size: 10.5px; font-weight: 600; letter-spacing: .02em; }
+
+    @media (max-width: 820px) {
+      .mob-nav { display: flex; }
+      .mobile-footer { display: block; }
+      /* extra bottom padding so content clears the tab bar */
+      .main { padding-bottom: calc(80px + env(safe-area-inset-bottom)) !important; }
+    }
+
     /* ── Responsive ────────────────────────────────────────────── */
+
+    /* ── Tablet (≤1024px) ──────────────────────────────────────── */
     @media (max-width: 1024px) {
       :root { --sidebar-w: 300px; }
       .main { padding: 52px 36px 64px; }
+      .projects-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* ── Mobile landscape / small tablet (≤820px) ──────────────── */
     @media (max-width: 820px) {
-      /* stack vertically on small screens */
-      body { overflow: auto; height: auto; }
+      /* restore normal page scroll */
+      body { overflow: auto; overflow-x: hidden; height: auto; }
       .split { flex-direction: column; height: auto; }
+
+      /* sidebar becomes a compact header */
       .sidebar {
         width: 100%; height: auto; position: static;
         border-right: none; border-bottom: 1px solid var(--glass-border);
-        padding: 40px 28px 36px;
+        padding: 28px 24px 24px;
+        gap: 20px;
       }
       .sidebar::after { display: none; }
-      .sb-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
-      .sb-ctas { flex-direction: row; }
-      .main { height: auto; overflow: visible; padding: 44px 28px 64px; }
-      .projects-grid { grid-template-columns: 1fr 1fr; }
+
+      /* avatar + theme toggle row */
+      .sb-top-row { align-items: center; }
+      .av-wrap { width: 72px; height: 72px; }
+      .av-inner { width: 72px; height: 72px; }
+
+      /* nav becomes a scrollable pill row */
+      .sb-nav {
+        flex-direction: row; flex-wrap: nowrap;
+        gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; padding-bottom: 2px;
+      }
+      .sb-nav::-webkit-scrollbar { display: none; }
+      .sb-nav-link { white-space: nowrap; flex-shrink: 0; }
+
+      /* tags wrap naturally */
+      .tag-row { gap: 6px; }
+
+      /* hide footer in sidebar — it's in the main content on mobile */
+      .sb-footer { display: none; }
+
+      /* main content */
+      .main { height: auto; overflow: visible; padding: 40px 24px 100px; }
+      .projects-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .about-grid { grid-template-columns: 1fr; gap: 20px; }
     }
+
+    /* ── Mobile portrait (≤560px) ──────────────────────────────── */
     @media (max-width: 560px) {
-      .projects-grid { grid-template-columns: 1fr; }
-      .about-grid    { grid-template-columns: 1fr; }
-      .sb-ctas { flex-direction: column; }
-      .main { padding: 32px 18px 56px; }
-      .sidebar { padding: 32px 18px 28px; }
+      .sidebar { padding: 24px 18px 20px; gap: 16px; }
+
+      /* avatar smaller */
+      .av-wrap { width: 62px; height: 62px; }
+      .av-inner { width: 62px; height: 62px; }
+
+      /* name size */
+      .sb-name { font-size: 22px; }
+      .sb-bio { font-size: 13px; }
+
+      /* single column projects */
+      .projects-grid { grid-template-columns: 1fr; gap: 12px; }
+      .project-card { padding: 22px 20px; }
+
+      /* skill grid 2-col stays fine */
+      .skill-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .skill-item { padding: 14px 14px; }
+
+      .main { padding: 32px 16px 100px; }
+      .section-title { font-size: 26px; }
+
+      /* bigger touch targets on nav */
+      .sb-nav-link { padding: 10px 16px; font-size: 14px; }
+
+      /* tags slightly smaller */
+      .tag { font-size: 11px; padding: 4px 10px; }
+    }
+
+    /* ── Very small (≤380px) ───────────────────────────────────── */
+    @media (max-width: 380px) {
+      .skill-grid { grid-template-columns: 1fr; }
+      .sb-name { font-size: 20px; }
+    }
+
+    /* ── Disable heavy hover effects on touch devices ───────────── */
+    @media (hover: none) {
+      .project-card:hover {
+        transform: none;
+        border-color: var(--glass-border);
+        background: var(--glass-bg);
+        box-shadow: none;
+      }
+      .project-card:hover .project-icon { transform: none; }
+      .skill-item:hover { transform: none; }
+      .tag:hover { border-color: rgba(168,85,247,.28); color: var(--text-muted); background: rgba(168,85,247,.08); }
+
+      /* use :active instead for touch feedback */
+      .project-card:active {
+        transform: scale(.98);
+        border-color: rgba(168,85,247,.38);
+        background: rgba(255,255,255,.065);
+        transition: transform .1s, border-color .1s;
+      }
+      .sb-nav-link:active { background: var(--glass-hover); }
+      .sb-footer-link:active { background: rgba(168,85,247,.1); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -765,8 +891,34 @@
         </div>
       </section>
 
+      <!-- Mobile-only footer (hidden on desktop where sidebar footer shows) -->
+      <footer class="mobile-footer reveal">
+        <div class="mobile-footer-links">
+          <a class="sb-footer-link" href="https://github.com/wollydev24" target="_blank" rel="noopener">GitHub</a>
+          <a class="sb-footer-link" href="https://wolly.is-a.dev/404" target="_blank" rel="noopener">Telegram</a>
+          <a class="sb-footer-link" href="startpage">Startpage</a>
+        </div>
+        <p class="sb-copy">&copy; 2026 WollyDev24</p>
+      </footer>
+
     </main>
   </div><!-- /.split -->
+
+  <!-- Mobile bottom tab bar (hidden on desktop) -->
+  <nav class="mob-nav" aria-label="Mobile navigation">
+    <a class="mob-nav-item active" href="#work" data-section="work">
+      <span class="msr filled mob-nav-icon">&#xE8F4;</span>
+      <span class="mob-nav-label">Work</span>
+    </a>
+    <a class="mob-nav-item" href="#about" data-section="about">
+      <span class="msr filled mob-nav-icon">&#xE88E;</span>
+      <span class="mob-nav-label">About</span>
+    </a>
+    <a class="mob-nav-item" href="blog">
+      <span class="msr filled mob-nav-icon">&#xE873;</span>
+      <span class="mob-nav-label">Blog</span>
+    </a>
+  </nav>
 
   <script>
     /* ── Stars ──────────────────────────────────────────────────── */
@@ -814,6 +966,8 @@
     /* ── Reveal on scroll (watches the right panel) ─────────────── */
     (function(){
       var root = document.getElementById('main-scroll') || window;
+    /* ── Reveal on scroll (null root works for both scroll contexts) */
+    (function(){
       if (!('IntersectionObserver' in window)) {
         document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
         return;
@@ -822,7 +976,7 @@
         entries.forEach(function(e){
           if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
         });
-      }, { root: root === window ? null : root, threshold: 0.08 });
+      }, { threshold: 0.08 });
       document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
     })();
 
@@ -864,20 +1018,29 @@
       if (grid) obs.observe(grid);
     })();
 
-    /* ── Active nav link on scroll ──────────────────────────────── */
+    /* ── Active nav (sidebar + mobile tab bar) ───────────────────── */
     (function(){
-      var links = document.querySelectorAll('.sb-nav-link');
-      var scroll = document.getElementById('main-scroll');
-      if (!scroll) return;
-      var sections = ['work','about'].map(function(id){ return document.getElementById(id); });
-      scroll.addEventListener('scroll', function(){
-        var scrollTop = scroll.scrollTop;
+      var sbLinks  = document.querySelectorAll('.sb-nav-link[href^="#"]');
+      var mobLinks = document.querySelectorAll('.mob-nav-item[data-section]');
+      var sections = ['work','about'].map(function(id){ return document.getElementById(id); }).filter(Boolean);
+      function onScroll(){
+        var panel = document.getElementById('main-scroll');
+        var scrollY = (panel && getComputedStyle(panel).overflowY === 'auto')
+          ? panel.scrollTop
+          : (window.scrollY || document.documentElement.scrollTop);
         var active = sections[0];
-        sections.forEach(function(s){ if (s && s.offsetTop - 100 <= scrollTop) active = s; });
-        links.forEach(function(l){
-          l.classList.toggle('active', l.getAttribute('href') === '#' + (active ? active.id : ''));
+        sections.forEach(function(s){ if (s && s.offsetTop - 120 <= scrollY) active = s; });
+        sbLinks.forEach(function(l){
+          l.classList.toggle('active', l.getAttribute('href') === '#' + active.id);
         });
-      }, { passive: true });
+        mobLinks.forEach(function(l){
+          l.classList.toggle('active', l.dataset.section === active.id);
+        });
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      var panel = document.getElementById('main-scroll');
+      if (panel) panel.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     })();
   </script>
 </body>
