@@ -5,102 +5,880 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>WollyDev24</title>
   <meta name="description" content="Kustom Creator, App Developer and Designer from Germany." />
-  <link rel="stylesheet" href="material.css" />
+  <style>
+    /* ============================================================
+       WollyDev24 — Violet Glass · Split layout
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @font-face {
+      font-family: 'Material Symbols Rounded';
+      font-style: normal; font-weight: 100 700;
+      src: url('fonts/material-symbols-rounded.woff2') format('woff2-variations'),
+           url('fonts/material-symbols-rounded.woff2') format('woff2');
+    }
+    .msr {
+      font-family: 'Material Symbols Rounded', sans-serif;
+      font-weight: normal; font-style: normal; line-height: 1;
+      letter-spacing: normal; text-transform: none;
+      display: inline-block; white-space: nowrap;
+      direction: ltr; -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      user-select: none;
+    }
+    .msr.filled { font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+
+    /* ── Tokens ────────────────────────────────────────────────── */
+    :root {
+      --bg:            #0B0810;
+      --violet:        #a855f7;
+      --violet-dim:    #7c3aed;
+      --pink:          #ec4899;
+      --text:          #f1edfb;
+      --text-muted:    #9d93b4;
+      --glass-bg:      rgba(255,255,255,0.04);
+      --glass-border:  rgba(255,255,255,0.09);
+      --glass-hover:   rgba(255,255,255,0.08);
+      --sidebar-w:     380px;
+      --blur:          blur(20px) saturate(160%);
+      --radius-lg:     20px;
+      --radius-pill:   999px;
+    }
+
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: "Google Sans Flex", "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;          /* let each panel scroll independently */
+      height: 100vh;
+    }
+
+    a { color: var(--violet); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Fixed background ──────────────────────────────────────── */
+    #bg {
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); pointer-events: none;
+      animation: drift var(--dur,20s) var(--delay,0s) infinite ease-in-out alternate;
+    }
+    .blob-a { width:660px;height:660px; background:#6d28d9; opacity:.20; top:-200px; left:-180px; --dur:22s; --delay:0s; }
+    .blob-b { width:500px;height:500px; background:#a855f7; opacity:.14; top:40%; right:-160px; --dur:26s; --delay:-8s; }
+    .blob-c { width:420px;height:420px; background:#7c3aed; opacity:.17; bottom:-100px; left:28%; --dur:19s; --delay:-4s; }
+    .blob-d { width:300px;height:300px; background:#ec4899; opacity:.09; top:55%; left:45%; --dur:28s; --delay:-12s; }
+    @keyframes drift {
+      0%   { transform: translate(0,0) scale(1); }
+      100% { transform: translate(50px,35px) scale(1.18); }
+    }
+    .star {
+      position: absolute; border-radius: 50%; background:#fff; opacity:0;
+      animation: twinkle var(--dur,4s) var(--delay,0s) infinite ease-in-out;
+    }
+    @keyframes twinkle {
+      0%,100% { opacity:0; transform:scale(.5); }
+      50%      { opacity:var(--op,.4); transform:scale(1); }
+    }
+
+    /* ── Split wrapper ─────────────────────────────────────────── */
+    .split {
+      position: relative; z-index: 1;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* ── LEFT — fixed sidebar ──────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w);
+      flex-shrink: 0;
+      height: 100vh;
+      position: sticky; top: 0;          /* stays in place */
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 52px 40px 48px;
+      display: flex; flex-direction: column; gap: 32px;
+      border-right: 1px solid var(--glass-border);
+      background: rgba(11,8,16,0.55);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+    }
+    /* thin violet line on right edge */
+    .sidebar::after {
+      content:'';
+      position: absolute; top:0; right:-1px; bottom:0; width:1px;
+      background: linear-gradient(180deg, transparent, rgba(168,85,247,.4) 40%, rgba(168,85,247,.4) 60%, transparent);
+      pointer-events: none;
+    }
+
+    /* avatar */
+    .av-wrap {
+      position: relative; width: 88px; height: 88px;
+      animation: floatIn .9s cubic-bezier(.22,1,.36,1) both;
+    }
+    .av-inner {
+      width: 88px; height: 88px; border-radius: 50%;
+      background: linear-gradient(145deg, #1e1433, #2d1f4a);
+      border: 1px solid rgba(168,85,247,.35);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 0 1px rgba(168,85,247,.12), 0 0 32px rgba(168,85,247,.28), 0 14px 40px rgba(0,0,0,.5);
+    }
+    @keyframes floatIn {
+      from { opacity:0; transform:scale(.7) rotate(-6deg); }
+      to   { opacity:1; transform:scale(1) rotate(0); }
+    }
+
+    /* identity */
+    .sb-eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--violet);
+      animation: fadeUp .6s .05s both;
+    }
+    .sb-name {
+      font-size: 26px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1;
+      animation: fadeUp .6s .12s both;
+    }
+    .sb-name .grad {
+      background: linear-gradient(120deg, var(--violet) 20%, var(--pink) 80%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sb-bio {
+      font-size: 14px; color: var(--text-muted); line-height: 1.75;
+      animation: fadeUp .6s .18s both;
+    }
+    .sb-bio strong { color: var(--text); font-weight: 600; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* tags */
+    .tag-row {
+      display: flex; flex-wrap: wrap; gap: 7px;
+      animation: fadeUp .6s .24s both;
+    }
+    .tag {
+      font-size: 11.5px; font-weight: 500;
+      padding: 4px 12px; border-radius: var(--radius-pill);
+      border: 1px solid rgba(168,85,247,.28);
+      background: rgba(168,85,247,.08);
+      color: var(--text-muted);
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .tag:hover {
+      border-color: rgba(168,85,247,.55); color: var(--text);
+      background: rgba(168,85,247,.16);
+    }
+
+    /* sidebar nav */
+    .sb-nav {
+      display: flex; flex-direction: column; gap: 2px;
+      animation: fadeUp .6s .3s both;
+    }
+    .sb-nav-link {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; font-weight: 500; padding: 10px 14px;
+      border-radius: 12px; color: var(--text-muted);
+      transition: color .2s, background .2s;
+    }
+    .sb-nav-link .msr { font-size: 18px; }
+    .sb-nav-link:hover { color: var(--text); background: var(--glass-hover); text-decoration: none; }
+    .sb-nav-link.active { color: var(--violet); background: rgba(168,85,247,.12); }
+
+    /* CTA buttons */
+    .sb-ctas {
+      display: flex; flex-direction: column; gap: 10px;
+      animation: fadeUp .6s .36s both;
+    }
+    .cta {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+      padding: 12px 20px; border-radius: var(--radius-pill);
+      font-size: 14px; font-weight: 600;
+      text-decoration: none; cursor: pointer;
+      transition: transform .25s cubic-bezier(.22,1,.36,1), box-shadow .25s, background .2s;
+    }
+    .cta:hover { transform: translateY(-2px) scale(1.02); text-decoration: none; }
+    .cta.primary {
+      background: linear-gradient(130deg, var(--violet-dim), var(--violet));
+      color: #fff; box-shadow: 0 6px 24px rgba(168,85,247,.4);
+    }
+    .cta.primary:hover { box-shadow: 0 10px 36px rgba(168,85,247,.6); }
+    .cta.ghost {
+      background: var(--glass-bg); border: 1px solid var(--glass-border); color: var(--text);
+    }
+    .cta.ghost:hover { background: var(--glass-hover); }
+
+    /* footer links at bottom */
+    .sb-footer {
+      margin-top: auto;
+      animation: fadeUp .6s .42s both;
+    }
+    .sb-footer-links { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+    .sb-footer-link {
+      font-size: 12px; font-weight: 500;
+      padding: 5px 13px; border-radius: var(--radius-pill);
+      color: var(--text-muted); border: 1px solid var(--glass-border);
+      background: var(--glass-bg);
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .sb-footer-link:hover {
+      color: var(--text); border-color: rgba(168,85,247,.4);
+      background: rgba(168,85,247,.1); text-decoration: none;
+    }
+    .sb-copy { font-size: 11px; color: var(--text-muted); opacity: .6; }
+
+    /* theme toggle */
+    .theme-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 11px;
+      border: 1px solid var(--glass-border); background: var(--glass-bg);
+      color: var(--text); cursor: pointer;
+      transition: background .2s, transform .2s;
+    }
+    .theme-btn:hover { background: var(--glass-hover); transform: scale(1.08); }
+    .sb-top-row { display: flex; align-items: flex-start; justify-content: space-between; }
+
+    /* ── RIGHT — scrollable main content ──────────────────────── */
+    .main {
+      flex: 1;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 64px 56px 80px;
+    }
+
+    /* ── Section ───────────────────────────────────────────────── */
+    .section { margin-bottom: 96px; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 16px;
+    }
+    .section-label::before {
+      content:''; display:block; width:18px; height:1.5px;
+      background: var(--violet); border-radius:2px;
+    }
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 40px);
+      font-weight: 800; letter-spacing: -.03em; line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .section-desc { font-size: 15px; color: var(--text-muted); margin-bottom: 40px; }
+
+    /* ── Project cards ─────────────────────────────────────────── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .project-card {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 28px 26px;
+      border-radius: var(--radius-lg);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+      text-decoration: none; color: var(--text);
+      position: relative; overflow: hidden;
+      transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .3s, box-shadow .3s, background .3s;
+    }
+    .project-card::before {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(130deg, transparent 40%, rgba(168,85,247,.07) 60%, transparent 80%);
+      transform: translateX(-100%); transition: transform .55s ease;
+    }
+    .project-card:hover::before { transform: translateX(100%); }
+    .project-card:hover {
+      text-decoration: none; transform: translateY(-5px);
+      border-color: rgba(168,85,247,.38); background: rgba(255,255,255,.065);
+      box-shadow: 0 20px 52px rgba(0,0,0,.45), 0 0 0 1px rgba(168,85,247,.18);
+    }
+    .project-num {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--violet); margin-bottom: 20px;
+    }
+    .project-icon {
+      width: 48px; height: 48px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.05);
+      transition: transform .3s cubic-bezier(.22,1,.36,1);
+    }
+    .project-card:hover .project-icon { transform: scale(1.12) rotate(-4deg); }
+    .icon-v { background:rgba(168,85,247,.14); border-color:rgba(168,85,247,.24); }
+    .icon-p { background:rgba(236,72,153,.12); border-color:rgba(236,72,153,.22); }
+    .icon-b { background:rgba(99,102,241,.14); border-color:rgba(99,102,241,.24); }
+    .icon-c { background:rgba(20,184,166,.11); border-color:rgba(20,184,166,.22); }
+    .project-name { font-size: 18px; font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
+    .project-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.65; }
+    .project-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 24px; padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.07);
+    }
+    .project-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .project-tag {
+      font-size: 11px; font-weight: 500; padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(168,85,247,.11); border: 1px solid rgba(168,85,247,.22);
+      color: rgba(168,85,247,.9);
+    }
+    .project-arrow {
+      width: 30px; height: 30px; border-radius: 9px; flex-shrink: 0;
+      background: rgba(168,85,247,.14); border: 1px solid rgba(168,85,247,.24);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--violet); font-size: 16px;
+      transition: background .2s, transform .25s;
+    }
+    .project-card:hover .project-arrow { background: rgba(168,85,247,.28); transform: translate(2px,-2px); }
+
+
+    /* ── About ─────────────────────────────────────────────────── */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;
+    }
+    .about-text p { color: var(--text-muted); font-size: 15px; line-height: 1.8; margin-bottom: 14px; }
+    .about-text p strong { color: var(--text); font-weight: 600; }
+    .skill-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .skill-item {
+      padding: 16px 18px; border-radius: 14px;
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+      transition: border-color .2s, transform .25s cubic-bezier(.22,1,.36,1);
+    }
+    .skill-item:hover { border-color: rgba(168,85,247,.4); transform: translateY(-3px); }
+    .skill-name { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
+    .skill-level { font-size: 11.5px; color: var(--text-muted); }
+
+    /* ── Divider ───────────────────────────────────────────────── */
+    .divider {
+      height: 1px; border: none; margin-bottom: 96px;
+      background: linear-gradient(90deg, transparent, rgba(168,85,247,.35) 40%, rgba(168,85,247,.35) 60%, transparent);
+    }
+
+    /* ── Animations ────────────────────────────────────────────── */
+
+    /* avatar: gentle float bob */
+    .av-wrap {
+      animation: floatIn .9s cubic-bezier(.22,1,.36,1) both, floatBob 5s 1s ease-in-out infinite;
+    }
+    @keyframes floatBob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-7px); }
+    }
+
+    /* avatar: pulsing glow */
+    .av-inner {
+      animation: avatarGlow 4s 1s ease-in-out infinite;
+    }
+    @keyframes avatarGlow {
+      0%,100% { box-shadow: 0 0 0 1px rgba(168,85,247,.12), 0 0 32px rgba(168,85,247,.28), 0 14px 40px rgba(0,0,0,.5); }
+      50%      { box-shadow: 0 0 0 1px rgba(168,85,247,.22), 0 0 52px rgba(168,85,247,.48), 0 14px 40px rgba(0,0,0,.5); }
+    }
+
+    /* animated gradient on name */
+    .grad {
+      background: linear-gradient(120deg, var(--violet), var(--pink), var(--violet));
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradShift 4s linear infinite;
+    }
+    @keyframes gradShift {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* section label: slide in from left */
+    .section-label {
+      animation: none; /* handled by reveal */
+    }
+    .reveal.in .section-label {
+      animation: slideFromLeft .5s cubic-bezier(.22,1,.36,1) both;
+    }
+    @keyframes slideFromLeft {
+      from { opacity:0; transform: translateX(-18px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+
+    /* project cards: scale up on reveal */
+    .project-card {
+      transform-origin: center bottom;
+    }
+    .project-card.reveal {
+      opacity:0; transform: translateY(28px) scale(.97);
+    }
+    .project-card.reveal.in {
+      opacity:1; transform: translateY(0) scale(1);
+    }
+
+    /* skill items: pop in */
+    .skill-item {
+      opacity: 0; transform: scale(.93) translateY(12px);
+      transition: opacity .45s cubic-bezier(.22,1,.36,1),
+                  transform .45s cubic-bezier(.22,1,.36,1),
+                  border-color .2s;
+    }
+    .skill-item.in { opacity:1; transform: none; }
+    .skill-item:hover { border-color: rgba(168,85,247,.4); transform: translateY(-3px) !important; }
+
+    /* tags: wave entrance */
+    .tag {
+      opacity: 0; transform: translateY(10px) scale(.9);
+      animation: none;
+      transition: border-color .2s, color .2s, background .2s,
+                  opacity .4s cubic-bezier(.22,1,.36,1),
+                  transform .4s cubic-bezier(.22,1,.36,1);
+    }
+    .tag.in { opacity:1; transform: none; }
+    .tag:hover {
+      border-color: rgba(168,85,247,.55); color: var(--text);
+      background: rgba(168,85,247,.16);
+    }
+
+    /* sidebar nav links: fade in staggered */
+    .sb-nav-link {
+      opacity: 0; transform: translateX(-12px);
+      transition: color .2s, background .2s,
+                  opacity .4s cubic-bezier(.22,1,.36,1),
+                  transform .4s cubic-bezier(.22,1,.36,1);
+    }
+    .sb-nav-link.in { opacity:1; transform: none; }
+
+    /* footer links */
+    .sb-footer { opacity:0; transform: translateY(10px);
+      transition: opacity .5s cubic-bezier(.22,1,.36,1), transform .5s cubic-bezier(.22,1,.36,1); }
+    .sb-footer.in { opacity:1; transform:none; }
+
+    /* project card hover: lift + glow border */
+    .project-card:hover {
+      text-decoration: none; transform: translateY(-7px) scale(1.01);
+      border-color: rgba(168,85,247,.38); background: rgba(255,255,255,.065);
+      box-shadow: 0 24px 60px rgba(0,0,0,.5),
+                  0 0 0 1px rgba(168,85,247,.2),
+                  0 0 32px rgba(168,85,247,.12);
+    }
+
+    /* project icon: bounce on card hover */
+    .project-card:hover .project-icon {
+      transform: scale(1.15) rotate(-6deg);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1); /* spring */
+    }
+
+    /* divider: shimmer sweep */
+    .divider {
+      position: relative; overflow: hidden;
+    }
+    .divider::after {
+      content: '';
+      position: absolute; top:0; left:-60%;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(168,85,247,.7), transparent);
+      animation: shimmer 4s 2s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+      0%   { left: -60%; }
+      100% { left: 120%; }
+    }
+
+    /* ── Reduce motion overrides ────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .av-wrap, .av-inner, .grad, .divider::after { animation: none; }
+      .tag, .sb-nav-link, .skill-item, .sb-footer { opacity:1; transform:none; transition:none; }
+    }
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      :root { --sidebar-w: 300px; }
+      .main { padding: 52px 36px 64px; }
+    }
+    @media (max-width: 820px) {
+      /* stack vertically on small screens */
+      body { overflow: auto; height: auto; }
+      .split { flex-direction: column; height: auto; }
+      .sidebar {
+        width: 100%; height: auto; position: static;
+        border-right: none; border-bottom: 1px solid var(--glass-border);
+        padding: 40px 28px 36px;
+      }
+      .sidebar::after { display: none; }
+      .sb-nav { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+      .sb-ctas { flex-direction: row; }
+      .main { height: auto; overflow: visible; padding: 44px 28px 64px; }
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .about-grid    { grid-template-columns: 1fr; }
+      .sb-ctas { flex-direction: column; }
+      .main { padding: 32px 18px 56px; }
+      .sidebar { padding: 32px 18px 28px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .av-ring, .av-ring2, .star, .blob, .reveal { animation: none; transition: none; opacity: 1; transform: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <nav class="nav">
-    <a class="nav-brand" href="/">
-      <span class="icon-box" style="width:32px;height:32px;border-radius:10px;"><span class="msr md filled" aria-hidden="true">&#xE65F;</span></span>
-      <span class="brand-txt">WollyDev24</span>
-    </a>
-    <div class="nav-links">
-      <a class="nav-link" href="/">Main</a>
-      <a class="nav-link" href="blog">Blog</a>
-      <button class="theme-toggle" data-theme-toggle aria-label="Toggle appearance"><span class="msr md" aria-hidden="true"></span></button>
-    </div>
-  </nav>
+  <!-- Background -->
+  <div id="bg" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="blob blob-c"></div>
+    <div class="blob blob-d"></div>
+  </div>
 
-  <header class="hero">
-    <div class="icon-box big" style="margin:0 auto;">
-      <span class="msr filled" aria-hidden="true">&#xE65F;</span>
-    </div>
-    <h1>Hello there <span class="accent">&#128075;</span></h1>
-    <p class="tagline">I&rsquo;m a <strong>Kustom Creator</strong>, <strong>App Developer</strong> and <strong>UI/UX Designer</strong> from Germany &mdash; building modern, Material You inspired projects.</p>
-    <div class="hero-badges">
-      <span class="chip">Kustom Design</span>
-      <span class="chip">Material You</span>
-      <span class="chip">UI/UX Design</span>
-      <span class="chip">Web Development</span>
-      <span class="chip">Python</span>
-      <span class="chip">Discord Bots</span>
-      <span class="chip">Open Source</span>
-    </div>
-  </header>
+  <div class="split">
 
-  <section id="work">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <span class="kicker">Featured Work</span>
-        <h2>Things I&rsquo;ve built</h2>
-        <p>A few projects I&rsquo;m proud of &mdash; apps, widgets and open source bots.</p>
+    <!-- ══════════════════════════════════════════════════════════
+         LEFT SIDEBAR
+    ══════════════════════════════════════════════════════════════ -->
+    <aside class="sidebar">
+
+      <!-- top row: avatar + theme toggle -->
+      <div class="sb-top-row">
+        <div class="av-wrap">
+          <div class="av-inner" style="overflow:hidden; padding:0;">
+            <img src="https://github.com/wollydev24.png" alt="WollyDev24" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
+          </div>
+        </div>
+        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
+          <span class="msr" id="themeIcon" style="font-size:20px;">&#xE51C;</span>
+        </button>
       </div>
 
-      <div class="card-grid">
-        <a class="card clickable reveal" href="https://github.com/wollydev24/YouShade" target="_blank" rel="noopener">
-          <span class="card-icon-row icon-box"><span class="msr lg filled" aria-hidden="true">&#xE40A;</span></span>
-          <span class="card-body">
-            <span class="card-title">YouShade Expressive</span>
-            <span class="card-desc">KWGT widgets inspired by Material You.</span>
-          </span>
-          <span class="card-arrow msr md" aria-hidden="true">&#xEA5C;</span>
-        </a>
-        <a class="card clickable reveal" href="astra">
-          <span class="card-icon-row icon-box alt1"><span class="msr lg filled" aria-hidden="true">&#xE80C;</span></span>
-          <span class="card-body">
-            <span class="card-title">Astra</span>
-            <span class="card-desc">Material You Expressive alternative for DSBmobile.</span>
-          </span>
-          <span class="card-arrow msr md" aria-hidden="true">&#xEA5C;</span>
-        </a>
-        <a class="card clickable reveal" href="https://github.com/wollydev24/DSBwatch" target="_blank" rel="noopener">
-          <span class="card-icon-row icon-box alt2"><span class="msr lg filled" aria-hidden="true">&#xEA42;</span></span>
-          <span class="card-body">
-            <span class="card-title">DSBwatch</span>
-            <span class="card-desc">DSBmobile on your watch &mdash; modern UI.</span>
-          </span>
-          <span class="card-arrow msr md" aria-hidden="true">&#xEA5C;</span>
-        </a>
-        <a class="card clickable reveal" href="sharky">
-          <span class="card-icon-row icon-box"><span class="msr lg filled" aria-hidden="true">&#xEB7C;</span></span>
-          <span class="card-body">
-            <span class="card-title">Sharky</span>
-            <span class="card-desc">Open source Discord bot written in Python.</span>
-          </span>
-          <span class="card-arrow msr md" aria-hidden="true">&#xEA5C;</span>
-        </a>
+      <!-- identity -->
+      <div>
+        <p class="sb-eyebrow">Based in Germany &#127465;&#127466;</p>
+        <h1 class="sb-name" style="margin-top:8px;">
+          Hey, I&rsquo;m<br>
+          <span class="grad">WollyDev24</span> &#128075;
+        </h1>
+        <p class="sb-bio" style="margin-top:14px;">
+          <strong>Kustom Creator</strong>, <strong>App Developer</strong>
+          &amp; <strong>UI/UX Designer</strong> &mdash; building modern,
+          expressive projects I&rsquo;m proud of.
+        </p>
       </div>
-    </div>
-  </section>
 
-  <section id="about" style="padding-top:0;">
-    <div class="wrap">
-      <div class="card reveal" style="text-align:center;">
-        <h3 style="font-size:22px;margin-bottom:10px;">About me</h3>
-        <p style="color:var(--on-surface-variant);max-width:640px;margin:0 auto;">I design modern interfaces, write Python and build websites. Currently learning Android development &mdash; and always experimenting with Material You Expressive.</p>
+      <!-- skill tags -->
+      <div class="tag-row">
+        <span class="tag">Kustom Design</span>
+        <span class="tag">Material You</span>
+        <span class="tag">UI / UX</span>
+        <span class="tag">Web Dev</span>
+        <span class="tag">Python</span>
+        <span class="tag">Discord Bots</span>
+        <span class="tag">Open Source</span>
       </div>
-    </div>
-  </section>
 
-  <footer class="footer">
-    <div class="row">
-      <a href="https://github.com/wollydev24" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://wolly.is-a.dev/404" target="_blank" rel="noopener">Telegram</a>
-      <a href="startpage">Startpage</a>
-    </div>
-    <span>&copy; 2026 WollyDev24</span>
-  </footer>
+      <!-- nav -->
+      <nav class="sb-nav" aria-label="Page sections">
+        <a class="sb-nav-link active" href="#work">
+          <span class="msr filled">&#xE8F4;</span> Work
+        </a>
+        <a class="sb-nav-link" href="#about">
+          <span class="msr filled">&#xE88E;</span> About
+        </a>
+        <a class="sb-nav-link" href="blog">
+          <span class="msr filled">&#xE873;</span> Blog
+        </a>
+      </nav>
 
-  <script src="material.js"></script>
+
+      <!-- footer -->
+      <div class="sb-footer">
+        <div class="sb-footer-links">
+          <a class="sb-footer-link" href="https://github.com/wollydev24" target="_blank" rel="noopener">GitHub</a>
+          <a class="sb-footer-link" href="https://wolly.is-a.dev/404" target="_blank" rel="noopener">Telegram</a>
+          <a class="sb-footer-link" href="startpage">Startpage</a>
+        </div>
+        <p class="sb-copy">&copy; 2026 WollyDev24</p>
+      </div>
+
+    </aside>
+
+    <!-- ══════════════════════════════════════════════════════════
+         RIGHT — scrollable content
+    ══════════════════════════════════════════════════════════════ -->
+    <main class="main" id="main-scroll">
+
+      <!-- Work -->
+      <section id="work" class="section">
+        <div class="reveal">
+          <span class="section-label">Featured Work</span>
+          <h2 class="section-title">Things I&rsquo;ve built</h2>
+          <p class="section-desc">A handful of projects I care about &mdash; widgets, apps and open source bots.</p>
+        </div>
+
+        <div class="projects-grid">
+
+          <a class="project-card reveal" href="https://github.com/wollydev24/YouShade" target="_blank" rel="noopener">
+            <div>
+              <p class="project-num">01 &mdash; KWGT Widget Pack</p>
+              <div class="project-icon icon-v">
+                <span class="msr filled" style="color:#c084fc;">&#xE40A;</span>
+              </div>
+              <p class="project-name">YouShade Expressive</p>
+              <p class="project-desc">A KWGT widget pack inspired by Material You &mdash; dynamic, colourful and deeply customisable for any home screen.</p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="project-tag">KWGT</span>
+                <span class="project-tag">Android</span>
+              </div>
+              <div class="project-arrow">
+                <span class="msr" style="font-size:16px;">&#xEA5C;</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project-card reveal" href="astra" style="transition-delay:.07s;">
+            <div>
+              <p class="project-num">02 &mdash; Android App</p>
+              <div class="project-icon icon-p">
+                <span class="msr filled" style="color:#f472b6;">&#xE80C;</span>
+              </div>
+              <p class="project-name">Astra</p>
+              <p class="project-desc">A Material You Expressive alternative client for DSBmobile, rebuilt with a modern and clean interface.</p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="project-tag">Android</span>
+                <span class="project-tag">Material You</span>
+              </div>
+              <div class="project-arrow">
+                <span class="msr" style="font-size:16px;">&#xEA5C;</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project-card reveal" href="https://github.com/wollydev24/DSBwatch" target="_blank" rel="noopener" style="transition-delay:.13s;">
+            <div>
+              <p class="project-num">03 &mdash; Wear OS App</p>
+              <div class="project-icon icon-b">
+                <span class="msr filled" style="color:#818cf8;">&#xEA42;</span>
+              </div>
+              <p class="project-name">DSBwatch</p>
+              <p class="project-desc">DSBmobile brought to your wrist. A modern Wear OS companion with a clean, watch-native UI.</p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="project-tag">Wear OS</span>
+                <span class="project-tag">Android</span>
+              </div>
+              <div class="project-arrow">
+                <span class="msr" style="font-size:16px;">&#xEA5C;</span>
+              </div>
+            </div>
+          </a>
+
+          <a class="project-card reveal" href="sharky" style="transition-delay:.19s;">
+            <div>
+              <p class="project-num">04 &mdash; Discord Bot</p>
+              <div class="project-icon icon-c">
+                <span class="msr filled" style="color:#2dd4bf;">&#xEB7C;</span>
+              </div>
+              <p class="project-name">Sharky</p>
+              <p class="project-desc">An open source Discord bot written in Python. Modular, fast, and easy to self-host.</p>
+            </div>
+            <div class="project-footer">
+              <div class="project-tags">
+                <span class="project-tag">Python</span>
+                <span class="project-tag">Discord</span>
+              </div>
+              <div class="project-arrow">
+                <span class="msr" style="font-size:16px;">&#xEA5C;</span>
+              </div>
+            </div>
+          </a>
+
+        </div>
+
+
+      </section>
+
+      <hr class="divider" />
+
+      <!-- About -->
+      <section id="about" class="section" style="margin-bottom:0;">
+        <div class="reveal">
+          <span class="section-label">About</span>
+          <h2 class="section-title">A bit about me</h2>
+          <p class="section-desc">Who I am, what I do, and what I&rsquo;m learning.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-text reveal" style="transition-delay:.06s;">
+            <p>I design modern interfaces, write <strong>Python</strong> and build websites.
+            I&rsquo;m passionate about clean, expressive UI that feels <strong>great to use</strong>
+            &mdash; not just pretty to look at.</p>
+            <p>Currently diving into <strong>Android development</strong> while always
+            experimenting with Material You Expressive. I believe great design
+            should be <strong>accessible to everyone</strong>.</p>
+            <p>When I&rsquo;m not coding I&rsquo;m tinkering with home screen setups
+            and pushing the limits of <strong>Kustom</strong>.</p>
+          </div>
+
+          <div class="skill-grid reveal" style="transition-delay:.12s;">
+            <div class="skill-item">
+              <p class="skill-name">Python</p>
+              <p class="skill-level">Bots &amp; scripts</p>
+            </div>
+            <div class="skill-item">
+              <p class="skill-name">Android</p>
+              <p class="skill-level">Currently learning</p>
+            </div>
+            <div class="skill-item">
+              <p class="skill-name">UI / UX Design</p>
+              <p class="skill-level">Material You</p>
+            </div>
+            <div class="skill-item">
+              <p class="skill-name">Web Dev</p>
+              <p class="skill-level">HTML · CSS · JS</p>
+            </div>
+            <div class="skill-item">
+              <p class="skill-name">KWGT / Kustom</p>
+              <p class="skill-level">Widget design</p>
+            </div>
+            <div class="skill-item">
+              <p class="skill-name">Open Source</p>
+              <p class="skill-level">GitHub contributor</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- /.split -->
+
+  <script>
+    /* ── Stars ──────────────────────────────────────────────────── */
+    (function(){
+      var bg = document.getElementById('bg');
+      if (!bg || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      for (var i = 0; i < 140; i++) {
+        var s = document.createElement('div'); s.className = 'star';
+        var sz = Math.random() * 2.2 + 0.5;
+        s.style.cssText = [
+          'width:' + sz + 'px', 'height:' + sz + 'px',
+          'left:'  + (Math.random()*100) + '%',
+          'top:'   + (Math.random()*100) + '%',
+          '--dur:' + (Math.random()*5+3).toFixed(1)+'s',
+          '--delay:' + (Math.random()*9).toFixed(1)+'s',
+          '--op:'  + (Math.random()*.4+.15).toFixed(2)
+        ].join(';');
+        bg.appendChild(s);
+      }
+    })();
+
+    /* ── Theme toggle ───────────────────────────────────────────── */
+    (function(){
+      var btn  = document.getElementById('themeBtn');
+      var icon = document.getElementById('themeIcon');
+      var MOON = '\uE51C', SUN = '\uE518';
+      var light = false;
+      try { light = localStorage.getItem('wdy-theme') === 'light'; } catch(e){}
+      function apply(l) {
+        light = l;
+        icon.textContent = l ? SUN : MOON;
+        var r = document.documentElement.style;
+        r.setProperty('--bg',           l ? '#faf7ff'                    : '#0B0810');
+        r.setProperty('--text',         l ? '#1a1225'                    : '#f1edfb');
+        r.setProperty('--text-muted',   l ? '#6b5f82'                    : '#9d93b4');
+        r.setProperty('--glass-bg',     l ? 'rgba(168,85,247,0.05)'      : 'rgba(255,255,255,0.04)');
+        r.setProperty('--glass-border', l ? 'rgba(168,85,247,0.16)'      : 'rgba(255,255,255,0.09)');
+        r.setProperty('--glass-hover',  l ? 'rgba(168,85,247,0.10)'      : 'rgba(255,255,255,0.08)');
+        try { localStorage.setItem('wdy-theme', l ? 'light' : 'dark'); } catch(e){}
+      }
+      apply(light);
+      if (btn) btn.addEventListener('click', function(){ apply(!light); });
+    })();
+
+    /* ── Reveal on scroll (watches the right panel) ─────────────── */
+    (function(){
+      var root = document.getElementById('main-scroll') || window;
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+        return;
+      }
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+        });
+      }, { root: root === window ? null : root, threshold: 0.08 });
+      document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+    })();
+
+    /* ── Staggered sidebar entrance ─────────────────────────────── */
+    (function(){
+      // tags
+      document.querySelectorAll('.tag').forEach(function(el, i){
+        el.style.transitionDelay = (i * 0.055) + 's';
+        setTimeout(function(){ el.classList.add('in'); }, 300 + i * 55);
+      });
+      // nav links
+      document.querySelectorAll('.sb-nav-link').forEach(function(el, i){
+        setTimeout(function(){ el.classList.add('in'); }, 500 + i * 80);
+      });
+      // footer
+      var footer = document.querySelector('.sb-footer');
+      if (footer) setTimeout(function(){ footer.classList.add('in'); }, 700);
+    })();
+
+    /* ── Staggered skill items (scroll-triggered) ───────────────── */
+    (function(){
+      if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('.skill-item').forEach(function(el){ el.classList.add('in'); });
+        return;
+      }
+      var scroll = document.getElementById('main-scroll');
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting){
+            var items = e.target.querySelectorAll('.skill-item');
+            items.forEach(function(item, i){
+              setTimeout(function(){ item.classList.add('in'); }, i * 70);
+            });
+            obs.unobserve(e.target);
+          }
+        });
+      }, { root: scroll || null, threshold: 0.1 });
+      var grid = document.querySelector('.skill-grid');
+      if (grid) obs.observe(grid);
+    })();
+
+    /* ── Active nav link on scroll ──────────────────────────────── */
+    (function(){
+      var links = document.querySelectorAll('.sb-nav-link');
+      var scroll = document.getElementById('main-scroll');
+      if (!scroll) return;
+      var sections = ['work','about'].map(function(id){ return document.getElementById(id); });
+      scroll.addEventListener('scroll', function(){
+        var scrollTop = scroll.scrollTop;
+        var active = sections[0];
+        sections.forEach(function(s){ if (s && s.offsetTop - 100 <= scrollTop) active = s; });
+        links.forEach(function(l){
+          l.classList.toggle('active', l.getAttribute('href') === '#' + (active ? active.id : ''));
+        });
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
