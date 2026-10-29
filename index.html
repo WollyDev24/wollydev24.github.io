@@ -963,15 +963,13 @@
       if (btn) btn.addEventListener('click', function(){ apply(!light); });
     })();
 
-    /* ── Reveal on scroll (watches the right panel) ─────────────── */
-    (function(){
-      var root = document.getElementById('main-scroll') || window;
     /* ── Reveal on scroll (panel root on desktop, viewport on mobile) */
     (function(){
-      if (!('IntersectionObserver' in window)) {
+      function revealAll() {
         document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
-        return;
       }
+      if (!('IntersectionObserver' in window)) { revealAll(); return; }
+
       function setup() {
         var isMobile = window.innerWidth <= 820;
         var panel    = document.getElementById('main-scroll');
@@ -980,11 +978,17 @@
           entries.forEach(function(e){
             if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
           });
-        }, { root: root, threshold: 0.05 });
+        }, { root: root, threshold: 0.01 });
         document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ obs.observe(el); });
       }
       setup();
       window.addEventListener('resize', setup, { passive: true });
+
+      /* hard fallback — if anything is still hidden after 600ms, force it visible */
+      setTimeout(function(){
+        document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ el.classList.add('in'); });
+        document.querySelectorAll('.skill-item:not(.in)').forEach(function(el){ el.classList.add('in'); });
+      }, 600);
     })();
 
     /* ── Staggered sidebar entrance ─────────────────────────────── */
