@@ -925,16 +925,16 @@
     (function(){
       var bg = document.getElementById('bg');
       if (!bg || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      for (var i = 0; i < 140; i++) {
+      for (var i = 0; i < 320; i++) {
         var s = document.createElement('div'); s.className = 'star';
-        var sz = Math.random() * 2.2 + 0.5;
+        var sz = Math.random() * 3 + 0.4;
         s.style.cssText = [
           'width:' + sz + 'px', 'height:' + sz + 'px',
           'left:'  + (Math.random()*100) + '%',
           'top:'   + (Math.random()*100) + '%',
-          '--dur:' + (Math.random()*5+3).toFixed(1)+'s',
-          '--delay:' + (Math.random()*9).toFixed(1)+'s',
-          '--op:'  + (Math.random()*.4+.15).toFixed(2)
+          '--dur:' + (Math.random()*5+2).toFixed(1)+'s',
+          '--delay:' + (Math.random()*10).toFixed(1)+'s',
+          '--op:'  + (Math.random()*.65+0.2).toFixed(2)
         ].join(';');
         bg.appendChild(s);
       }
