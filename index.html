@@ -966,18 +966,25 @@
     /* ── Reveal on scroll (watches the right panel) ─────────────── */
     (function(){
       var root = document.getElementById('main-scroll') || window;
-    /* ── Reveal on scroll (null root works for both scroll contexts) */
+    /* ── Reveal on scroll (panel root on desktop, viewport on mobile) */
     (function(){
       if (!('IntersectionObserver' in window)) {
         document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
         return;
       }
-      var obs = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
-        });
-      }, { threshold: 0.08 });
-      document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+      function setup() {
+        var isMobile = window.innerWidth <= 820;
+        var panel    = document.getElementById('main-scroll');
+        var root     = (!isMobile && panel) ? panel : null;
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if (e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); }
+          });
+        }, { root: root, threshold: 0.05 });
+        document.querySelectorAll('.reveal:not(.in)').forEach(function(el){ obs.observe(el); });
+      }
+      setup();
+      window.addEventListener('resize', setup, { passive: true });
     })();
 
     /* ── Staggered sidebar entrance ─────────────────────────────── */
@@ -1002,20 +1009,25 @@
         document.querySelectorAll('.skill-item').forEach(function(el){ el.classList.add('in'); });
         return;
       }
-      var scroll = document.getElementById('main-scroll');
-      var obs = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if (e.isIntersecting){
-            var items = e.target.querySelectorAll('.skill-item');
-            items.forEach(function(item, i){
-              setTimeout(function(){ item.classList.add('in'); }, i * 70);
-            });
-            obs.unobserve(e.target);
-          }
-        });
-      }, { root: scroll || null, threshold: 0.1 });
       var grid = document.querySelector('.skill-grid');
-      if (grid) obs.observe(grid);
+      if (!grid) return;
+      function setup() {
+        var isMobile = window.innerWidth <= 820;
+        var panel    = document.getElementById('main-scroll');
+        var root     = (!isMobile && panel) ? panel : null;
+        var obs = new IntersectionObserver(function(entries){
+          entries.forEach(function(e){
+            if (e.isIntersecting){
+              e.target.querySelectorAll('.skill-item').forEach(function(item, i){
+                setTimeout(function(){ item.classList.add('in'); }, i * 70);
+              });
+              obs.unobserve(e.target);
+            }
+          });
+        }, { root: root, threshold: 0.05 });
+        obs.observe(grid);
+      }
+      setup();
     })();
 
     /* ── Active nav (sidebar + mobile tab bar) ───────────────────── */
