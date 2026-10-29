@@ -191,7 +191,11 @@
     }
     .sb-nav-link .msr { font-size: 18px; }
     .sb-nav-link:hover { color: var(--text); background: var(--glass-hover); text-decoration: none; }
-    .sb-nav-link.active { color: var(--violet); background: rgba(168,85,247,.12); }
+    .sb-nav-link.active { color: var(--violet); background: rgba(168,85,247,.12); animation: navPulse 3s ease-in-out infinite; }
+    @keyframes navPulse {
+      0%,100% { background: rgba(168,85,247,.12); }
+      50%      { background: rgba(168,85,247,.22); }
+    }
 
     /* CTA buttons */
     .sb-ctas {
@@ -234,17 +238,30 @@
       background: rgba(168,85,247,.1); text-decoration: none;
     }
     .sb-copy { font-size: 11px; color: var(--text-muted); opacity: .6; }
+    .sb-top-row { display: flex; align-items: flex-start; justify-content: flex-start; }
 
-    /* theme toggle */
-    .theme-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 11px;
-      border: 1px solid var(--glass-border); background: var(--glass-bg);
-      color: var(--text); cursor: pointer;
-      transition: background .2s, transform .2s;
+    /* ── Cursor glow ────────────────────────────────────────────── */
+    #cursor-glow {
+      position: fixed; width: 340px; height: 340px;
+      border-radius: 50%; pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(168,85,247,.13) 0%, transparent 70%);
+      transform: translate(-50%,-50%);
+      transition: opacity .4s;
     }
-    .theme-btn:hover { background: var(--glass-hover); transform: scale(1.08); }
-    .sb-top-row { display: flex; align-items: flex-start; justify-content: space-between; }
+
+    /* ── Rising particles ───────────────────────────────────────── */
+    .particle {
+      position: fixed; border-radius: 50%;
+      background: var(--violet); pointer-events: none; z-index: 0;
+      animation: rise var(--rdur,8s) var(--rdelay,0s) infinite linear;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0%   { transform: translateY(0)   scale(1);   opacity: 0; }
+      10%  { opacity: var(--rop, .35); }
+      90%  { opacity: var(--rop, .35); }
+      100% { transform: translateY(-100vh) scale(.4); opacity: 0; }
+    }
 
     /* ── RIGHT — scrollable main content ──────────────────────── */
     .main {
@@ -410,7 +427,24 @@
       to   { opacity:1; transform: translateX(0); }
     }
 
-    /* project cards: scale up on reveal */
+    /* project card: animated glowing border on hover via ::after */
+    .project-card::after {
+      content:''; position:absolute; inset:-1px; border-radius: var(--radius-lg);
+      background: linear-gradient(130deg, var(--violet), var(--pink), var(--violet));
+      background-size: 200% 200%;
+      opacity: 0; z-index: -1;
+      transition: opacity .35s;
+      animation: borderSpin 3s linear infinite paused;
+    }
+    .project-card:hover::after { opacity: 1; animation-play-state: running; }
+    @keyframes borderSpin {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+    /* cover inner so only border shows */
+    .project-card:hover { background: var(--bg) !important; }
+
+    /* project card: scale up on reveal */
     .project-card {
       transform-origin: center bottom;
     }
@@ -669,6 +703,8 @@
     <div class="blob blob-c"></div>
     <div class="blob blob-d"></div>
   </div>
+  <!-- Cursor glow -->
+  <div id="cursor-glow" aria-hidden="true"></div>
 
   <div class="split">
 
@@ -677,16 +713,13 @@
     ══════════════════════════════════════════════════════════════ -->
     <aside class="sidebar">
 
-      <!-- top row: avatar + theme toggle -->
+      <!-- top row: avatar -->
       <div class="sb-top-row">
         <div class="av-wrap">
           <div class="av-inner" style="overflow:hidden; padding:0;">
             <img src="https://github.com/wollydev24.png" alt="WollyDev24" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />
           </div>
         </div>
-        <button class="theme-btn" id="themeBtn" aria-label="Toggle theme">
-          <span class="msr" id="themeIcon" style="font-size:20px;">&#xE51C;</span>
-        </button>
       </div>
 
       <!-- identity -->
@@ -940,8 +973,55 @@
       }
     })();
 
-    /* ── Theme toggle ───────────────────────────────────────────── */
+    /* ── Cursor glow ────────────────────────────────────────────── */
     (function(){
+      if (window.matchMedia('(hover: none)').matches) return;
+      var glow = document.getElementById('cursor-glow');
+      if (!glow) return;
+      document.addEventListener('mousemove', function(e){
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+      }, { passive: true });
+    })();
+
+    /* ── Rising particles ───────────────────────────────────────── */
+    (function(){
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var count = 18;
+      for (var i = 0; i < count; i++) {
+        var p = document.createElement('div'); p.className = 'particle';
+        var sz = Math.random() * 3 + 1;
+        p.style.cssText = [
+          'width:'    + sz + 'px',
+          'height:'   + sz + 'px',
+          'left:'     + (Math.random() * 100) + '%',
+          'bottom:'   + (Math.random() * 30)  + '%',
+          '--rdur:'   + (Math.random() * 10 + 8).toFixed(1) + 's',
+          '--rdelay:' + (Math.random() * 12).toFixed(1) + 's',
+          '--rop:'    + (Math.random() * 0.3 + 0.1).toFixed(2)
+        ].join(';');
+        document.body.appendChild(p);
+      }
+    })();
+
+    /* ── Aurora parallax on mouse ───────────────────────────────── */
+    (function(){
+      if (window.matchMedia('(hover: none)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var blobs = document.querySelectorAll('.blob');
+      var cx = window.innerWidth / 2, cy = window.innerHeight / 2;
+      document.addEventListener('mousemove', function(e){
+        var dx = (e.clientX - cx) / cx;
+        var dy = (e.clientY - cy) / cy;
+        blobs.forEach(function(b, i){
+          var strength = (i + 1) * 10;
+          b.style.transform = 'translate(' + (dx * strength) + 'px,' + (dy * strength) + 'px)';
+        });
+      }, { passive: true });
+    })();
+
+    /* ── Theme toggle ───────────────────────────────────────────── */
+    (function(){\
       var btn  = document.getElementById('themeBtn');
       var icon = document.getElementById('themeIcon');
       var MOON = '\uE51C', SUN = '\uE518';
